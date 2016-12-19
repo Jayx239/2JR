@@ -1,5 +1,7 @@
 /**
- * 
+ * IPrintable Interface
+ * <p>
+ * The IPrintable interface used by all data type classes in the TwoJRToolKit
  */
 package twojrtoolkit;
 
