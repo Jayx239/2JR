@@ -1,8 +1,0 @@
-/**
- * 
- */
-/**
- * @author Jason
- *
- */
-package TwoJRToolKit;
