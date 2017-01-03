@@ -9,7 +9,7 @@ package twojrtoolkit;
  * @author Jason Gallagher
  *
  */
-public class JIdentity {
+public abstract class JIdentity implements IPrintable {
 	
 	public JIdentity(){
 		
