@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
  * @author Jason Gallagher
  *
  */
-public class JDouble extends JData{
+public class JDouble extends JData {
 
 	JDouble(int inId, String inName, int inSize, double inValue) {
 		super(inId, inName, inSize);
