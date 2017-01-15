@@ -135,9 +135,9 @@ public class DataTypes {
         dataSizeMap.put(EIGHT_BIT_ENUMERATION, 1);
         dataSizeMap.put(SIXTEEN_BIT_ENUMERATION, 2);
 
-        dataSizeMap.put(SINGLE_PRECISION, 1);
-        dataSizeMap.put(DOUBLE_PRECISION, 2);
-        dataSizeMap.put(SEMI_PRECISION, 1);
+        dataSizeMap.put(SINGLE_PRECISION, 4);
+        dataSizeMap.put(DOUBLE_PRECISION, 8);
+        dataSizeMap.put(SEMI_PRECISION, 2);
 
 
         dataSizeMap.put(IEEE_ADDRESS, 8);
