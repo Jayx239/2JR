@@ -1,5 +1,8 @@
 package com.twojr.toolkit;
 
+import java.nio.ByteBuffer;
+import java.time.temporal.ValueRange;
+
 /**
  * Created by rcunni002c on 11/17/2016.
  */
@@ -39,6 +42,14 @@ public class JBit extends JData{
     //==================================================================================================================
 
     @Override
+    public byte[] toByte() {
+        byte[] byteArray = new byte[getSize()];
+        char valueAsChar = (char) (value ? 0x01 : 0x00);
+        ByteBuffer.wrap(byteArray).putChar(valueAsChar);
+        return byteArray;
+    }
+
+    @Override
     public byte[] compress() {
         return new byte[0];
     }
@@ -50,13 +61,9 @@ public class JBit extends JData{
 
     @Override
     public String print() {
-        return null;
+        return value ? "1" : "0";
     }
 
-    @Override
-    public byte[] toByte() {
-        return new byte[0];
-    }
 
 
     //==================================================================================================================
