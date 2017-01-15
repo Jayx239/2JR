@@ -1,7 +1,10 @@
 package com.twojr.toolkit;
 
+import java.nio.ByteBuffer;
+
 /**
  * Created by rcunni002c on 11/17/2016.
+ * Updated 1/15/2016 by Jason Gallagher
  */
 public class JDouble extends JData {
 
@@ -38,7 +41,9 @@ public class JDouble extends JData {
 
     @Override
     public byte[] toByte() {
-        return new byte[0];
+        byte[] byteArray = new byte[DataTypes.dataSizeMap.get(DataTypes.DOUBLE_PRECISION);
+        ByteBuffer.wrap(byteArray).putDouble(value);
+        return byteArray;
     }
 
     @Override
@@ -53,7 +58,7 @@ public class JDouble extends JData {
 
     @Override
     public String print() {
-        return null;
+        return Double.toString(value);
     }
 
 
