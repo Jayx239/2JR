@@ -41,7 +41,7 @@ public class JDouble extends JData {
 
     @Override
     public byte[] toByte() {
-        byte[] byteArray = new byte[DataTypes.dataSizeMap.get(DataTypes.DOUBLE_PRECISION);
+        byte[] byteArray = new byte[getSize()];
         ByteBuffer.wrap(byteArray).putDouble(value);
         return byteArray;
     }
