@@ -41,7 +41,7 @@ public class JBoolean extends JData{
 
     @Override
     public byte[] toByte() {
-        byte[] byteArray = new byte[DataTypes.dataSizeMap.get(DataTypes.BOOLEAN)];
+        byte[] byteArray = new byte[getSize()];
         ByteBuffer.wrap(byteArray).putInt(value ? 1 : 0);
         return byteArray;
     }
