@@ -1,3 +1,5 @@
+2JR.iml
+.idea/
 .metadata
 /bin/
 tmp/
@@ -48,3 +50,4 @@ local.properties
 
 # Code Recommenders
 .recommenders/
+/bin/
