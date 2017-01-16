@@ -32,7 +32,9 @@ public class JKey extends JData{
 
     @Override
     public byte[] compress() {
-        return new byte[0];
+
+        return value;
+
     }
 
     @Override
@@ -42,7 +44,19 @@ public class JKey extends JData{
 
     @Override
     public String print() {
-        return null;
+
+        String output = "Key: ";
+
+        for(byte bits : value){
+
+            output += bits + " ";
+
+        }
+
+        output += "\n";
+
+        return output;
+        
     }
 
     @Override
