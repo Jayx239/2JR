@@ -39,7 +39,9 @@ public class JString extends JData {
 
     @Override
     public byte[] toByte() {
-        return new byte[0];
+
+        return value.getBytes();
+
     }
 
     @Override
@@ -54,7 +56,13 @@ public class JString extends JData {
 
     @Override
     public String print() {
-        return null;
+
+        String output = "String Value: " + value + "\n";
+
+        System.out.print(output);
+
+        return output;
+
     }
 
     //==================================================================================================================
