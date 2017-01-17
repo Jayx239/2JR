@@ -2,6 +2,8 @@ package com.twojr.toolkit.integer;
 
 import com.twojr.toolkit.JInteger;
 
+import java.nio.ByteBuffer;
+
 /**
  * Created by rcunni002c on 11/17/2016.
  */
@@ -11,6 +13,7 @@ public class JSignedInteger extends JInteger {
     // Constructor(s)
     //==================================================================================================================
 
+    public JSignedInteger(){};
     public JSignedInteger(int id, String name, int size, int value) {
         super(id, name, size, value);
     }
@@ -28,7 +31,9 @@ public class JSignedInteger extends JInteger {
 
     @Override
     public byte[] toByte() {
-        return new byte[0];
+        byte[] byteArray = new byte[getSize()];
+        ByteBuffer.wrap(byteArray).putInt(getValue());
+        return byteArray;
     }
 
     @Override
@@ -42,9 +47,7 @@ public class JSignedInteger extends JInteger {
     }
 
     @Override
-    public String print() {
-        return null;
-    }
+    public String print() { return Integer.toString(getValue()); }
 
 
     //==================================================================================================================
