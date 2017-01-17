@@ -48,12 +48,26 @@ public class JAddress extends JData{
 
     @Override
     public String print() {
-        return null;
+
+        String output = "Address: ";
+
+        for(byte bits : address)
+        {
+            output  += bits + ":";
+
+        }
+
+        output += "\n";
+
+        return output;
+
     }
 
     @Override
     public byte[] toByte() {
-        return new byte[0];
+
+        return address;
+        
     }
 
 

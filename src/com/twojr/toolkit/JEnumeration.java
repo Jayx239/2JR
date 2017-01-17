@@ -1,5 +1,6 @@
 package com.twojr.toolkit;
 
+import java.nio.ByteBuffer;
 import java.util.Enumeration;
 
 /**
@@ -41,7 +42,14 @@ public class JEnumeration extends JData {
 
     @Override
     public byte[] toByte() {
-        return new byte[0];
+        byte[] byteArray = new byte[getSize()];
+        String valStr = value.toString();
+
+        for(char valC : valStr.toCharArray()) {
+            ByteBuffer.wrap(byteArray).putChar(valC);
+        }
+
+        return byteArray;
     }
 
     @Override
@@ -56,7 +64,7 @@ public class JEnumeration extends JData {
 
     @Override
     public String print() {
-        return null;
+        return value.toString();
     }
 
 

@@ -9,7 +9,6 @@ public class JBitmap extends JData {
 
     private HashMap<Integer,Integer> value;
     private HashMap<Integer,String> params;
-    private int noBits;
 
 
     //==================================================================================================================
@@ -20,21 +19,22 @@ public class JBitmap extends JData {
 
     }
 
-    public JBitmap(int id, String name, int noBits) {
-        super(id, name, (int)noBits/8);
+    public JBitmap(int id, String name, JDataSizes size) {
+
+        super(id, name, size);
         this.params = new HashMap<>();
 
-        for(int i = 0; i < noBits; i++){
+        for(int i = 0; i < getSize(); i++){
             params.put(i,"");
         }
 
 
         this.value = new HashMap<>();
 
-        for(int i = 0; i < noBits; i++){
+        for(int i = 0; i < getSize(); i++){
             value.put(i,0);
         }
-        this.noBits = noBits;
+
     }
 
 
@@ -50,43 +50,82 @@ public class JBitmap extends JData {
         this.params = params;
     }
 
-    public int getNoBits() {
-        return noBits;
-    }
-
-    public void setNoBits(int noBits) {
-        this.noBits = noBits;
-    }
-
 
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
 
-    public void putValue(int i, boolean used){
+    public void putValue(int i, boolean used) {
 
-        if(used) {
-            value.put(i,1);
-        }else {
-            value.put(i,0);
+        if (i > 0 && i <= getSize() * 8) {
+
+            if (used) {
+
+                value.put(i, 1);
+
+            } else {
+
+                value.put(i, 0);
+
+            }
+
         }
 
     }
 
     public int getValues(int i){
 
-        return value.get(i);
+        if (i > 0 && i <= getSize() * 8) {
+
+            return value.get(i);
+
+        }else {
+
+
+            return  -1;
+
+        }
 
     }
 
     @Override
     public byte[] toByte() {
-        return new byte[0];
+
+        byte[] bytes = new byte[getSize()];
+
+        for(int i = 0; i < getSize(); i++){
+
+            String byteStr = "";
+
+            for(int j = 0; j < 8; j++)
+            {
+
+                byteStr += value.get(j + i*8);
+
+            }
+
+            bytes[i] = Byte.parseByte(byteStr);
+        }
+
+        return bytes;
+
     }
 
     @Override
     public String print() {
-        return null;
+
+        String output = "";
+
+        for(int key : value.keySet()){
+
+            output +=  key + ". value: " + value.get(key) + ", param: " + params.get(key) + "\n";
+
+        }
+
+        System.out.print(output);
+
+        return output;
+        
     }
 
     @Override

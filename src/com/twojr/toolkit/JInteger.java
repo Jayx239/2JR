@@ -3,7 +3,7 @@ package com.twojr.toolkit;
 /**
  * Created by rcunni002c on 11/17/2016.
  */
-public class JInteger extends JData {
+public abstract class JInteger extends JData {
 
     private int value;
 
@@ -38,25 +38,13 @@ public class JInteger extends JData {
 
 
     @Override
-    public byte[] toByte() {
-        return new byte[0];
-    }
-
+    public abstract byte[] toByte();
     @Override
-    public byte[] compress() {
-        return new byte[0];
-    }
-
+    public abstract String print();
     @Override
-    public int getSavings() {
-        return 0;
-    }
-
+    public abstract byte[] compress();      //Compresses data into the smallest format possible
     @Override
-    public String print() {
-        return null;
-    }
-
+    public abstract int getSavings();       //Reports the numbers of bytes saved by compression
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================
