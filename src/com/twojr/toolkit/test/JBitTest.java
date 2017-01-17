@@ -18,7 +18,8 @@ public class JBitTest {
 
         JBit bit1 = new JBit(id,name,size,value);
 
-        assertEquals(0x01, bit1.toByte());
+        assertEquals(size,bit1.toByte().length);
+        assertEquals(0x01, bit1.toByte()[0]);
     }
 
     @Test
@@ -31,7 +32,8 @@ public class JBitTest {
 
         JBit bit0 = new JBit(id,name,size,value);
 
-        assertEquals(0x00, bit0.toByte());
+        assertEquals(size,bit0.toByte().length);
+        assertEquals((byte) 0x00, bit0.toByte()[0]);
     }
 
     @Test
