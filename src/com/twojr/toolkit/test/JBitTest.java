@@ -109,4 +109,49 @@ public class JBitTest {
         assertEquals("0", bit1.print());
     }
 
+    @Test
+    public void evaluateSetValue() {
+        JBit jBit = new JBit();
+
+        assertEquals(false, jBit.getValue());
+        jBit.setValue(true);
+        assertEquals(true, jBit.getValue());
+
+        jBit.setValue(false);
+        assertEquals(false,jBit.getValue());
+
+    }
+
+    @Test
+    public void evaluateSetId() {
+        JBit jBit = new JBit();
+
+
+        assertEquals(0, jBit.getId());
+        jBit.setId(12);
+        assertEquals(12, jBit.getId());
+
+    }
+
+    @Test
+    public void evaluateSetSize() {
+        JBit jBit = new JBit();
+
+        assertEquals(0, jBit.getSize());
+        jBit.setSize(1);
+        assertEquals(1, jBit.getSize());
+
+    }
+
+    @Test
+    public void evaluateSetName() {
+        JBit jBit = new JBit();
+
+        assertEquals(null, jBit.getName());
+        jBit.setName("name");
+        assertEquals("name", jBit.getName());
+    }
+
+    // TODO: implement and write tests for compress and savings methods
+
 }
