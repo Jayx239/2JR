@@ -75,4 +75,47 @@ public class JDoubleTest {
         JDouble jDouble = new JDouble(id,name,size,value);
         assertEquals(jDouble.print(),"201902.0");
     }
+
+    @Test
+    public void evaluateSetValue() {
+        JDouble jDouble = new JDouble();
+
+        assertEquals(0.0, jDouble.getValue(),0);
+        jDouble.setValue(20.0);
+        assertEquals(20.0, jDouble.getValue(),0);
+
+    }
+
+    @Test
+    public void evaluateSetId() {
+        JDouble jDouble = new JDouble();
+
+
+        assertEquals(0, jDouble.getId());
+        jDouble.setId(12);
+        assertEquals(12, jDouble.getId());
+
+    }
+
+    @Test
+    public void evaluateSetSize() {
+        JDouble jDouble = new JDouble();
+
+        assertEquals(0, jDouble.getSize());
+        jDouble.setSize(8);
+        assertEquals(8, jDouble.getSize());
+
+    }
+
+    @Test
+    public void evaluateSetName() {
+        JDouble jDouble = new JDouble();
+
+        assertEquals(null, jDouble.getName());
+        jDouble.setName("name");
+        assertEquals("name", jDouble.getName());
+    }
+
+    // TODO: implement and write tests for compress and savings methods
+
 }
