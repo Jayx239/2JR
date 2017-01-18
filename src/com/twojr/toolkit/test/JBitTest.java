@@ -2,9 +2,7 @@ package com.twojr.toolkit.test;
 import static org.junit.Assert.*;
 
 import com.twojr.toolkit.JBit;
-import com.twojr.toolkit.JDouble;
 import org.junit.Test;
-import java.nio.ByteBuffer;
 /**
  * Created by Jason on 1/17/2017.
  */
