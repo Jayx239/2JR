@@ -65,7 +65,7 @@ public class JDoubleTest {
     }
 
     @Test
-    public void evaluateToString() {
+    public void evaluatePrint() {
 
         double value = 201902;
         int size = 8;
