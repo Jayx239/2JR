@@ -1,6 +1,7 @@
 package com.twojr.toolkit.integer;
 
 import com.twojr.toolkit.JInteger;
+import java.nio.ByteBuffer;
 
 /**
  * Created by rcunni002c on 11/17/2016.
@@ -11,8 +12,13 @@ public class JUnsignedInteger extends JInteger{
     // Constructor(s)
     //==================================================================================================================
 
+    public JUnsignedInteger(){};
     public JUnsignedInteger(int id, String name, int size, int value) {
         super(id, name, size, value);
+        //Any negative input for value is set to zero to keep this type unsigned
+        if (value < 0) {
+            super.setValue(0);
+        }
     }
 
     //==================================================================================================================
@@ -27,7 +33,9 @@ public class JUnsignedInteger extends JInteger{
 
     @Override
     public byte[] toByte() {
-        return new byte[0];
+        byte[] byteArray = new byte[getSize()];
+        ByteBuffer.wrap(byteArray).putInt(getValue());
+        return byteArray;
     }
 
     @Override
@@ -42,7 +50,9 @@ public class JUnsignedInteger extends JInteger{
 
     @Override
     public String print() {
-        return null;
+        String val = Integer.toString(getValue());
+        System.out.println(val);
+        return val;
     }
 
 

@@ -1,7 +1,5 @@
 package com.twojr.toolkit;
 
-import java.nio.ByteBuffer;
-
 /**
  * Created by rcunni002c on 11/17/2016.
  */
@@ -42,7 +40,8 @@ public class JBoolean extends JData{
     @Override
     public byte[] toByte() {
         byte[] byteArray = new byte[getSize()];
-        ByteBuffer.wrap(byteArray).putInt(value ? 1 : 0);
+        String valueAsChar = (char) (value ? 0x01 : 0x00) + "";
+        byteArray = valueAsChar.getBytes();
         return byteArray;
     }
 
