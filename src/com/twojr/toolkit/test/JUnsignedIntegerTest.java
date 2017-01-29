@@ -9,7 +9,7 @@ import org.junit.Test;
 public class JUnsignedIntegerTest {
     @Test
     public void evaluateToByte1() {
-        int value = 0;
+        int value = 1;
         int size = 1;
         int id = 1;
         String name = "test_name";
@@ -22,7 +22,7 @@ public class JUnsignedIntegerTest {
 
     @Test
     public void evaluateToByte0() {
-        int value = 1;
+        int value = 0;
         int size = 1;
         int id = 1;
         String name = "test_name";
@@ -80,7 +80,7 @@ public class JUnsignedIntegerTest {
 
     @Test
     public void evaluatePrint1() {
-        int value = 0;
+        int value = 1;
         int size = 1;
         int id = 1;
         String name = "test_name";
