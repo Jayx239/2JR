@@ -9,19 +9,6 @@ import org.junit.Test;
 public class JSignedIntegerTest {
     @Test
     public void evaluateToByte1() {
-        int value = 0;
-        int size = 1;
-        int id = 1;
-        String name = "test_name";
-
-        JSignedInteger sIntTest = new JSignedInteger(id,name,size,value);
-
-        assertEquals(size,sIntTest.toByte().length);
-        assertEquals(0x01, sIntTest.toByte()[0]);
-    }
-
-    @Test
-    public void evaluateToByte0() {
         int value = 1;
         int size = 1;
         int id = 1;
@@ -30,7 +17,20 @@ public class JSignedIntegerTest {
         JSignedInteger sIntTest = new JSignedInteger(id,name,size,value);
 
         assertEquals(size,sIntTest.toByte().length);
-        assertEquals((byte) 0x00, sIntTest.toByte()[0]);
+        assertEquals( 0x01, sIntTest.toByte()[0]);
+    }
+
+    @Test
+    public void evaluateToByte0() {
+        int value = 0;
+        int size = 1;
+        int id = 1;
+        String name = "test_name";
+
+        JSignedInteger sIntTest = new JSignedInteger(id,name,size,value);
+
+        assertEquals(size,sIntTest.toByte().length);
+        assertEquals(0x00, sIntTest.toByte()[0]);
     }
 
     @Test
@@ -80,7 +80,7 @@ public class JSignedIntegerTest {
 
     @Test
     public void evaluatePrint1() {
-        int value = 0;
+        int value = 1;
         int size = 1;
         int id = 1;
         String name = "test_name";
