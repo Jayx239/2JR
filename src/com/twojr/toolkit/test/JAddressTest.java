@@ -74,4 +74,5 @@ public class JAddressTest {
         assertEquals(jAddress.print(),output);
 
     }
+
 }
