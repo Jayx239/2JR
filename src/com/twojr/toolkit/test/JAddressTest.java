@@ -22,7 +22,7 @@ public class JAddressTest {
 
         JAddress jAddress = new JAddress(IEEE_ADDRESS,"Address",8,address);
 
-        assertEquals(jAddress.toByte(),jAddress);
+        assertEquals(jAddress.toByte(),address);
 
     }
 
@@ -34,7 +34,7 @@ public class JAddressTest {
 
         JAddress jAddress = new JAddress(IEEE_ADDRESS,"Address",8,address);
 
-        assertEquals(jAddress.getAddress(),jAddress);
+        assertEquals(jAddress.getAddress(),address);
     }
 
     @Test
