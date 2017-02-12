@@ -9,7 +9,7 @@ import java.util.Enumeration;
 public class JEnumeration extends JData {
 
 
-    private Enumeration value;
+    private byte[] value;
 
     //==================================================================================================================
     // Constructor(s)
@@ -18,7 +18,7 @@ public class JEnumeration extends JData {
     public JEnumeration() {
     }
 
-    public JEnumeration(int id, String name, int size, Enumeration value) {
+    public JEnumeration(int id, String name, int size, byte[] value) {
         super(id, name, size);
         this.value = value;
     }
@@ -27,11 +27,11 @@ public class JEnumeration extends JData {
     // Getter(s) & Setter(s)
     //==================================================================================================================
 
-    public Enumeration getValue() {
+    public byte[] getValue() {
         return value;
     }
 
-    public void setValue(Enumeration value) {
+    public void setValue(byte[] value) {
         this.value = value;
     }
 
@@ -42,14 +42,9 @@ public class JEnumeration extends JData {
 
     @Override
     public byte[] toByte() {
-        byte[] byteArray = new byte[getSize()];
-        String valStr = value.toString();
 
-        for(char valC : valStr.toCharArray()) {
-            ByteBuffer.wrap(byteArray).putChar(valC);
-        }
+        return value;
 
-        return byteArray;
     }
 
     @Override
@@ -64,7 +59,15 @@ public class JEnumeration extends JData {
 
     @Override
     public String print() {
-        return value.toString();
+
+        String output = "Enumeration: ";
+
+        output += value;
+
+        output += "\n";
+
+        return output;
+
     }
 
 
