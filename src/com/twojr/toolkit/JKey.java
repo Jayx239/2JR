@@ -25,6 +25,14 @@ public class JKey extends JData{
     // Getter(s) & Setter(s)
     //==================================================================================================================
 
+    public byte[] getValue() {
+        return value;
+    }
+
+    public void setValue(byte[] value) {
+        this.value = value;
+    }
+
 
     //==================================================================================================================
     // Public Functions(s)
