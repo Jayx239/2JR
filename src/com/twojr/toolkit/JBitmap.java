@@ -37,6 +37,13 @@ public class JBitmap extends JData {
 
     }
 
+    public JBitmap(int id, String name, JDataSizes size, HashMap<Integer, Integer> value, HashMap<Integer, String> params) {
+
+        super(id, name, size);
+        this.value = value;
+        this.params = params;
+
+    }
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
@@ -50,6 +57,13 @@ public class JBitmap extends JData {
         this.params = params;
     }
 
+    public HashMap<Integer, Integer> getValue() {
+        return value;
+    }
+
+    public void setValue(HashMap<Integer, Integer> value) {
+        this.value = value;
+    }
 
     //==================================================================================================================
     // Public Functions(s)
@@ -87,6 +101,7 @@ public class JBitmap extends JData {
         }
 
     }
+
 
     @Override
     public byte[] toByte() {
