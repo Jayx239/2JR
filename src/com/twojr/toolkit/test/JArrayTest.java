@@ -20,7 +20,7 @@ public class JArrayTest {
 
         JBit jBit = new JBit(0,"Bit",1,false);
         JData array[] = {jBit};
-        JArray jArray = new JArray(DataTypes.ARRAY,"Array", JDataSizes.EIGHT_BIT,array);
+        JArray jArray = new JArray(array);
 
         assertEquals(jArray.toByte(),0);
 
@@ -32,7 +32,7 @@ public class JArrayTest {
 
         JBit jBit = new JBit(0,"Bit",1,false);
         JData array[] = {jBit};
-        JArray jArray = new JArray(DataTypes.ARRAY,"Array", JDataSizes.EIGHT_BIT,array);
+        JArray jArray = new JArray(array);
 
         assertEquals(jArray.getValue(),array);
 
@@ -50,7 +50,7 @@ public class JArrayTest {
         JData array1[] = {jBit1};
         JData array2[] = {jBit2};
 
-        JArray jArray = new JArray(DataTypes.ARRAY,"Array", JDataSizes.EIGHT_BIT,array1);
+        JArray jArray = new JArray(array1);
 
         jArray.setValue(array2);
         assertEquals(jArray.getValue(),array2);
@@ -63,7 +63,7 @@ public class JArrayTest {
 
         JBit jBit = new JBit(0,"Bit",1,false);
         JData array[] = {jBit};
-        JArray jArray = new JArray(DataTypes.ARRAY,"Array", JDataSizes.EIGHT_BIT,array);
+        JArray jArray = new JArray(array);
 
         String output = "";
 

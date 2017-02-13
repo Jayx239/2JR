@@ -1,6 +1,8 @@
 package com.twojr.toolkit.test;
+import static com.twojr.toolkit.JDataSizes.*;
 import static org.junit.Assert.*;
 
+import com.twojr.toolkit.JDataSizes;
 import com.twojr.toolkit.integer.JSignedInteger;
 import org.junit.Test;
 /**
@@ -14,7 +16,7 @@ public class JSignedIntegerTest {
         int id = 1;
         String name = "test_name";
 
-        JSignedInteger sIntTest = new JSignedInteger(id,name,size,value);
+        JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
 
         assertEquals(size,sIntTest.toByte().length);
         assertEquals( 0x01, sIntTest.toByte()[0]);
@@ -27,7 +29,7 @@ public class JSignedIntegerTest {
         int id = 1;
         String name = "test_name";
 
-        JSignedInteger sIntTest = new JSignedInteger(id,name,size,value);
+        JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
 
         assertEquals(size,sIntTest.toByte().length);
         assertEquals(0x00, sIntTest.toByte()[0]);
@@ -40,7 +42,7 @@ public class JSignedIntegerTest {
         int id = 1;
         String name = "test_name";
 
-        JSignedInteger sIntTest = new JSignedInteger(id,name,size,value);
+        JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
         assertEquals(size, sIntTest.getSize());
     }
 
@@ -51,7 +53,7 @@ public class JSignedIntegerTest {
         int id = 1;
         String name = "test_name";
 
-        JSignedInteger sIntTest = new JSignedInteger(id,name,size,value);
+        JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
 
         assertEquals(value,sIntTest.getValue());
     }
@@ -63,7 +65,7 @@ public class JSignedIntegerTest {
         int id = 1;
         String name = "test_name";
 
-        JSignedInteger sIntTest = new JSignedInteger(id,name,size,value);
+        JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
         assertEquals(id, sIntTest.getId());
     }
 
@@ -74,7 +76,7 @@ public class JSignedIntegerTest {
         int id = 1;
         String name = "test_name";
 
-        JSignedInteger sIntTest = new JSignedInteger(id,name,size,value);
+        JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
         assertEquals(name, sIntTest.getName());
     }
 
@@ -85,7 +87,7 @@ public class JSignedIntegerTest {
         int id = 1;
         String name = "test_name";
 
-        JSignedInteger sIntTest = new JSignedInteger(id,name,size,value);
+        JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
         assertEquals("1", sIntTest.print());
     }
 
@@ -96,7 +98,7 @@ public class JSignedIntegerTest {
         int id = 1;
         String name = "test_name";
 
-        JSignedInteger sIntTest = new JSignedInteger(id,name,size,value);
+        JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
         assertEquals("0", sIntTest.print());
     }
 

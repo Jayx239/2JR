@@ -2,11 +2,13 @@ package com.twojr.toolkit.test;
 
 import com.twojr.toolkit.DataTypes;
 import com.twojr.toolkit.JAddress;
+import com.twojr.toolkit.JDataSizes;
 import com.twojr.toolkit.JEnumeration;
 import org.junit.Test;
 
 import static com.twojr.toolkit.DataTypes.*;
 import static com.twojr.toolkit.DataTypes.IEEE_ADDRESS;
+import static com.twojr.toolkit.JDataSizes.*;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -20,7 +22,7 @@ public class JEnumerationTest {
 
         byte[] value = {00, 00};
 
-        JEnumeration jEnumeration = new JEnumeration(SIXTEEN_BIT_ENUMERATION, "Enumeration",2, value);
+        JEnumeration jEnumeration = new JEnumeration(SIXTEEN_BIT,value);
 
         assertEquals(value,jEnumeration.toByte());
         
@@ -32,7 +34,7 @@ public class JEnumerationTest {
 
         byte[] value = {00, 00};
 
-        JEnumeration jEnumeration = new JEnumeration(SIXTEEN_BIT_ENUMERATION, "Enumeration",2, value);
+        JEnumeration jEnumeration = new JEnumeration(SIXTEEN_BIT,value);
 
         assertEquals(value,jEnumeration.getValue());
 
@@ -43,9 +45,9 @@ public class JEnumerationTest {
     {
 
         byte[] value1 = {00, 00};
-        byte[] value2 = {00, 00};
+        byte[] value2 = {00, 01};
 
-        JEnumeration jEnumeration = new JEnumeration(SIXTEEN_BIT_ENUMERATION, "Enumeration",2, value1);
+        JEnumeration jEnumeration = new JEnumeration(SIXTEEN_BIT,value1);
         jEnumeration.setValue(value2);
 
         assertEquals(value2,jEnumeration.getValue());
@@ -59,7 +61,7 @@ public class JEnumerationTest {
 
         byte[] value = {00, 00};
 
-        JEnumeration jEnumeration = new JEnumeration(SIXTEEN_BIT_ENUMERATION, "Enumeration",2, value);
+        JEnumeration jEnumeration = new JEnumeration(SIXTEEN_BIT,value);
 
         String output = "Enumeration: ";
 

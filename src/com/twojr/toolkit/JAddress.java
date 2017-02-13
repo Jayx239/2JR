@@ -5,18 +5,21 @@ package com.twojr.toolkit;
  */
 public class JAddress extends JData{
 
+    public final static String ADDRESS = "Address";
+
     private byte[] address;
+
 
     //==================================================================================================================
     // Constructor(s)
     //==================================================================================================================
 
     public JAddress(){
-
+        super(DataTypes.IEEE_ADDRESS, ADDRESS, JDataSizes.SIXTY_FOUR_BIT);
     }
 
-    public JAddress(int id, String name, int size, byte[] address) {
-        super(id, name, size);
+    public JAddress(byte[] address) {
+        super(DataTypes.IEEE_ADDRESS, ADDRESS, JDataSizes.SIXTY_FOUR_BIT);
         this.address = address;
     }
 

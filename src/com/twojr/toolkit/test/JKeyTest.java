@@ -20,7 +20,7 @@ public class JKeyTest {
 
         byte[] address = {00,00,00,00,00,00,00,00};
 
-        JKey jKey = new JKey(IEEE_ADDRESS,"Address",8,address);
+        JKey jKey = new JKey(address);
 
         assertEquals(jKey.toByte(),address);
 
@@ -32,7 +32,7 @@ public class JKeyTest {
 
         byte[] address = {00,00,00,00,00,00,00,00};
 
-        JKey jKey = new JKey(IEEE_ADDRESS,"Address",8,address);
+        JKey jKey = new JKey(address);
 
         assertEquals(jKey.getValue(),address);
     }
@@ -44,7 +44,7 @@ public class JKeyTest {
         byte[] address1 = {00,00,00,00,00,00,00,00};
         byte[] address2 = {00,00,00,00,00,00,00,01};
 
-        JKey jKey = new JKey(IEEE_ADDRESS,"Address",8,address1);
+        JKey jKey = new JKey(address1);
 
         jKey.setValue(address2);
         assertEquals(jKey.getValue(),address2);
@@ -58,7 +58,7 @@ public class JKeyTest {
 
         byte[] address = {00,00,00,00,00,00,00,00};
 
-        JAddress jAddress = new JAddress(SECURITY_KEY,"Key",8,address);
+        JAddress jAddress = new JAddress(address);
 
         String output = "Key: ";
 

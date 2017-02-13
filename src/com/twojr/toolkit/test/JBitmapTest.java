@@ -21,7 +21,7 @@ public class JBitmapTest {
     public void evaluateToByte()
     {
 
-        JBitmap jBitmap = new JBitmap(EIGHT_BIT_MAP_DATA,"Bitmap", EIGHT_BIT);
+        JBitmap jBitmap = new JBitmap();
 
         assertEquals(jBitmap.toByte(),0);
 
@@ -31,7 +31,8 @@ public class JBitmapTest {
     public void evaluateGetValue()
     {
 
-        JBitmap jBitmap = new JBitmap(EIGHT_BIT_MAP_DATA,"Bitmap", EIGHT_BIT);
+
+        JBitmap jBitmap = new JBitmap();
 
         assertEquals(jBitmap.getValue(),0);
 
@@ -51,7 +52,7 @@ public class JBitmapTest {
         values.put(6,0);
         values.put(7,1);
 
-        JBitmap jBitmap = new JBitmap(EIGHT_BIT_MAP_DATA,"Bitmap", EIGHT_BIT);
+        JBitmap jBitmap = new JBitmap();
 
         jBitmap.setValue(values);
 
@@ -63,7 +64,7 @@ public class JBitmapTest {
     public void evaluateGetValues()
     {
 
-        JBitmap jBitmap = new JBitmap(EIGHT_BIT_MAP_DATA,"Bitmap", EIGHT_BIT);
+        JBitmap jBitmap = new JBitmap();
 
         assertEquals(jBitmap.getValues(0),0);
 
@@ -74,8 +75,7 @@ public class JBitmapTest {
     public void evaluatePutValue()
     {
 
-
-        JBitmap jBitmap = new JBitmap(EIGHT_BIT_MAP_DATA,"Bitmap", EIGHT_BIT);
+        JBitmap jBitmap = new JBitmap();
 
         jBitmap.putValue(0,true);
 
@@ -88,7 +88,7 @@ public class JBitmapTest {
     public void evaluatePrint()
     {
 
-        JBitmap jBitmap = new JBitmap(EIGHT_BIT_MAP_DATA,"Bitmap", EIGHT_BIT);
+        JBitmap jBitmap = new JBitmap();
 
         HashMap<Integer,Integer> value = jBitmap.getValue();
         HashMap<Integer,String> params = jBitmap.getParams();
