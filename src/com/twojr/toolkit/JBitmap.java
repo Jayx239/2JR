@@ -2,10 +2,14 @@ package com.twojr.toolkit;
 
 import java.util.HashMap;
 
+import static com.twojr.toolkit.DataTypes.*;
+
 /**
  * Created by rcunni002c on 11/17/2016.
  */
 public class JBitmap extends JData {
+
+    public static final String BITMAP = "Bitmap";
 
     private HashMap<Integer,Integer> value;
     private HashMap<Integer,String> params;
@@ -17,11 +21,8 @@ public class JBitmap extends JData {
 
     public JBitmap(){
 
-    }
+        super(EIGHT_BIT_MAP_DATA, BITMAP, JDataSizes.EIGHT_BIT);
 
-    public JBitmap(int id, String name, JDataSizes size) {
-
-        super(id, name, size);
         this.params = new HashMap<>();
 
         for(int i = 0; i < getSize(); i++){
@@ -37,9 +38,110 @@ public class JBitmap extends JData {
 
     }
 
-    public JBitmap(int id, String name, JDataSizes size, HashMap<Integer, Integer> value, HashMap<Integer, String> params) {
+    public JBitmap(JDataSizes size) {
 
-        super(id, name, size);
+        super(EIGHT_BIT_MAP_DATA, BITMAP, size);
+
+        int id;
+        switch (size){
+
+            case EIGHT_BIT:
+                id = EIGHT_BIT_MAP_DATA;
+                break;
+
+            case SIXTEEN_BIT:
+                id = SIXTEEN_BIT_MAP_DATA;
+                break;
+
+            case TWENTY_FOUR_BIT:
+                id = TWENTY_FOUR_BIT_MAP_DATA;
+                break;
+
+            case THIRTY_TWO_BIT:
+                id = THIRTY_TWO_BIT_MAP_DATA;
+                break;
+
+            case FORTY_BIT:
+                id = FORTY_BIT_MAP_DATA;
+                break;
+
+            case FORTY_EIGHT_BIT:
+                id = FORTY_EIGHT_BIT_MAP_DATA;
+                break;
+
+            case FIFTY_SIX_BIT:
+                id = FIFTY_SIX_BIT_MAP_DATA;
+                break;
+
+            case SIXTY_FOUR_BIT:
+                id = SIXTY_FOUR_BIT_MAP_DATA;
+                break;
+
+            default:
+                id = EIGHT_BIT_MAP_DATA;
+                break;
+        }
+
+        setId(id);
+
+        this.params = new HashMap<>();
+
+        for(int i = 0; i < getSize(); i++){
+            params.put(i,"");
+        }
+
+
+        this.value = new HashMap<>();
+
+        for(int i = 0; i < getSize(); i++){
+            value.put(i,0);
+        }
+
+    }
+
+    public JBitmap(JDataSizes size, HashMap<Integer, Integer> value, HashMap<Integer, String> params) {
+
+        super(EIGHT_BIT_MAP_DATA, BITMAP, size);
+
+        int id;
+        switch (size){
+
+            case EIGHT_BIT:
+                id = EIGHT_BIT_MAP_DATA;
+                break;
+
+            case SIXTEEN_BIT:
+                id = SIXTEEN_BIT_MAP_DATA;
+                break;
+
+            case TWENTY_FOUR_BIT:
+                id = TWENTY_FOUR_BIT_MAP_DATA;
+                break;
+
+            case THIRTY_TWO_BIT:
+                id = THIRTY_TWO_BIT_MAP_DATA;
+                break;
+
+            case FORTY_BIT:
+                id = FORTY_BIT_MAP_DATA;
+                break;
+
+            case FORTY_EIGHT_BIT:
+                id = FORTY_EIGHT_BIT_MAP_DATA;
+                break;
+
+            case FIFTY_SIX_BIT:
+                id = FIFTY_SIX_BIT_MAP_DATA;
+                break;
+
+            case SIXTY_FOUR_BIT:
+                id = SIXTY_FOUR_BIT_MAP_DATA;
+                break;
+
+            default:
+                id = EIGHT_BIT_MAP_DATA;
+                break;
+        }
         this.value = value;
         this.params = params;
 

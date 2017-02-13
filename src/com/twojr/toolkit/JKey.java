@@ -1,9 +1,14 @@
 package com.twojr.toolkit;
 
+import static com.twojr.toolkit.DataTypes.*;
+import static com.twojr.toolkit.JDataSizes.*;
+
 /**
  * Created by rcunni002c on 11/17/2016.
  */
 public class JKey extends JData{
+
+    public static final String KEY = "Key";
 
     private byte[] value;
 
@@ -12,11 +17,11 @@ public class JKey extends JData{
     //==================================================================================================================
 
     public JKey(){
-
+        super(SECURITY_KEY, KEY, HUNDRED_TWENTY_EIGHT_BIT);
     }
 
-    public JKey(int id, String name, int size, byte[] value) {
-        super(id, name, size);
+    public JKey(byte[] value) {
+        super(SECURITY_KEY, KEY, HUNDRED_TWENTY_EIGHT_BIT);
         this.value = value;
     }
 

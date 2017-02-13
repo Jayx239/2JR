@@ -16,7 +16,7 @@ public class JBooleanTest {
         int id = 1;
         String name = "name";
 
-        JBoolean boolean1 = new JBoolean(id,name,size,value);
+        JBoolean boolean1 = new JBoolean(value);
 
         assertEquals(size,boolean1.toByte().length);
         assertEquals(0x01, boolean1.toByte()[0]);
@@ -30,7 +30,7 @@ public class JBooleanTest {
         int id = 1;
         String name = "name";
 
-        JBoolean boolean0 = new JBoolean(id,name,size,value);
+        JBoolean boolean0 = new JBoolean(value);
 
         assertEquals(size,boolean0.toByte().length);
         assertEquals((byte) 0x00, boolean0.toByte()[0]);
@@ -44,7 +44,7 @@ public class JBooleanTest {
         int id = 1;
         String name = "name";
 
-        JBoolean jBoolean = new JBoolean(id,name,size,value);
+        JBoolean jBoolean = new JBoolean(value);
         assertEquals(size, jBoolean.getSize());
     }
 
@@ -56,7 +56,7 @@ public class JBooleanTest {
         int id = 1;
         String name = "name";
 
-        JBoolean jBoolean = new JBoolean(id,name,size,value);
+        JBoolean jBoolean = new JBoolean(value);
 
         assertEquals(value,jBoolean.getValue());
     }
@@ -69,7 +69,8 @@ public class JBooleanTest {
         int id = 1;
         String name = "name";
 
-        JBoolean jBoolean = new JBoolean(id,name,size,value);
+
+        JBoolean jBoolean = new JBoolean(value);
         assertEquals(id, jBoolean.getId());
     }
 
@@ -81,7 +82,9 @@ public class JBooleanTest {
         int id = 1;
         String name = "name";
 
-        JBoolean jBoolean = new JBoolean(id,name,size,value);
+
+        JBoolean jBoolean = new JBoolean(value);
+
         assertEquals(name, jBoolean.getName());
     }
 
@@ -93,7 +96,8 @@ public class JBooleanTest {
         int id = 1;
         String name = "name";
 
-        JBoolean jBoolean = new JBoolean(id,name,size,value);
+        JBoolean jBoolean = new JBoolean(value);
+
         assertEquals("true", jBoolean.print());
     }
 
@@ -105,7 +109,9 @@ public class JBooleanTest {
         int id = 1;
         String name = "name";
 
-        JBoolean jBoolean = new JBoolean(id,name,size,value);
+
+        JBoolean jBoolean = new JBoolean(value);
+
         assertEquals("false", jBoolean.print());
     }
 
