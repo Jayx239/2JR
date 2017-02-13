@@ -2,10 +2,12 @@ package com.twojr.toolkit.test;
 
 import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
 import com.twojr.toolkit.DataTypes;
+import com.twojr.toolkit.JDataSizes;
 import com.twojr.toolkit.JString;
 import org.junit.Test;
 
 import static com.twojr.toolkit.DataTypes.*;
+import static com.twojr.toolkit.JDataSizes.*;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -21,7 +23,7 @@ public class JStringTest {
 
         String str = "Test";
 
-        JString jString = new JString(CHARACTER_STRING,"String",-1,str);
+        JString jString = new JString(EIGHT_BIT,str);
 
         assertEquals(jString.toByte(),str.getBytes());
 
@@ -33,7 +35,7 @@ public class JStringTest {
 
         String str = "Test";
 
-        JString jString = new JString(CHARACTER_STRING,"String",-1,str);
+        JString jString = new JString(EIGHT_BIT,str);
 
         assertEquals(jString.getValue(),str);
 
@@ -46,7 +48,8 @@ public class JStringTest {
         String str = "Test";
         String test  = "Test2";
 
-        JString jString = new JString(CHARACTER_STRING,"String",-1,str);
+        JString jString = new JString(EIGHT_BIT,str);
+
         jString.setValue(test);
         assertEquals(jString.getValue(),test);
 
@@ -58,7 +61,7 @@ public class JStringTest {
     {
         String str = "Test";
 
-        JString jString = new JString(CHARACTER_STRING,"String",-1,str);
+        JString jString = new JString(EIGHT_BIT,str);
 
         String output = "String Value: " + str + "\n";
 

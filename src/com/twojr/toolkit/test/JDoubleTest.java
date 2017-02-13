@@ -16,7 +16,7 @@ public class JDoubleTest {
         int id = 1;
         String name = "name";
 
-        JDouble jDouble = new JDouble(id,name,size,value);
+        JDouble jDouble = new JDouble(value);
         assertEquals(ByteBuffer.wrap(jDouble.toByte()).getDouble(),value,0);
     }
 
@@ -27,7 +27,7 @@ public class JDoubleTest {
         int id = 1;
         String name = "name";
 
-        JDouble jDouble = new JDouble(id,name,size,value);
+        JDouble jDouble = new JDouble(value);
         assertEquals(jDouble.getSize(),size);
     }
 
@@ -38,7 +38,7 @@ public class JDoubleTest {
         int id = 1;
         String name = "name";
 
-        JDouble jDouble = new JDouble(id,name,size,value);
+        JDouble jDouble = new JDouble(value);
         assertEquals(Double.compare(jDouble.getValue(),value),0);
     }
 
@@ -49,7 +49,8 @@ public class JDoubleTest {
         int id = 1;
         String name = "name";
 
-        JDouble jDouble = new JDouble(id,name,size,value);
+
+        JDouble jDouble = new JDouble(value);
         assertEquals(jDouble.getId(),id);
     }
 
@@ -60,7 +61,8 @@ public class JDoubleTest {
         int id = 1;
         String name = "name";
 
-        JDouble jDouble = new JDouble(id,name,size,value);
+        JDouble jDouble = new JDouble(value);
+
         assertEquals(jDouble.getName(),name);
     }
 
@@ -72,7 +74,8 @@ public class JDoubleTest {
         int id = 1;
         String name = "name";
 
-        JDouble jDouble = new JDouble(id,name,size,value);
+        JDouble jDouble = new JDouble(value);
+
         assertEquals(jDouble.print(),"201902.0");
     }
 

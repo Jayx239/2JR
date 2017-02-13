@@ -1,9 +1,13 @@
 package com.twojr.toolkit;
 
+import static com.twojr.toolkit.DataTypes.*;
+
 /**
  * Created by rcunni002c on 11/17/2016.
  */
 public class JString extends JData {
+
+    public static final String STRING_NAME = "String";
 
     private String value;
 
@@ -13,10 +17,22 @@ public class JString extends JData {
 
     public JString(){
 
+        super(CHARACTER_STRING, STRING_NAME, 1);
+
+        if(getSize() > 8){
+            setId(LONG_CHARARACTER_STRING);
+        }
+
     }
 
-    public JString(int id, String name, int size, String value) {
-        super(id, name, size);
+    public JString(JDataSizes size, String value) {
+
+        super(CHARACTER_STRING, STRING_NAME, size);
+
+        if(getSize() > 8){
+            setId(LONG_CHARARACTER_STRING);
+        }
+
         this.value = value;
     }
 
