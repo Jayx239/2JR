@@ -20,7 +20,7 @@ public class JAddressTest {
 
         byte[] address = {00,00,00,00,00,00,00,00};
 
-        JAddress jAddress = new JAddress(IEEE_ADDRESS,"Address",8,address);
+        JAddress jAddress = new JAddress(address);
 
         assertEquals(jAddress.toByte(),address);
 
@@ -32,7 +32,7 @@ public class JAddressTest {
 
         byte[] address = {00,00,00,00,00,00,00,00};
 
-        JAddress jAddress = new JAddress(IEEE_ADDRESS,"Address",8,address);
+        JAddress jAddress = new JAddress(address);
 
         assertEquals(jAddress.getAddress(),address);
     }
@@ -44,7 +44,7 @@ public class JAddressTest {
         byte[] address1 = {00,00,00,00,00,00,00,00};
         byte[] address2 = {00,00,00,00,00,00,00,01};
 
-        JAddress jAddress = new JAddress(IEEE_ADDRESS,"Address",8,address1);
+        JAddress jAddress = new JAddress(address1);
 
         jAddress.setAddress(address2);
         assertEquals(jAddress.getAddress(),address2);
@@ -58,7 +58,7 @@ public class JAddressTest {
 
         byte[] address = {00,00,00,00,00,00,00,00};
 
-        JAddress jAddress = new JAddress(IEEE_ADDRESS,"Address",8,address);
+        JAddress jAddress = new JAddress(address);
 
         String output = "Address: ";
 

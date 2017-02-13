@@ -20,6 +20,12 @@ public abstract class JInteger extends JData {
         this.value = value;
     }
 
+    public JInteger(int id, String name, JDataSizes size, int value) {
+        super(id, name, size);
+        this.value = value;
+    }
+
+
     //==================================================================================================================
     // Getter(s) & Setter(s)
     //==================================================================================================================

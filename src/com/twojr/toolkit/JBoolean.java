@@ -1,9 +1,13 @@
 package com.twojr.toolkit;
 
+import static com.twojr.toolkit.JDataSizes.*;
+
 /**
  * Created by rcunni002c on 11/17/2016.
  */
 public class JBoolean extends JData{
+
+    public static final String BOOLEAN_NAME = "Boolean";
 
     private boolean value;
 
@@ -12,11 +16,11 @@ public class JBoolean extends JData{
     //==================================================================================================================
 
     public JBoolean(){
-
+        super(DataTypes.BOOLEAN, BOOLEAN_NAME, EIGHT_BIT);
     }
 
-    public JBoolean(int id, String name, int size, boolean value) {
-        super(id, name, size);
+    public JBoolean(boolean value) {
+        super(DataTypes.BOOLEAN, BOOLEAN_NAME, EIGHT_BIT);
         this.value = value;
     }
 
