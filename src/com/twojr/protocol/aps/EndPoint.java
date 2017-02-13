@@ -1,9 +1,10 @@
 package com.twojr.protocol.aps;
 
+import com.twojr.protocol.Attribute;
 import com.twojr.toolkit.JData;
 import com.twojr.toolkit.JIdentity;
 import com.twojr.toolkit.JInteger;
-import com.twojr.twojr.protocol.Attribute;
+
 
 import java.util.ArrayList;
 

@@ -5,10 +5,10 @@ import com.twojr.toolkit.JData;
 /**
  * Created by rcunni002c on 11/17/2016.
  */
-public class Attribute extends JData{
+public class Attribute{
 
-    private int bitNo;
     private JData data;
+    private String name;
 
     //==================================================================================================================
     // Constructor(s)
@@ -17,24 +17,14 @@ public class Attribute extends JData{
     public Attribute() {
     }
 
-    public Attribute(String name, int bitNo, JData data) {
-        super(data.getId(), name, data.getSize());
-        this.bitNo = bitNo;
+    public Attribute(JData data, String name) {
         this.data = data;
+        this.name = name;
     }
-
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
     //==================================================================================================================
-
-    public int getBitNo() {
-        return bitNo;
-    }
-
-    public void setBitNo(int bitNo) {
-        this.bitNo = bitNo;
-    }
 
     public JData getData() {
         return data;
@@ -44,29 +34,17 @@ public class Attribute extends JData{
         this.data = data;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
-
-    @Override
-    public byte[] compress() {
-        return data.compress();
-    }
-
-    @Override
-    public int getSavings() {
-        return 0;
-    }
-
-    @Override
-    public String print() {
-        return null;
-    }
-
-    @Override
-    public byte[] toByte() {
-        return new byte[0];
-    }
 
 
     //==================================================================================================================

@@ -7,25 +7,23 @@ import com.twojr.toolkit.JDataSizes;
 import java.util.HashMap;
 
 /**
- * Created by rcunni002c on 11/17/2016.
+ * Created by rcunni002c on 2/12/2017.
  */
-public class AttributeControl extends JBitmap{
+public class LengthControl extends JBitmap{
 
     private HashMap<Integer,Attribute> attributeMap;
-    private boolean lengthControl;
 
     //==================================================================================================================
     // Constructor(s)
     //==================================================================================================================
 
-    public AttributeControl(){
+    public LengthControl(){
 
     }
 
-    public AttributeControl(JDataSizes dataSize, HashMap<Integer, Attribute> attributeMap, boolean lengthControl) {
+    public LengthControl(JDataSizes dataSize, HashMap<Integer, Attribute> attributeMap) {
         super(dataSize);
         this.attributeMap = attributeMap;
-        this.lengthControl = lengthControl;
     }
 
 
