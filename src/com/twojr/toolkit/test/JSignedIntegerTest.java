@@ -2,6 +2,7 @@ package com.twojr.toolkit.test;
 import static com.twojr.toolkit.JDataSizes.*;
 import static org.junit.Assert.*;
 
+import com.twojr.toolkit.DataTypes;
 import com.twojr.toolkit.JDataSizes;
 import com.twojr.toolkit.integer.JSignedInteger;
 import org.junit.Test;
@@ -62,10 +63,10 @@ public class JSignedIntegerTest {
     public void evalueateGetId() {
         int value = 0;
         int size = 1;
-        int id = 1;
+        int id = DataTypes.SIGNED_THIRTY_TWO_BIT_INT;
         String name = "test_name";
 
-        JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
+        JSignedInteger sIntTest = new JSignedInteger(JDataSizes.THIRTY_TWO_BIT, value);
         assertEquals(id, sIntTest.getId());
     }
 
@@ -77,6 +78,9 @@ public class JSignedIntegerTest {
         String name = "test_name";
 
         JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
+        assertEquals("Signed Integer", sIntTest.getName());
+
+        sIntTest.setName(name);
         assertEquals(name, sIntTest.getName());
     }
 
@@ -118,7 +122,7 @@ public class JSignedIntegerTest {
     public void evaluateSetId() {
         JSignedInteger sIntTest = new JSignedInteger();
 
-        assertEquals(0, sIntTest.getId());
+        assertEquals(DataTypes.SIGNED_EIGHT_BIT_INT, sIntTest.getId());
         sIntTest.setId(12);
         assertEquals(12, sIntTest.getId());
     }
@@ -127,16 +131,16 @@ public class JSignedIntegerTest {
     public void evaluateSetSize() {
         JSignedInteger sIntTest = new JSignedInteger();
 
-        assertEquals(0, sIntTest.getSize());
-        sIntTest.setSize(1);
         assertEquals(1, sIntTest.getSize());
+        sIntTest.setSize(0);
+        assertEquals(0, sIntTest.getSize());
     }
 
     @Test
     public void evaluateSetName() {
         JSignedInteger sIntTest = new JSignedInteger();
 
-        assertEquals(null, sIntTest.getName());
+        assertEquals("Signed Integer", sIntTest.getName());
         sIntTest.setName("test_name");
         assertEquals("test_name", sIntTest.getName());
     }

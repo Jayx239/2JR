@@ -28,52 +28,9 @@ public class JUnsignedInteger extends JInteger{
 
     public JUnsignedInteger(JDataSizes size, int value) {
 
-        super(UNSIGNED_EIGHT_BIT_INT, UNSIGNED_INTEGER, EIGHT_BIT, value);
+        super(UNSIGNED_EIGHT_BIT_INT, UNSIGNED_INTEGER, size, value);
 
-        int id;
-
-        switch (size){
-
-            case EIGHT_BIT:
-                id = SIGNED_EIGHT_BIT_INT;
-                break;
-
-            case SIXTEEN_BIT:
-                id = SIGNED_SIXTEEN_BIT_INT;
-                break;
-
-            case TWENTY_FOUR_BIT:
-                id = SIGNED_TWENTY_FOUR_BIT_INT;
-                break;
-
-            case THIRTY_TWO_BIT:
-                id = SIGNED_THIRTY_TWO_BIT_INT;
-                break;
-
-            case FORTY_BIT:
-                id = SIGNED_FORTY_BIT_INT;
-                break;
-
-            case FORTY_EIGHT_BIT:
-                id = SIGNED_FORTY_EIGHT_BIT_INT;
-                break;
-
-            case FIFTY_SIX_BIT:
-                id = SIGNED_FIFTY_SIX_BIT_INT;
-                break;
-
-            case SIXTY_FOUR_BIT:
-                id = SIGNED_SIXTY_FOUR_BIT_INT;
-                break;
-
-            default:
-                id = SIGNED_EIGHT_BIT_INT;
-                setSize(1);
-                break;
-
-        }
-
-        setId(id);
+        setId(computeId(size));
     }
 
     //==================================================================================================================
@@ -118,4 +75,51 @@ public class JUnsignedInteger extends JInteger{
     // Private Functions(s)
     //==================================================================================================================
 
+    private int computeId(JDataSizes size) {
+
+        int id;
+
+        switch (size){
+
+            case EIGHT_BIT:
+                id = UNSIGNED_EIGHT_BIT_INT;
+                break;
+
+            case SIXTEEN_BIT:
+                id = UNSIGNED_SIXTEEN_BIT_INT;
+                break;
+
+            case TWENTY_FOUR_BIT:
+                id = UNSIGNED_TWENTY_FOUR_BIT_INT;
+                break;
+
+            case THIRTY_TWO_BIT:
+                id = UNSIGNED_THIRTY_TWO_BIT_INT;
+                break;
+
+            case FORTY_BIT:
+                id = UNSIGNED_FORTY_BIT_INT;
+                break;
+
+            case FORTY_EIGHT_BIT:
+                id = UNSIGNED_FORTY_EIGHT_BIT_INT;
+                break;
+
+            case FIFTY_SIX_BIT:
+                id = UNSIGNED_FIFTY_SIX_BIT_INT;
+                break;
+
+            case SIXTY_FOUR_BIT:
+                id = UNSIGNED_SIXTY_FOUR_BIT_INT;
+                break;
+
+            default:
+                id = UNSIGNED_EIGHT_BIT_INT;
+                setSize(1);
+                break;
+
+        }
+
+        return id;
+    }
 } /*********************************************END OF FILE*************************************************************/
