@@ -74,7 +74,8 @@ public class JKey extends JData{
 
     @Override
     public byte[] toByte() {
-        return new byte[0];
+
+        return value;
     }
 
     //==================================================================================================================
