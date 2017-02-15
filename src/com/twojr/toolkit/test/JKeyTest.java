@@ -22,7 +22,8 @@ public class JKeyTest {
 
         JKey jKey = new JKey(address);
 
-        assertEquals(jKey.toByte(),address);
+        for(int i=0; i<address.length; i++)
+        assertEquals(address[i], jKey.toByte()[i]);
 
     }
 
@@ -34,7 +35,7 @@ public class JKeyTest {
 
         JKey jKey = new JKey(address);
 
-        assertEquals(jKey.getValue(),address);
+        assertEquals(address, jKey.getValue());
     }
 
     @Test
@@ -47,7 +48,7 @@ public class JKeyTest {
         JKey jKey = new JKey(address1);
 
         jKey.setValue(address2);
-        assertEquals(jKey.getValue(),address2);
+        assertEquals(address2, jKey.getValue());
 
     }
 
@@ -58,7 +59,7 @@ public class JKeyTest {
 
         byte[] address = {00,00,00,00,00,00,00,00};
 
-        JAddress jAddress = new JAddress(address);
+        JKey jAddress = new JKey(address);
 
         String output = "Key: ";
 
@@ -72,7 +73,7 @@ public class JKeyTest {
 
 
 
-        assertEquals(jAddress.print(),output);
+        assertEquals(output, jAddress.print());
 
     }
 

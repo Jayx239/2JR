@@ -2,9 +2,13 @@ package com.twojr.toolkit.test;
 import static com.twojr.toolkit.JDataSizes.*;
 import static org.junit.Assert.*;
 
+import com.twojr.toolkit.DataTypes;
 import com.twojr.toolkit.JDataSizes;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 import org.junit.Test;
+
+import javax.xml.crypto.Data;
+
 /**
  * Created by Joseph Haggerty on 1/20/2017.
  */
@@ -62,7 +66,7 @@ public class JUnsignedIntegerTest {
     public void evalueateGetId() {
         int value = 0;
         int size = 1;
-        int id = 1;
+        int id = DataTypes.UNSIGNED_EIGHT_BIT_INT;
         String name = "test_name";
 
         JUnsignedInteger sIntTest = new JUnsignedInteger(EIGHT_BIT,value);
@@ -74,7 +78,7 @@ public class JUnsignedIntegerTest {
         int value = 0;
         int size = 1;
         int id = 1;
-        String name = "test_name";
+        String name = "Unsigned Integer";
 
         JUnsignedInteger sIntTest = new JUnsignedInteger(EIGHT_BIT,value);
         assertEquals(name, sIntTest.getName());
@@ -128,7 +132,7 @@ public class JUnsignedIntegerTest {
     public void evaluateSetId() {
         JUnsignedInteger sIntTest = new JUnsignedInteger();
 
-        assertEquals(0, sIntTest.getId());
+        assertEquals(DataTypes.UNSIGNED_EIGHT_BIT_INT, sIntTest.getId());
         sIntTest.setId(12);
         assertEquals(12, sIntTest.getId());
     }
@@ -137,16 +141,16 @@ public class JUnsignedIntegerTest {
     public void evaluateSetSize() {
         JUnsignedInteger sIntTest = new JUnsignedInteger();
 
-        assertEquals(0, sIntTest.getSize());
-        sIntTest.setSize(1);
         assertEquals(1, sIntTest.getSize());
+        sIntTest.setSize(4);
+        assertEquals(4, sIntTest.getSize());
     }
 
     @Test
     public void evaluateSetName() {
         JUnsignedInteger sIntTest = new JUnsignedInteger();
 
-        assertEquals(null, sIntTest.getName());
+        assertEquals("Unsigned Integer", sIntTest.getName());
         sIntTest.setName("test_name");
         assertEquals("test_name", sIntTest.getName());
     }

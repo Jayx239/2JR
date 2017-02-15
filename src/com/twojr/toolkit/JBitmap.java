@@ -3,6 +3,7 @@ package com.twojr.toolkit;
 import java.util.HashMap;
 
 import static com.twojr.toolkit.DataTypes.*;
+import static com.twojr.toolkit.JDataSizes.*;
 
 /**
  * Created by rcunni002c on 11/17/2016.
@@ -11,29 +12,29 @@ public class JBitmap extends JData {
 
     public static final String BITMAP = "Bitmap";
 
-    private HashMap<Integer,Integer> value;
-    private HashMap<Integer,String> params;
+    private HashMap<Integer, Integer> value;
+    private HashMap<Integer, String> params;
 
 
     //==================================================================================================================
     // Constructor(s)
     //==================================================================================================================
 
-    public JBitmap(){
+    public JBitmap() {
 
         super(EIGHT_BIT_MAP_DATA, BITMAP, JDataSizes.EIGHT_BIT);
 
         this.params = new HashMap<>();
 
-        for(int i = 0; i < getSize(); i++){
-            params.put(i,"");
+        for (int i = 0; i < getSize(); i++) {
+            params.put(i, "");
         }
 
 
         this.value = new HashMap<>();
 
-        for(int i = 0; i < getSize(); i++){
-            value.put(i,0);
+        for (int i = 0; i < getSize(); i++) {
+            value.put(i, 0);
         }
 
     }
@@ -41,60 +42,19 @@ public class JBitmap extends JData {
     public JBitmap(JDataSizes size) {
 
         super(EIGHT_BIT_MAP_DATA, BITMAP, size);
-
-        int id;
-        switch (size){
-
-            case EIGHT_BIT:
-                id = EIGHT_BIT_MAP_DATA;
-                break;
-
-            case SIXTEEN_BIT:
-                id = SIXTEEN_BIT_MAP_DATA;
-                break;
-
-            case TWENTY_FOUR_BIT:
-                id = TWENTY_FOUR_BIT_MAP_DATA;
-                break;
-
-            case THIRTY_TWO_BIT:
-                id = THIRTY_TWO_BIT_MAP_DATA;
-                break;
-
-            case FORTY_BIT:
-                id = FORTY_BIT_MAP_DATA;
-                break;
-
-            case FORTY_EIGHT_BIT:
-                id = FORTY_EIGHT_BIT_MAP_DATA;
-                break;
-
-            case FIFTY_SIX_BIT:
-                id = FIFTY_SIX_BIT_MAP_DATA;
-                break;
-
-            case SIXTY_FOUR_BIT:
-                id = SIXTY_FOUR_BIT_MAP_DATA;
-                break;
-
-            default:
-                id = EIGHT_BIT_MAP_DATA;
-                break;
-        }
-
-        setId(id);
+        setId(computeId(size));
 
         this.params = new HashMap<>();
 
-        for(int i = 0; i < getSize(); i++){
-            params.put(i,"");
+        for (int i = 0; i < getSize(); i++) {
+            params.put(i, "");
         }
 
 
         this.value = new HashMap<>();
 
-        for(int i = 0; i < getSize(); i++){
-            value.put(i,0);
+        for (int i = 0; i < getSize(); i++) {
+            value.put(i, 0);
         }
 
     }
@@ -103,45 +63,7 @@ public class JBitmap extends JData {
 
         super(EIGHT_BIT_MAP_DATA, BITMAP, size);
 
-        int id;
-        switch (size){
-
-            case EIGHT_BIT:
-                id = EIGHT_BIT_MAP_DATA;
-                break;
-
-            case SIXTEEN_BIT:
-                id = SIXTEEN_BIT_MAP_DATA;
-                break;
-
-            case TWENTY_FOUR_BIT:
-                id = TWENTY_FOUR_BIT_MAP_DATA;
-                break;
-
-            case THIRTY_TWO_BIT:
-                id = THIRTY_TWO_BIT_MAP_DATA;
-                break;
-
-            case FORTY_BIT:
-                id = FORTY_BIT_MAP_DATA;
-                break;
-
-            case FORTY_EIGHT_BIT:
-                id = FORTY_EIGHT_BIT_MAP_DATA;
-                break;
-
-            case FIFTY_SIX_BIT:
-                id = FIFTY_SIX_BIT_MAP_DATA;
-                break;
-
-            case SIXTY_FOUR_BIT:
-                id = SIXTY_FOUR_BIT_MAP_DATA;
-                break;
-
-            default:
-                id = EIGHT_BIT_MAP_DATA;
-                break;
-        }
+        setId(computeId(size));
         this.value = value;
         this.params = params;
 
@@ -189,16 +111,16 @@ public class JBitmap extends JData {
 
     }
 
-    public int getValues(int i){
+    public int getValues(int i) {
 
         if (i > 0 && i <= getSize() * 8) {
 
             return value.get(i);
 
-        }else {
+        } else {
 
 
-            return  -1;
+            return -1;
 
         }
 
@@ -210,14 +132,13 @@ public class JBitmap extends JData {
 
         byte[] bytes = new byte[getSize()];
 
-        for(int i = 0; i < getSize(); i++){
+        for (int i = 0; i < getSize(); i++) {
 
             String byteStr = "";
 
-            for(int j = 0; j < 8; j++)
-            {
+            for (int j = 0; j < 8; j++) {
 
-                byteStr += value.get(j + i*8);
+                byteStr += value.get(j + i * 8);
 
             }
 
@@ -233,16 +154,16 @@ public class JBitmap extends JData {
 
         String output = "";
 
-        for(int key : value.keySet()){
+        for (int key : value.keySet()) {
 
-            output +=  key + ". value: " + value.get(key) + ", param: " + params.get(key) + "\n";
+            output += key + ". value: " + value.get(key) + ", param: " + params.get(key) + "\n";
 
         }
 
         System.out.print(output);
 
         return output;
-        
+
     }
 
     @Override
@@ -259,5 +180,51 @@ public class JBitmap extends JData {
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================
+
+    private int computeId(JDataSizes size) {
+
+        int id;
+        switch(size)
+        {
+            case EIGHT_BIT:
+                id = EIGHT_BIT_MAP_DATA;
+                break;
+
+            case SIXTEEN_BIT:
+               id = SIXTEEN_BIT_MAP_DATA;
+               break;
+
+            case TWENTY_FOUR_BIT:
+               id = TWENTY_FOUR_BIT_MAP_DATA;
+               break;
+
+            case THIRTY_TWO_BIT:
+               id = THIRTY_TWO_BIT_MAP_DATA;
+               break;
+
+            case FORTY_BIT:
+               id = FORTY_BIT_MAP_DATA;
+               break;
+
+            case FORTY_EIGHT_BIT:
+               id = FORTY_EIGHT_BIT_MAP_DATA;
+               break;
+
+            case FIFTY_SIX_BIT:
+                id = FIFTY_SIX_BIT_MAP_DATA;
+                break;
+
+            case SIXTY_FOUR_BIT:
+                id = SIXTY_FOUR_BIT_MAP_DATA;
+                break;
+
+            default:
+                id = EIGHT_BIT_MAP_DATA;
+                break;
+
+        }
+
+        return id;
+    }
 
 } /*********************************************END OF FILE*************************************************************/

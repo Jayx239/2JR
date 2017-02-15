@@ -23,9 +23,11 @@ public class JStringTest {
 
         String str = "Test";
 
+        byte[] strAsByte= {(byte) 0x54, (byte) 0x65, (byte) 0x73, (byte) 0x74};     // Test
         JString jString = new JString(EIGHT_BIT,str);
 
-        assertEquals(jString.toByte(),str.getBytes());
+        for(int i=0; i<strAsByte.length; i++)
+            assertEquals(strAsByte[i],jString.toByte()[i]);
 
     }
 
@@ -65,7 +67,7 @@ public class JStringTest {
 
         String output = "String Value: " + str + "\n";
 
-        assertEquals(jString.getValue(),output);
+        assertEquals(output, jString.print());
 
     }
 
