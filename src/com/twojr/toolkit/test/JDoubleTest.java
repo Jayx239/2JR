@@ -1,6 +1,9 @@
 package com.twojr.toolkit.test;
+import static com.twojr.toolkit.DataTypes.DOUBLE_PRECISION;
+import static com.twojr.toolkit.JDataSizes.SIXTY_FOUR_BIT;
 import static org.junit.Assert.*;
 
+import com.twojr.toolkit.JDataSizes;
 import com.twojr.toolkit.JDouble;
 import org.junit.Test;
 import java.nio.ByteBuffer;
@@ -12,15 +15,37 @@ public class JDoubleTest {
     @Test
     public void evaluateToByte() {
         double value = 201902;
+
+        byte[] expectedValue = {(byte) 0x41, (byte)0x08, (byte) 0xA5, (byte) 0x70,
+                (byte) 0x00,(byte) 0x00,(byte) 0x00,(byte) 0x00};
         int size = 8;
         int id = 1;
         String name = "name";
 
         JDouble jDouble = new JDouble(value);
-        assertEquals(ByteBuffer.wrap(jDouble.toByte()).getDouble(),value,0);
+        for(int i=0; i<size; i++)
+            assertEquals(expectedValue[i],jDouble.toByte()[i]);
+
     }
 
     @Test
+    public void evaluateToByteDecimal() {
+
+        double value = 10.39284;
+
+        byte[] expectedValue = {(byte) 0x40, (byte) 0x24, (byte) 0xC9, (byte) 0x22,
+                (byte) 0x53, (byte) 0x11, (byte) 0x1F, (byte) 0x0C};
+        int size = 8;
+        int id = 1;
+        String name = "name";
+
+        JDouble jDouble = new JDouble(value);
+        for (int i = 0; i < size; i++)
+            assertEquals(expectedValue[i], jDouble.toByte()[i]);
+
+    }
+
+        @Test
     public void evaluateGetSize() {
         double value = 201902;
         int size = 8;
@@ -49,9 +74,8 @@ public class JDoubleTest {
         int id = 1;
         String name = "name";
 
-
         JDouble jDouble = new JDouble(value);
-        assertEquals(jDouble.getId(),id);
+        assertEquals(jDouble.getId(),DOUBLE_PRECISION);
     }
 
     @Test
@@ -63,7 +87,7 @@ public class JDoubleTest {
 
         JDouble jDouble = new JDouble(value);
 
-        assertEquals(jDouble.getName(),name);
+        assertEquals(jDouble.getName(),"Double");
     }
 
     @Test
@@ -94,7 +118,7 @@ public class JDoubleTest {
         JDouble jDouble = new JDouble();
 
 
-        assertEquals(0, jDouble.getId());
+        assertEquals(DOUBLE_PRECISION, jDouble.getId());
         jDouble.setId(12);
         assertEquals(12, jDouble.getId());
 
@@ -104,9 +128,9 @@ public class JDoubleTest {
     public void evaluateSetSize() {
         JDouble jDouble = new JDouble();
 
-        assertEquals(0, jDouble.getSize());
-        jDouble.setSize(8);
-        assertEquals(8, jDouble.getSize());
+        assertEquals(SIXTY_FOUR_BIT.ordinal(), jDouble.getSize());
+        jDouble.setSize(SIXTY_FOUR_BIT.ordinal());
+        assertEquals(SIXTY_FOUR_BIT.ordinal(), jDouble.getSize());
 
     }
 
@@ -114,7 +138,7 @@ public class JDoubleTest {
     public void evaluateSetName() {
         JDouble jDouble = new JDouble();
 
-        assertEquals(null, jDouble.getName());
+        assertEquals("Double", jDouble.getName());
         jDouble.setName("name");
         assertEquals("name", jDouble.getName());
     }
