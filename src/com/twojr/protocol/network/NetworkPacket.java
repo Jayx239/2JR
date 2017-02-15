@@ -45,6 +45,7 @@ public class NetworkPacket implements IPacket{
     private JUnsignedInteger sequenceNumber;
     private JUnsignedInteger networkControl;
     private JDouble macAddress;
+
     private JUnsignedInteger commandFrame;
     byte[] payload;
 
@@ -74,6 +75,14 @@ public class NetworkPacket implements IPacket{
 
     public void setMacAddress(JDouble macAddress) {
         this.macAddress = macAddress;
+    }
+
+    public JUnsignedInteger getCommandFrame() {
+        return commandFrame;
+    }
+
+    public void setCommandFrame(JUnsignedInteger commandFrame) {
+        this.commandFrame = commandFrame;
     }
 
     public byte[] getPayload() {
