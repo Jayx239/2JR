@@ -26,17 +26,8 @@ public class JArray extends JData{
     public JArray(JData[] value) {
 
         super(ARRAY, ARRAY_NAME, 0);
-        int size = 0;
-
-        for(JData data : value){
-
-            size += data.getSize();
-
-        }
-
-        setSize(size);
-
         this.value = value;
+        setSize(computeSize());
     }
 
     //==================================================================================================================
@@ -50,16 +41,7 @@ public class JArray extends JData{
     public void setValue(JData[] value) {
 
         this.value = value;
-
-        int size = 0;
-
-        for(JData data : value){
-
-            size += data.getSize();
-
-        }
-
-        setSize(size);
+        setSize(computeSize());
 
     }
 
@@ -96,13 +78,7 @@ public class JArray extends JData{
     @Override
     public byte[] toByte() {
 
-        int size = 0;
-
-        for(JData data : value){
-
-            size += data.getSize();
-
-        }
+        int size = getSize();
 
         byte bytes[] = new byte[size];
         int arrayIndex = 0;
@@ -127,5 +103,17 @@ public class JArray extends JData{
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================
+
+    private int computeSize() {
+        int size = 0;
+
+        for(JData data : value){
+
+            size += data.getSize();
+
+        }
+
+        return size;
+    }
 
 } /*********************************************END OF FILE*************************************************************/
