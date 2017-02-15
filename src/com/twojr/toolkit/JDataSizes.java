@@ -4,7 +4,7 @@ package com.twojr.toolkit;
  * Created by rcunni002c on 1/15/2017.
  */
 public enum JDataSizes {
-
+    NULL,
     EIGHT_BIT,                  //8 bit, 1 byte
     SIXTEEN_BIT,                //16 bit, 2 byte
     TWENTY_FOUR_BIT,            //24 bit, 3 byte

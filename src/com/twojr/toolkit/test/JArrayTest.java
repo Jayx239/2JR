@@ -5,8 +5,10 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
+import static com.twojr.toolkit.DataTypes.DOUBLE_PRECISION;
 import static com.twojr.toolkit.DataTypes.EIGHT_BIT_MAP_DATA;
 import static com.twojr.toolkit.JDataSizes.EIGHT_BIT;
+import static com.twojr.toolkit.JDataSizes.SIXTY_FOUR_BIT;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -22,7 +24,20 @@ public class JArrayTest {
         JData array[] = {jBit};
         JArray jArray = new JArray(array);
 
-        assertEquals(jArray.toByte(),0);
+        assertEquals(jArray.toByte()[0],0);
+
+
+        JDouble array2[] = {new JDouble(10392),new JDouble(9382.392),new JDouble(83)};
+        JArray doubArray = new JArray(array2);
+        byte[] output = doubArray.toByte();
+
+        // Test Array
+        byte[] expected = {(byte) 0x40, (byte) 0xC4, (byte) 0x4C, (byte)0x00, (byte)0x00, (byte) 0x00,(byte) 0x00,(byte) 0x00,  //10392
+                (byte) 0x40, (byte) 0xC2, (byte) 0x53, (byte) 0x32, (byte) 0x2D, (byte) 0x0E, (byte) 0x56, (byte) 0x04,     // 9382.392
+                (byte) 0x40, (byte) 0x54, (byte) 0xC0, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00 };   // 83
+
+        for(int i=0; i < (3*SIXTY_FOUR_BIT.ordinal()); i++)
+                assertEquals(expected[i],output[i]);
 
     }
 

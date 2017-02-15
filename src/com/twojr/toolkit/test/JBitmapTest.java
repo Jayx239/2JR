@@ -23,7 +23,7 @@ public class JBitmapTest {
 
         JBitmap jBitmap = new JBitmap();
 
-        assertEquals(jBitmap.toByte(),0);
+        assertEquals(0, jBitmap.toByte());
 
     }
 
@@ -34,7 +34,7 @@ public class JBitmapTest {
 
         JBitmap jBitmap = new JBitmap();
 
-        assertEquals(jBitmap.getValue(),0);
+        assertEquals(0, jBitmap.getValue());
 
     }
 
@@ -56,7 +56,7 @@ public class JBitmapTest {
 
         jBitmap.setValue(values);
 
-        assertEquals(jBitmap.getValue(),1);
+        assertEquals(1, jBitmap.getValue());
 
     }
 
@@ -66,7 +66,7 @@ public class JBitmapTest {
 
         JBitmap jBitmap = new JBitmap();
 
-        assertEquals(jBitmap.getValues(0),0);
+        assertEquals(0, jBitmap.getValues(0));
 
 
     }
@@ -79,7 +79,7 @@ public class JBitmapTest {
 
         jBitmap.putValue(0,true);
 
-        assertEquals(jBitmap.getValues(0),1);
+        assertEquals(1,jBitmap.getValues(0));
 
     }
 
@@ -101,7 +101,7 @@ public class JBitmapTest {
 
         }
         
-        assertEquals(jBitmap.getValue(),output);
+        assertEquals(output,jBitmap.print());
 
     }
 
