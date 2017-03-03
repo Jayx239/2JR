@@ -1,14 +1,13 @@
 package com.twojr.protocol.network;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import com.twojr.toolkit.IPrintable;
-import com.twojr.toolkit.JDouble;
-import com.twojr.toolkit.JInteger;
-import com.twojr.toolkit.JString;
-import com.twojr.toolkit.integer.JSignedInteger;
+import com.twojr.toolkit.*;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 
+import java.nio.ByteBuffer;
 import java.util.Vector;
+
+import static com.twojr.toolkit.DataTypes.DOUBLE_PRECISION;
+import static com.twojr.toolkit.DataTypes.UNSIGNED_EIGHT_BIT_INT;
 
 /**
  * Created by Jason on 2/14/2017.
@@ -36,6 +35,19 @@ public class NetworkPacket implements IPacket{
         this.networkControl = networkControl;
         this.macAddress = macAddress;
         this.commandFrame = commandFrame;
+    }
+
+    public NetworkPacket(byte[] encodedPacket) {
+
+        sequenceNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT, Byte.toUnsignedInt(encodedPacket[0]));
+        networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT,Byte.toUnsignedInt(encodedPacket[1]));
+
+        byte[] mByteAddr = new byte[]{encodedPacket[2],encodedPacket[3],encodedPacket[4],encodedPacket[5],encodedPacket[6],encodedPacket[7],encodedPacket[8],encodedPacket[9]};
+        macAddress = new JDouble(ByteBuffer.wrap(mByteAddr).getDouble());
+
+        int sizeOfPayload = networkControl.getValue();
+
+        //for(int i=9; i<)
     }
 
     //==================================================================================================================
