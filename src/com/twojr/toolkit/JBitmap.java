@@ -11,10 +11,7 @@ import static com.twojr.toolkit.JDataSizes.*;
 public class JBitmap extends JData {
 
     public static final String BITMAP = "Bitmap";
-
-    private HashMap<Integer, Integer> value;
-    private HashMap<Integer, String> params;
-
+    byte[] value;
 
     //==================================================================================================================
     // Constructor(s)
@@ -22,145 +19,79 @@ public class JBitmap extends JData {
 
     public JBitmap() {
 
-        super(EIGHT_BIT_MAP_DATA, BITMAP, JDataSizes.EIGHT_BIT);
-
-        this.params = new HashMap<>();
-
-        for (int i = 0; i < getSize(); i++) {
-            params.put(i, "");
-        }
-
-
-        this.value = new HashMap<>();
-
-        for (int i = 0; i < getSize(); i++) {
-            value.put(i, 0);
-        }
-
+        super(EIGHT_BIT_MAP_DATA, BITMAP, EIGHT_BIT);
+        value = new byte[EIGHT_BIT.ordinal()];
     }
 
     public JBitmap(JDataSizes size) {
 
         super(EIGHT_BIT_MAP_DATA, BITMAP, size);
         setId(computeId(size));
-
-        this.params = new HashMap<>();
-
-        for (int i = 0; i < getSize(); i++) {
-            params.put(i, "");
-        }
-
-
-        this.value = new HashMap<>();
-
-        for (int i = 0; i < getSize(); i++) {
-            value.put(i, 0);
-        }
-
+        value = new byte[size.ordinal()];
     }
 
-    public JBitmap(JDataSizes size, HashMap<Integer, Integer> value, HashMap<Integer, String> params) {
-
-        super(EIGHT_BIT_MAP_DATA, BITMAP, size);
-
-        setId(computeId(size));
+    public JBitmap(byte[] value) {
+        
+        super(EIGHT_BIT_MAP_DATA, BITMAP, value.length);
+        setId(computeId(value.length));
         this.value = value;
-        this.params = params;
-
     }
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
     //==================================================================================================================
 
-    public HashMap<Integer, String> getParams() {
-        return params;
-    }
-
-    public void setParams(HashMap<Integer, String> params) {
-        this.params = params;
-    }
-
-    public HashMap<Integer, Integer> getValue() {
+    public byte[] getValue() {
         return value;
     }
 
-    public void setValue(HashMap<Integer, Integer> value) {
-        this.value = value;
+    public void setValue(int mask, int byteOffset) {
+        if(!isValidByteOffset(byteOffset))
+            return;
+
+        this.value[byteOffset] = (byte) mask;
+    }
+
+    public void setValue(int mask) {
+        setValue(mask,0);
+    }
+
+    public void setBitValue(boolean value, int bitOffset, int byteOffset) {
+        if(!isValidBitOffset(bitOffset) || !isValidByteOffset(byteOffset))
+            return;
+
+        int intVal =  this.value[byteOffset];
+        int flag = 0x0001 << (bitOffset);
+        if(value)
+            this.value[byteOffset] = (byte) (intVal | flag);    // Set bit to 1
+        else
+            this.value[byteOffset] = (byte) (intVal & ~flag);    // Set bit to 0
+    }
+
+    public void setBitValue(boolean value, int bitOffset) {
+        setBitValue(value,bitOffset,0);
     }
 
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
 
-    public void putValue(int i, boolean used) {
-
-        if (i > 0 && i <= getSize() * 8) {
-
-            if (used) {
-
-                value.put(i, 1);
-
-            } else {
-
-                value.put(i, 0);
-
-            }
-
-        }
-
-    }
-
-    public int getValues(int i) {
-
-        if (i > 0 && i <= getSize() * 8) {
-
-            return value.get(i);
-
-        } else {
-
-
-            return -1;
-
-        }
-
-    }
-
-
     @Override
     public byte[] toByte() {
-
-        byte[] bytes = new byte[getSize()];
-
-        for (int i = 0; i < getSize(); i++) {
-
-            String byteStr = "";
-
-            for (int j = 0; j < 8; j++) {
-
-                byteStr += value.get(j + i * 8);
-
-            }
-
-            bytes[i] = Byte.parseByte(byteStr);
-        }
-
-        return bytes;
-
+        return value;
     }
 
     @Override
     public String print() {
 
-        String output = "";
-
-        for (int key : value.keySet()) {
-
-            output += key + ". value: " + value.get(key) + ", param: " + params.get(key) + "\n";
-
+        String output = "Bitmap:\n";
+        int row = 0;
+        for(byte B : value) {
+            output += "Row[" + row++ + "]: ";
+            for(int i=7; i>=0; i--)
+                output+= Integer.toString(((B >> i)&0x01));
+            output+="\n";
         }
-
-        System.out.print(output);
 
         return output;
 
@@ -225,6 +156,70 @@ public class JBitmap extends JData {
         }
 
         return id;
+    }
+
+    // Overload for computing id from byte array
+    private int computeId(int size) {
+    
+        int id;
+        switch(size)
+        {
+            case 1:
+                id = EIGHT_BIT_MAP_DATA;
+                break;
+
+            case 2:
+                id = SIXTEEN_BIT_MAP_DATA;
+                break;
+
+            case 3:
+                id = TWENTY_FOUR_BIT_MAP_DATA;
+                break;
+
+            case 4:
+                id = THIRTY_TWO_BIT_MAP_DATA;
+                break;
+
+            case 5:
+                id = FORTY_BIT_MAP_DATA;
+                break;
+
+            case 6:
+                id = FORTY_EIGHT_BIT_MAP_DATA;
+                break;
+
+            case 7:
+                id = FIFTY_SIX_BIT_MAP_DATA;
+                break;
+
+            case 8:
+                id = SIXTY_FOUR_BIT_MAP_DATA;
+                break;
+
+            default:
+                id = EIGHT_BIT_MAP_DATA;
+                break;
+        }
+
+        return id;
+    }
+    
+    private boolean isValidByteOffset(int byteOffset) {
+        // Check for invalid byte offset size
+        if(byteOffset >= getSize()) {
+            System.err.println("Invalid byte offset for bitmap setValue\nByte offset: " + byteOffset + "\nBitmap Size: " + getSize());
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean isValidBitOffset(int bitOffset) {
+        if(bitOffset > 7 || bitOffset < 0) {
+            System.err.println("Invalid bit offset for bitmap setValue\nBit offset: " + bitOffset);
+            return false;
+        }
+        return true;
     }
 
 } /*********************************************END OF FILE*************************************************************/
