@@ -1,9 +1,6 @@
 package com.twojr.toolkit.test;
 
-import com.twojr.toolkit.DataTypes;
-import com.twojr.toolkit.JBitmap;
-import com.twojr.toolkit.JDataSizes;
-import com.twojr.toolkit.JString;
+import com.twojr.toolkit.*;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -20,21 +17,30 @@ public class JBitmapTest {
     @Test
     public void evaluateToByte()
     {
-
         JBitmap jBitmap = new JBitmap();
+        jBitmap.setValue(0x13,0);
+        assertEquals((byte)0x13, jBitmap.toByte()[0]);
+    }
 
-        assertEquals(0, jBitmap.toByte());
+    @Test
+    public void evaluateByteInitizilzer() {
 
+        byte[] bitmap = {(byte)0x13,(byte)0x32};
+        JBitmap constrTest = new JBitmap(bitmap);
+
+        assertEquals(bitmap[0],constrTest.toByte()[0]);
+        assertEquals(bitmap[1],constrTest.toByte()[1]);
     }
 
     @Test
     public void evaluateGetValue()
     {
+        byte[] value = {(byte)0x80,(byte) 0x32};
 
+        JBitmap jBitmap = new JBitmap(value);
 
-        JBitmap jBitmap = new JBitmap();
-
-        assertEquals(0, jBitmap.getValue());
+        assertEquals(-128, jBitmap.getValue()[0]);
+        assertEquals(0x32, jBitmap.getValue()[1]);
 
     }
 
@@ -42,44 +48,26 @@ public class JBitmapTest {
     public void evaluateSetValue()
     {
 
-        HashMap<Integer,Integer> values = new HashMap<>();
-        values.put(0,0);
-        values.put(1,0);
-        values.put(2,0);
-        values.put(3,0);
-        values.put(4,0);
-        values.put(5,0);
-        values.put(6,0);
-        values.put(7,1);
-
-        JBitmap jBitmap = new JBitmap();
-
-        jBitmap.setValue(values);
-
-        assertEquals(1, jBitmap.getValue());
-
+        JBitmap jBitmap = new JBitmap(JDataSizes.SIXTEEN_BIT);
+        jBitmap.setBitValue(true,6,0);
+        jBitmap.setBitValue(true,3,1);
+        assertEquals(0x40, jBitmap.getValue()[0]);
+        assertEquals(0x08,jBitmap.getValue()[1]);
     }
 
     @Test
-    public void evaluateGetValues()
+    public void evaluateSetBit()
     {
+        JBitmap jBitmap = new JBitmap(JDataSizes.THIRTY_TWO_BIT);
+        jBitmap.setBitValue(true,3);    // Set first byte 4th bit => 8 base 10
+        jBitmap.setBitValue(true,6,1);  // Set second byte 7th bit => 64 base 10
+        jBitmap.setBitValue(true,1,2);  // Set third byte 3rd bit => 2 base 10
+        jBitmap.setBitValue(true,4,3);  // Set fourth byte 5th bit -> 16 base 10
 
-        JBitmap jBitmap = new JBitmap();
-
-        assertEquals(0, jBitmap.getValues(0));
-
-
-    }
-
-    @Test
-    public void evaluatePutValue()
-    {
-
-        JBitmap jBitmap = new JBitmap();
-
-        jBitmap.putValue(0,true);
-
-        assertEquals(1,jBitmap.getValues(0));
+        assertEquals(8,jBitmap.toByte()[0]);
+        assertEquals(64,jBitmap.toByte()[1]);
+        assertEquals(2,jBitmap.toByte()[2]);
+        assertEquals(16,jBitmap.toByte()[3]);
 
     }
 
@@ -87,20 +75,10 @@ public class JBitmapTest {
     @Test
     public void evaluatePrint()
     {
+        byte[] bitmap = {0x39,0x32,0x76};
+        JBitmap jBitmap = new JBitmap(bitmap);
+        String output = "Bitmap:\nRow[0]: 00111001\nRow[1]: 00110010\nRow[2]: 01110110\n";
 
-        JBitmap jBitmap = new JBitmap();
-
-        HashMap<Integer,Integer> value = jBitmap.getValue();
-        HashMap<Integer,String> params = jBitmap.getParams();
-
-        String output = "";
-
-        for(int key :value.keySet()){
-
-            output +=  key + ". value: " + value.get(key) + ", param: " + params.get(key) + "\n";
-
-        }
-        
         assertEquals(output,jBitmap.print());
 
     }
