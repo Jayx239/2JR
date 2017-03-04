@@ -1,12 +1,26 @@
 package com.twojr.toolkit.test;
 import static org.junit.Assert.*;
 
+import com.twojr.toolkit.DataTypes;
 import com.twojr.toolkit.JBit;
+import com.twojr.toolkit.JDataSizes;
 import org.junit.Test;
 /**
  * Created by Jason on 1/17/2017.
  */
 public class JBitTest {
+
+    @Test
+    public void evaluateByteInitializer() {
+        byte[] byteBit = {0x01};
+        JBit bitByte = new JBit(byteBit);
+
+        assertEquals(0x01,bitByte.toByte()[0]);
+
+        bitByte.setValue(false);
+        assertEquals(0x00, bitByte.toByte()[0]);
+    }
+
     @Test
     public void evaluateToByte1() {
         boolean value = true;
@@ -14,7 +28,7 @@ public class JBitTest {
         int id = 1;
         String name = "name";
 
-        JBit bit1 = new JBit(id,name,size,value);
+        JBit bit1 = new JBit(name, JDataSizes.EIGHT_BIT,value);
 
         assertEquals(size,bit1.toByte().length);
         assertEquals(0x01, bit1.toByte()[0]);
@@ -28,7 +42,7 @@ public class JBitTest {
         int id = 1;
         String name = "name";
 
-        JBit bit0 = new JBit(id,name,size,value);
+        JBit bit0 = new JBit(name,JDataSizes.EIGHT_BIT,value);
 
         assertEquals(size,bit0.toByte().length);
         assertEquals((byte) 0x00, bit0.toByte()[0]);
@@ -42,7 +56,7 @@ public class JBitTest {
         int id = 1;
         String name = "name";
 
-        JBit bit = new JBit(id,name,size,value);
+        JBit bit = new JBit(name,JDataSizes.EIGHT_BIT,value);
         assertEquals(size, bit.getSize());
     }
 
@@ -54,7 +68,7 @@ public class JBitTest {
         int id = 1;
         String name = "name";
 
-        JBit bit = new JBit(id,name,size,value);
+        JBit bit = new JBit(name,JDataSizes.EIGHT_BIT,value);
 
         assertEquals(value,bit.getValue());
     }
@@ -64,10 +78,10 @@ public class JBitTest {
 
         boolean value = false;
         int size = 1;
-        int id = 1;
+        int id = DataTypes.EIGHT_BIT_DATA;
         String name = "name";
 
-        JBit bit = new JBit(id,name,size,value);
+        JBit bit = new JBit(name,JDataSizes.EIGHT_BIT,value);
         assertEquals(id, bit.getId());
     }
 
@@ -79,7 +93,7 @@ public class JBitTest {
         int id = 1;
         String name = "name";
 
-        JBit bit = new JBit(id,name,size,value);
+        JBit bit = new JBit(name,JDataSizes.EIGHT_BIT,value);
         assertEquals(name, bit.getName());
     }
 
@@ -91,7 +105,7 @@ public class JBitTest {
         int id = 1;
         String name = "name";
 
-        JBit bit1 = new JBit(id,name,size,value);
+        JBit bit1 = new JBit(name,JDataSizes.EIGHT_BIT,value);
         assertEquals("1", bit1.print());
     }
 
@@ -103,7 +117,7 @@ public class JBitTest {
         int id = 1;
         String name = "name";
 
-        JBit bit1 = new JBit(id,name,size,value);
+        JBit bit1 = new JBit(name,JDataSizes.EIGHT_BIT,value);
         assertEquals("0", bit1.print());
     }
 
