@@ -30,6 +30,11 @@ public class JDouble extends JData {
 
     }
 
+    public JDouble(byte[] byteDouble) {
+        super(DOUBLE_PRECISION, DOUBLE, SIXTY_FOUR_BIT);
+        setValue(byteDouble);
+    }
+
     //==================================================================================================================
     // Getter(s) & Setter(s)
     //==================================================================================================================
@@ -39,9 +44,13 @@ public class JDouble extends JData {
     }
 
     public void setValue(double value) {
+
         this.value = value;
     }
 
+    public void setValue(byte[] value) {
+        setValue(ByteBuffer.wrap(value).getDouble());
+    }
 
     //==================================================================================================================
     // Public Functions(s)
