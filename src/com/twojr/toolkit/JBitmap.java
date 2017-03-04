@@ -31,10 +31,8 @@ public class JBitmap extends JData {
     }
 
     public JBitmap(byte[] value) {
-        
         super(EIGHT_BIT_MAP_DATA, BITMAP, value.length);
-        setId(computeId(value.length));
-        this.value = value;
+        setValue(value);
     }
 
     //==================================================================================================================
@@ -50,6 +48,13 @@ public class JBitmap extends JData {
             return;
 
         this.value[byteOffset] = (byte) mask;
+    }
+
+    public void setValue(byte[] value) {
+        this.value = value;
+        setName(BITMAP);
+        setSize(value.length);
+        setId(computeId(value.length));
     }
 
     public void setValue(int mask) {

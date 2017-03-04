@@ -17,10 +17,19 @@ import static org.junit.Assert.assertEquals;
 public class JArrayTest {
 
     @Test
+    public void evaluateByteInitializer() {
+        JDouble jDouble = new JDouble(1000);
+        JDouble jDouble1 = new JDouble(10392);
+
+        JArray jArray = new JArray(new JData[]{jDouble,jDouble1});
+        JArray jArray1 = new JArray(jArray.toByte(),DataTypes.DOUBLE_PRECISION);
+    }
+
+    @Test
     public void evaluateToByte()
     {
 
-        JBit jBit = new JBit(0,"Bit",1,false);
+        JBit jBit = new JBit("Bit",JDataSizes.EIGHT_BIT,false);
         JData array[] = {jBit};
         JArray jArray = new JArray(array);
 
@@ -45,7 +54,7 @@ public class JArrayTest {
     public void evaluateGetValue()
     {
 
-        JBit jBit = new JBit(0,"Bit",1,false);
+        JBit jBit = new JBit("Bit",JDataSizes.EIGHT_BIT,false);
         JData array[] = {jBit};
         JArray jArray = new JArray(array);
 
@@ -59,8 +68,8 @@ public class JArrayTest {
 
         HashMap<Integer,Integer> values = new HashMap<>();
 
-        JBit jBit1 = new JBit(0,"Bit",1,false);
-        JBit jBit2 = new JBit(0,"Bit",1,true);
+        JBit jBit1 = new JBit("Bit",EIGHT_BIT,false);
+        JBit jBit2 = new JBit("Bit",EIGHT_BIT,true);
 
         JData array1[] = {jBit1};
         JData array2[] = {jBit2};
@@ -76,7 +85,7 @@ public class JArrayTest {
     public void evaluatePrint()
     {
 
-        JBit jBit = new JBit(0,"Bit",1,false);
+        JBit jBit = new JBit("Bit",EIGHT_BIT,false);
         JData array[] = {jBit};
         JArray jArray = new JArray(array);
 
