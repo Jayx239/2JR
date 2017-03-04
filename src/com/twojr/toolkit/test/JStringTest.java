@@ -32,6 +32,14 @@ public class JStringTest {
     }
 
     @Test
+    public void evaluateByteInitializer() {
+        String value = "This is the string value";
+        JString jString = new JString(value.getBytes());
+
+        assertEquals(value,jString.getValue());
+    }
+
+    @Test
     public void evaluateGetValue()
     {
 
@@ -39,7 +47,7 @@ public class JStringTest {
 
         JString jString = new JString(EIGHT_BIT,str);
 
-        assertEquals(jString.getValue(),str);
+        assertEquals(str,jString.getValue());
 
     }
 
@@ -53,7 +61,7 @@ public class JStringTest {
         JString jString = new JString(EIGHT_BIT,str);
 
         jString.setValue(test);
-        assertEquals(jString.getValue(),test);
+        assertEquals(test, jString.getValue());
 
     }
 

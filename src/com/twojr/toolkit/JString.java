@@ -36,6 +36,11 @@ public class JString extends JData {
         this.value = value;
     }
 
+    public JString(byte[] byteString) {
+        super(CHARACTER_STRING,STRING_NAME,byteString.length);
+        setValue(byteString);
+    }
+
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
@@ -47,8 +52,20 @@ public class JString extends JData {
 
     public void setValue(String value) {
         this.value = value;
+        setSize(value.length());
+        setName(STRING_NAME);
+        if(getSize()>8) {
+            setId(LONG_CHARARACTER_STRING);
+        }
     }
+    public void setValue(byte[] byteString) {
+        value = "";
+        for(byte byteChar: byteString) {
+            value+=(char) byteChar;
+        }
 
+        setName(value);
+    }
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
