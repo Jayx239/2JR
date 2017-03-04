@@ -12,6 +12,18 @@ import java.nio.ByteBuffer;
  * Created by Jason on 1/16/2017.
  */
 public class JDoubleTest {
+
+    @Test
+    public void evaluateByteInitializer() {
+        byte[] expectedValue = {(byte) 0x41, (byte)0x08, (byte) 0xA5, (byte) 0x70,
+                (byte) 0x00,(byte) 0x00,(byte) 0x00,(byte) 0x00};
+
+        JDouble jDouble = new JDouble(expectedValue);
+        for(int i=0; i<jDouble.getSize(); i++)
+            assertEquals(expectedValue[i],jDouble.toByte()[i]);
+
+    }
+
     @Test
     public void evaluateToByte() {
         double value = 201902;

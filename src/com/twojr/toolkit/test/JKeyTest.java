@@ -31,7 +31,7 @@ public class JKeyTest {
     public void evaluateGetAddress()
     {
 
-        byte[] address = {00,00,00,00,00,00,00,00};
+        byte[] address = {01,00,92,05,21,34,00,93};
 
         JKey jKey = new JKey(address);
 
@@ -43,7 +43,7 @@ public class JKeyTest {
     {
 
         byte[] address1 = {00,00,00,00,00,00,00,00};
-        byte[] address2 = {00,00,00,00,00,00,00,01};
+        byte[] address2 = {12,94,03,32,14,03,01,01};
 
         JKey jKey = new JKey(address1);
 
