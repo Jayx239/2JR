@@ -12,6 +12,18 @@ import org.junit.Test;
  * Created by Jason on 1/17/2017.
  */
 public class JBooleanTest {
+
+    @Test
+    public void evaluateByteInitializer() {
+        byte[] byteBit = {0x01};
+        JBoolean bitByte = new JBoolean(byteBit);
+
+        assertEquals(0x01,bitByte.toByte()[0]);
+
+        bitByte.setValue(false);
+        assertEquals(0x00, bitByte.toByte()[0]);
+    }
+
     @Test
     public void evaluateToByte1() {
         boolean value = true;

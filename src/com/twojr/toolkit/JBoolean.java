@@ -24,6 +24,10 @@ public class JBoolean extends JData{
         this.value = value;
     }
 
+    public JBoolean(byte[] boolByte) {
+        super(DataTypes.BOOLEAN,BOOLEAN_NAME,EIGHT_BIT);
+        setValue(boolByte);
+    }
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
@@ -37,6 +41,13 @@ public class JBoolean extends JData{
         this.value = value;
     }
 
+    public void setValue(byte[] boolByte) {
+
+        if(boolByte[0] == (byte) 0)
+            value = false;
+        else
+            value = true;
+    }
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================

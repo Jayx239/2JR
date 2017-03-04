@@ -33,6 +33,10 @@ public class JUnsignedInteger extends JInteger{
         setId(computeId(size));
     }
 
+    public JUnsignedInteger(byte[] value) {
+        setValue(value);
+    }
+
     //==================================================================================================================
     // Getter(s) & Setter(s)
     //==================================================================================================================
@@ -41,6 +45,22 @@ public class JUnsignedInteger extends JInteger{
         return super.getValue() < 0 ? 0 : super.getValue();
     }
 
+    @Override
+    public void setValue(int value) {
+        super.setValue(value);
+        setName(UNSIGNED_INTEGER);
+        setId(computeId(getSize()));
+
+    }
+
+    public void setValue(byte[] byteInt) {
+        int value = 0;
+        for(int i=0; i<byteInt.length; i++) {
+            value+= byteInt[i] << (i*8);
+        }
+        setSize(byteInt.length);
+        setValue(value);
+    }
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
@@ -49,7 +69,8 @@ public class JUnsignedInteger extends JInteger{
     @Override
     public byte[] toByte() {
         byte[] byteArray = new byte[getSize()];
-        byteArray[0] = (byte) getValue();
+        for(int i=0; i<getSize(); i++)
+            byteArray[i] = (byte) ((this.getValue()>>(i*8))&0xff);
         return byteArray;
     }
 
@@ -79,7 +100,7 @@ public class JUnsignedInteger extends JInteger{
 
         int id;
 
-        switch (size){
+        switch (size) {
 
             case EIGHT_BIT:
                 id = UNSIGNED_EIGHT_BIT_INT;
@@ -110,6 +131,54 @@ public class JUnsignedInteger extends JInteger{
                 break;
 
             case SIXTY_FOUR_BIT:
+                id = UNSIGNED_SIXTY_FOUR_BIT_INT;
+                break;
+
+            default:
+                id = UNSIGNED_EIGHT_BIT_INT;
+                setSize(1);
+                break;
+
+        }
+
+        return id;
+    }
+
+    private int computeId(int size) {
+
+        int id;
+
+        switch (size){
+
+            case 1:
+                id = UNSIGNED_EIGHT_BIT_INT;
+                break;
+
+            case 2:
+                id = UNSIGNED_SIXTEEN_BIT_INT;
+                break;
+
+            case 3:
+                id = UNSIGNED_TWENTY_FOUR_BIT_INT;
+                break;
+
+            case 4:
+                id = UNSIGNED_THIRTY_TWO_BIT_INT;
+                break;
+
+            case 5:
+                id = UNSIGNED_FORTY_BIT_INT;
+                break;
+
+            case 6:
+                id = UNSIGNED_FORTY_EIGHT_BIT_INT;
+                break;
+
+            case 7:
+                id = UNSIGNED_FIFTY_SIX_BIT_INT;
+                break;
+
+            case 8:
                 id = UNSIGNED_SIXTY_FOUR_BIT_INT;
                 break;
 
