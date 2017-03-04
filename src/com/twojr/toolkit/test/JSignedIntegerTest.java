@@ -4,28 +4,31 @@ import static org.junit.Assert.*;
 
 import com.twojr.toolkit.DataTypes;
 import com.twojr.toolkit.JDataSizes;
+import com.twojr.toolkit.JString;
 import com.twojr.toolkit.integer.JSignedInteger;
 import org.junit.Test;
 /**
  * Created by Joseph Haggerty on 1/20/2017.
  */
 public class JSignedIntegerTest {
+
     @Test
-    public void evaluateToByte1() {
-        int value = 1;
-        int size = 1;
-        int id = 1;
-        String name = "test_name";
+    public void evaluateByteInitializer() {
+        JSignedInteger jSigned = new JSignedInteger(JDataSizes.THIRTY_TWO_BIT,938273);
 
-        JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
+        JSignedInteger jSignedByte = new JSignedInteger(jSigned.toByte());
+        assertEquals(jSigned.getSize(),jSignedByte.getSize());
+        assertEquals(jSigned.getValue(),jSignedByte.getValue());
 
-        assertEquals(size,sIntTest.toByte().length);
-        assertEquals( 0x01, sIntTest.toByte()[0]);
+        assertEquals(jSigned.toByte()[0],jSignedByte.toByte()[0]);
+        assertEquals(jSigned.toByte()[1],jSignedByte.toByte()[1]);
+        assertEquals(jSigned.toByte()[2],jSignedByte.toByte()[2]);
+        assertEquals(jSigned.toByte()[3],jSignedByte.toByte()[3]);
     }
 
     @Test
-    public void evaluateToByte0() {
-        int value = 0;
+    public void evaluateToByte8bit() {
+        int value = 256;
         int size = 1;
         int id = 1;
         String name = "test_name";
@@ -33,7 +36,24 @@ public class JSignedIntegerTest {
         JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
 
         assertEquals(size,sIntTest.toByte().length);
-        assertEquals(0x00, sIntTest.toByte()[0]);
+        assertEquals( value &0xff, sIntTest.toByte()[0]);
+    }
+
+    @Test
+    public void evaluateToByte32bit() {
+        int value = 637261237;
+        int size = THIRTY_TWO_BIT.ordinal();
+        int id = 1;
+        String name = "test_name";
+
+        JSignedInteger sIntTest = new JSignedInteger(THIRTY_TWO_BIT, value);
+
+        assertEquals(size,sIntTest.toByte().length);
+
+        assertEquals((byte) 0x25, sIntTest.toByte()[3]);
+        assertEquals((byte) 0xFB, sIntTest.toByte()[2]);
+        assertEquals((byte) 0xD5, sIntTest.toByte()[1]);
+        assertEquals((byte) 0xB5, sIntTest.toByte()[0]);
     }
 
     @Test
@@ -45,11 +65,14 @@ public class JSignedIntegerTest {
 
         JSignedInteger sIntTest = new JSignedInteger(EIGHT_BIT, value);
         assertEquals(size, sIntTest.getSize());
+        JSignedInteger sIntTest2 = new JSignedInteger(THIRTY_TWO_BIT,10);
+        assertEquals(THIRTY_TWO_BIT.ordinal(), sIntTest2.getSize());
+
     }
 
     @Test
     public void evaluateGetValue() {
-        int value = 0;
+        int value = 128;
         int size = 1;
         int id = 1;
         String name = "test_name";

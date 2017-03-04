@@ -4,7 +4,7 @@ package com.twojr.toolkit;
  * Created by rcunni002c on 11/17/2016.
  */
 public class JBit extends JData{
-
+    public static final String BIT_NAME = "Bit";
     private boolean value;
 
     //==================================================================================================================
@@ -15,11 +15,15 @@ public class JBit extends JData{
 
     }
 
-    public JBit(int id, String name, int size, boolean value) {
-        super(id, name, size);
+    public JBit(String name, JDataSizes size, boolean value) {
+        super(DataTypes.EIGHT_BIT_DATA, name, size);
         this.value = value;
     }
 
+    public JBit(byte[] bitByte) {
+        super(DataTypes.EIGHT_BIT_DATA,BIT_NAME,bitByte.length);
+        setValue(bitByte);
+    }
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
@@ -33,7 +37,12 @@ public class JBit extends JData{
         this.value = value;
     }
 
-
+    public void setValue(byte[] bitByte) {
+        if(bitByte[0] == (byte) 0)
+            setValue(false);
+        else
+            setValue(true);
+    }
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
@@ -41,8 +50,8 @@ public class JBit extends JData{
     @Override
     public byte[] toByte() {
         byte[] byteArray = new byte[getSize()];
-        String valueAsChar = (char) (value ? 0x01 : 0x00) + "";
-        byteArray = valueAsChar.getBytes();
+        int retval = (value ? 0x01 : 0x00);
+        byteArray[0] = (byte) retval;
         return byteArray;
     }
 
