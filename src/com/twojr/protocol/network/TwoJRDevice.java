@@ -69,36 +69,6 @@ public abstract class TwoJRDevice implements IDevice {
     // Public Functions(s)
     //==================================================================================================================
 
-    @Override
-    public void start() {
-
-    }
-
-    @Override
-    public void close() {
-
-    }
-
-    @Override
-    public void send() {
-
-    }
-
-    @Override
-    public void read() {
-
-    }
-
-    @Override
-    public void discover() {
-
-    }
-
-    @Override
-    public String print() {
-        return null;
-    }
-
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================

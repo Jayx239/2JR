@@ -70,32 +70,32 @@ public class EndDevice  extends TwoJRDevice {
 
     @Override
     public void start() {
-        super.start();
+     //   super.start();
     }
 
     @Override
     public void close() {
-        super.close();
+        //super.close();
     }
 
     @Override
     public void send() {
-        super.send();
+        //super.send();
     }
 
     @Override
     public void read() {
-        super.read();
+        //super.read();
     }
 
     @Override
     public void discover() {
-        super.discover();
+        //super.discover();
     }
 
     @Override
     public String print() {
-        return super.print();
+        return "";//super.print();
     }
 
     //==================================================================================================================

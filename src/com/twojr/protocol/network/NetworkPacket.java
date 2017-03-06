@@ -1,14 +1,13 @@
 package com.twojr.protocol.network;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import com.twojr.toolkit.IPrintable;
-import com.twojr.toolkit.JDouble;
-import com.twojr.toolkit.JInteger;
-import com.twojr.toolkit.JString;
-import com.twojr.toolkit.integer.JSignedInteger;
+import com.twojr.toolkit.*;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 
+import java.nio.ByteBuffer;
 import java.util.Vector;
+
+import static com.twojr.toolkit.DataTypes.DOUBLE_PRECISION;
+import static com.twojr.toolkit.DataTypes.UNSIGNED_EIGHT_BIT_INT;
 
 /**
  * Created by Jason on 2/14/2017.
@@ -36,6 +35,28 @@ public class NetworkPacket implements IPacket{
         this.networkControl = networkControl;
         this.macAddress = macAddress;
         this.commandFrame = commandFrame;
+    }
+
+    public NetworkPacket(byte[] encodedPacket) {
+
+        byte[] singleTemp = {encodedPacket[networkPacketMasks.SEQUENCE_NUMBER.ordinal()]};
+        this.sequenceNumber = new JUnsignedInteger(singleTemp);
+
+        singleTemp[0] = encodedPacket[networkPacketMasks.NETWORK_CONTROL.ordinal()];
+        this.networkControl = new JUnsignedInteger(singleTemp);
+
+        byte[] mByteAddr = new byte[]{encodedPacket[2],encodedPacket[3],encodedPacket[4],encodedPacket[5],encodedPacket[6],encodedPacket[7],encodedPacket[8],encodedPacket[9]};
+        this.macAddress = new JDouble(mByteAddr);
+
+        singleTemp[0] = encodedPacket[networkPacketByteOffset[networkPacketMasks.COMMAND_FRAME.ordinal()]];
+        this.commandFrame = (new JUnsignedInteger(singleTemp));
+
+        int sizeOfPayload = encodedPacket.length- networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()];
+        this.payload = new byte[sizeOfPayload];
+
+        for(int i=0; i<sizeOfPayload;i++)
+            this.payload[i] = encodedPacket[i+networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()]];
+
     }
 
     //==================================================================================================================
@@ -93,37 +114,37 @@ public class NetworkPacket implements IPacket{
         this.payload = payload;
     }
 
+    @Override
     public byte[] toByte() {
 
-        Vector<Byte> output = new Vector<Byte>();
-
+        byte[] output = new byte[getSize()];
+        int index = 0;
         for(byte sequence : sequenceNumber.toByte()) {
-            output.add(sequence);
+            output[index++] = sequence;
         }
 
         for(byte control : networkControl.toByte()) {
-            output.add(control);
+            output[index++] = control;
         }
 
         for(byte mac : macAddress.toByte()) {
-            output.add(mac);
+            output[index++] = mac;
         }
 
         for(byte command : commandFrame.toByte()) {
-            output.add(command);
+            output[index++] = command;
         }
 
         for(byte pay : payload) {
-            output.add(pay);
+            output[index++] = pay;
         }
 
-        byte[] outputArray = new byte[output.size()];
-        for(int i=0; i<outputArray.length; i++) {
-            outputArray[i] = output.elementAt(i);
-        }
-
-        return outputArray;
+        return output;
     }
 
-
+    @Override
+    public int getSize() {
+        int size = sequenceNumber.getSize() + networkControl.getSize() + macAddress.getSize() + getCommandFrame().getSize() + payload.length;
+        return size;
+    }
 }

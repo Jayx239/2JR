@@ -1,7 +1,14 @@
 package com.twojr.protocol.network;
 
+import com.twojr.toolkit.JData;
+import com.twojr.toolkit.JDataSizes;
+import com.twojr.toolkit.JDouble;
 import com.twojr.toolkit.JString;
 import com.twojr.toolkit.integer.JSignedInteger;
+import com.twojr.toolkit.integer.JUnsignedInteger;
+
+import java.util.Map;
+import java.util.Vector;
 
 /**
  * Created by Jason on 2/14/2017.
@@ -13,12 +20,20 @@ public class Router extends TwoJRDevice {
     //==================================================================================================================
 
     public Router() {
-
+        listeners = new Vector<TwoJRRadioListener>();
     }
 
     public Router(JSignedInteger applicationVersion, TwoJRRadioListener radioListener, JString moduleId, JString manufacturer) {
         super(applicationVersion,radioListener,moduleId,manufacturer);
+        listeners = new Vector<TwoJRRadioListener>();
     }
+
+    //==================================================================================================================
+    // Instance variables
+    //==================================================================================================================
+
+    private NetworkPacket currentPacket;
+    private Vector<TwoJRRadioListener> listeners;
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
@@ -70,32 +85,40 @@ public class Router extends TwoJRDevice {
 
     @Override
     public void start() {
-        super.start();
+     //   radioListener
     }
 
     @Override
     public void close() {
-        super.close();
+
     }
 
     @Override
     public void send() {
-        super.send();
+
     }
 
     @Override
     public void read() {
-        super.read();
+
     }
 
     @Override
     public void discover() {
-        super.discover();
+        JUnsignedInteger sequenceNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT, 1);
+        JUnsignedInteger networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT, IPacket.networkControlFlags.ROUTER.ordinal());
+        JDouble macAddress = new JDouble(100202);
+        JUnsignedInteger commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT, IPacket.networkLayerCommands.REJOIN.ordinal());
+
+
+        NetworkPacket discoverPacket = new NetworkPacket(sequenceNumber,networkControl,macAddress,commandFrame);
+        currentPacket = discoverPacket;
+        send();
     }
 
     @Override
     public String print() {
-        return super.print();
+        return "Router: ";
     }
 
     //==================================================================================================================

@@ -6,40 +6,43 @@ package com.twojr.protocol.network;
 public interface IPacket {
 
     byte[] toByte();
+    int getSize();
 
+    //------------------------------------------------------------------------------------------------------------------
     // Enum used for indexing networkMasks and byteOffset arrays
+
     enum networkPacketMasks {
         SEQUENCE_NUMBER,
         NETWORK_CONTROL,
         MAC_ADDRESS,
         COMMAND_FRAME,
-        PAYLOAD_ONE_BYTE,
-        PAYLOAD_TWO_BYTE,
-        PAYLOAD_FOUR_BYTE,
+        PAYLOAD
     }
-
-    // Used for accessing segments of the packet.
-    // Uses networkPacketMasks for indexing
-    float[] networkMasks = {0xff,0xff >>> 8,0xffffffff >>> 16, 0xff >>> 80,
-            0xffff >>> 88, 0xffffffff >>> 88};
 
     // The offsets for each segment of the packet
     // Uses networkPacketMasks as indexer
-    int[] byteOffset = {0,8,16,80,88,88};
+    int[] networkPacketByteOffset = {0,1,2,10,11};
 
-    // Network control
+    //------------------------------------------------------------------------------------------------------------------
+    // Network control -------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
     enum networkControlFlags {
         ENCRYPTED,
         MESSAGE_INTEGRITY_CODE,
         END_DEVICE,
         ROUTER,
-        MANUFACTURER_SPECIFIC;
+        MANUFACTURER_SPECIFIC,
+        UNUSED_1,
+        UNUSED_2,
+        UNUSED_3
     }
 
     // Masks for setting control bits, uses networkControlFlags as indexer
-    int[] networkControlMask = {0x01, 0x02,0x04,0x08,0x10};
+    int[] networkControlMask = {0x01, 0x02,0x04,0x08,0x10,0x20,0x40,0x80};
 
-    // Network Layer commands
+    //------------------------------------------------------------------------------------------------------------------
+    // Network Layer commands ------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
     enum networkLayerCommands {
         REJOIN,
         REJOIN_RESPONSE,
@@ -52,7 +55,4 @@ public interface IPacket {
         ADDRESS_REQUEST,
         ADDRESS_RESPONSE
     }
-
-
-
 }
