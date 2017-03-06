@@ -23,6 +23,10 @@ public class JArrayTest {
 
         JArray jArray = new JArray(new JData[]{jDouble,jDouble1});
         JArray jArray1 = new JArray(jArray.toByte(),DataTypes.DOUBLE_PRECISION);
+        byte[] array = jArray.toByte();
+        for(int i=0; i<array.length; i++) {
+            assertEquals(array[i],jArray1.toByte()[i]);
+        }
     }
 
     @Test
