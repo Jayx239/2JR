@@ -115,20 +115,20 @@ public class JArray extends JData{
     @Override
     public byte[] toByte() {
 
-        int size = value.length*(value[0].toByte().length);
+        if(value == null || value.length == 0)
+            return null;
 
+        int size = value.length*(value[0].toByte().length);
         byte bytes[] = new byte[size];
         int arrayIndex = 0;
 
         for(JData data : value){
 
             byte[] dataBytes = data.toByte();
-
             for(int i = 0; i < dataBytes.length; i++){
                 bytes[arrayIndex] = dataBytes[i];
                 arrayIndex++;
             }
-
         }
 
         return bytes;
@@ -139,12 +139,10 @@ public class JArray extends JData{
     //==================================================================================================================
 
     private int computeSize() {
+
         int size = 0;
-
         for(JData data : value){
-
             size += data.getSize();
-
         }
 
         return size;
@@ -202,9 +200,7 @@ public class JArray extends JData{
                 return new JString(byteData);
             default:
                 return null;
-
         }
-
     }
 
 } /*********************************************END OF FILE*************************************************************/
