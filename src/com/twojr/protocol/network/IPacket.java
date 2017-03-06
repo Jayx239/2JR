@@ -6,6 +6,7 @@ package com.twojr.protocol.network;
 public interface IPacket {
 
     byte[] toByte();
+    int getSize();
 
     //------------------------------------------------------------------------------------------------------------------
     // Enum used for indexing networkMasks and byteOffset arrays
