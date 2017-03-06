@@ -73,13 +73,14 @@ public class JArray extends JData{
         int arrayLen = byteArray.length/dataSize;
         JData[] jArray = new JData[arrayLen];
 
-        for(int i = 0; i<arrayLen; i+=dataSize) {
+        for(int i = 0; i<arrayLen; i++) {
 
             byte[] nextIn = new byte[dataSize];
-            for(int j=dataSize*i; j< (dataSize*(i+1)); j++)
-                nextIn[j] = byteArray[j];
+            for(int j=0; j< dataSize; j++)
+                nextIn[j] = byteArray[(i*dataSize)+j];
             jArray[i] = initializeElement(dataType,nextIn);
         }
+        this.value = jArray;
     }
 
     //==================================================================================================================
@@ -114,23 +115,20 @@ public class JArray extends JData{
     @Override
     public byte[] toByte() {
 
-        int size = getSize();
+        if(value == null || value.length == 0)
+            return null;
 
+        int size = value.length*(value[0].toByte().length);
         byte bytes[] = new byte[size];
         int arrayIndex = 0;
 
         for(JData data : value){
 
             byte[] dataBytes = data.toByte();
-
-            for(int i = 0; i < data.getSize(); i++){
-
+            for(int i = 0; i < dataBytes.length; i++){
                 bytes[arrayIndex] = dataBytes[i];
-
                 arrayIndex++;
-
             }
-
         }
 
         return bytes;
@@ -141,12 +139,10 @@ public class JArray extends JData{
     //==================================================================================================================
 
     private int computeSize() {
+
         int size = 0;
-
         for(JData data : value){
-
             size += data.getSize();
-
         }
 
         return size;
@@ -204,9 +200,7 @@ public class JArray extends JData{
                 return new JString(byteData);
             default:
                 return null;
-
         }
-
     }
 
 } /*********************************************END OF FILE*************************************************************/
