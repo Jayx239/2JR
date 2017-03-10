@@ -2,29 +2,35 @@ package com.twojr.toolkit.test;
 import static com.twojr.toolkit.JDataSizes.*;
 import static org.junit.Assert.*;
 
+import com.twojr.toolkit.DataTypes;
 import com.twojr.toolkit.JDataSizes;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 import org.junit.Test;
+
+import javax.xml.crypto.Data;
+
 /**
  * Created by Joseph Haggerty on 1/20/2017.
  */
 public class JUnsignedIntegerTest {
+
     @Test
-    public void evaluateToByte1() {
-        int value = 1;
-        int size = 1;
-        int id = 1;
-        String name = "test_name";
+    public void evaluateByteInitializer() {
+        JUnsignedInteger jUnsigned = new JUnsignedInteger(JDataSizes.THIRTY_TWO_BIT,938273);
 
-        JUnsignedInteger sIntTest = new JUnsignedInteger(EIGHT_BIT,value);
+        JUnsignedInteger jUnsignedByte = new JUnsignedInteger(jUnsigned.toByte());
+        assertEquals(jUnsigned.getSize(),jUnsignedByte.getSize());
+        assertEquals(jUnsigned.getValue(),jUnsignedByte.getValue());
 
-        assertEquals(size,sIntTest.toByte().length);
-        assertEquals(0x01, sIntTest.toByte()[0]);
+        assertEquals(jUnsigned.toByte()[0],jUnsignedByte.toByte()[0]);
+        assertEquals(jUnsigned.toByte()[1],jUnsignedByte.toByte()[1]);
+        assertEquals(jUnsigned.toByte()[2],jUnsignedByte.toByte()[2]);
+        assertEquals(jUnsigned.toByte()[3],jUnsignedByte.toByte()[3]);
     }
 
     @Test
-    public void evaluateToByte0() {
-        int value = 0;
+    public void evaluateToByte8bit() {
+        int value = 233;
         int size = 1;
         int id = 1;
         String name = "test_name";
@@ -32,7 +38,23 @@ public class JUnsignedIntegerTest {
         JUnsignedInteger sIntTest = new JUnsignedInteger(EIGHT_BIT,value);
 
         assertEquals(size,sIntTest.toByte().length);
-        assertEquals((byte) 0x00, sIntTest.toByte()[0]);
+        assertEquals((byte) value, sIntTest.toByte()[0]);
+    }
+
+    @Test
+    public void evaluateToByte32bit() {
+        int value = 637261237;
+        int size = THIRTY_TWO_BIT.ordinal();
+        int id = 1;
+        String name = "test_name";
+
+        JUnsignedInteger sIntTest = new JUnsignedInteger(THIRTY_TWO_BIT,value);
+
+        assertEquals(size,sIntTest.toByte().length);
+        assertEquals((byte) 0x25, sIntTest.toByte()[3]);
+        assertEquals((byte) 0xFB, sIntTest.toByte()[2]);
+        assertEquals((byte) 0xD5, sIntTest.toByte()[1]);
+        assertEquals((byte) 0xB5, sIntTest.toByte()[0]);
     }
 
     @Test
@@ -62,7 +84,7 @@ public class JUnsignedIntegerTest {
     public void evalueateGetId() {
         int value = 0;
         int size = 1;
-        int id = 1;
+        int id = DataTypes.UNSIGNED_EIGHT_BIT_INT;
         String name = "test_name";
 
         JUnsignedInteger sIntTest = new JUnsignedInteger(EIGHT_BIT,value);
@@ -74,7 +96,7 @@ public class JUnsignedIntegerTest {
         int value = 0;
         int size = 1;
         int id = 1;
-        String name = "test_name";
+        String name = "Unsigned Integer";
 
         JUnsignedInteger sIntTest = new JUnsignedInteger(EIGHT_BIT,value);
         assertEquals(name, sIntTest.getName());
@@ -128,7 +150,7 @@ public class JUnsignedIntegerTest {
     public void evaluateSetId() {
         JUnsignedInteger sIntTest = new JUnsignedInteger();
 
-        assertEquals(0, sIntTest.getId());
+        assertEquals(DataTypes.UNSIGNED_EIGHT_BIT_INT, sIntTest.getId());
         sIntTest.setId(12);
         assertEquals(12, sIntTest.getId());
     }
@@ -137,16 +159,16 @@ public class JUnsignedIntegerTest {
     public void evaluateSetSize() {
         JUnsignedInteger sIntTest = new JUnsignedInteger();
 
-        assertEquals(0, sIntTest.getSize());
-        sIntTest.setSize(1);
         assertEquals(1, sIntTest.getSize());
+        sIntTest.setSize(4);
+        assertEquals(4, sIntTest.getSize());
     }
 
     @Test
     public void evaluateSetName() {
         JUnsignedInteger sIntTest = new JUnsignedInteger();
 
-        assertEquals(null, sIntTest.getName());
+        assertEquals("Unsigned Integer", sIntTest.getName());
         sIntTest.setName("test_name");
         assertEquals("test_name", sIntTest.getName());
     }

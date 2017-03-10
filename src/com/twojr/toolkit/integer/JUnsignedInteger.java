@@ -28,52 +28,13 @@ public class JUnsignedInteger extends JInteger{
 
     public JUnsignedInteger(JDataSizes size, int value) {
 
-        super(UNSIGNED_EIGHT_BIT_INT, UNSIGNED_INTEGER, EIGHT_BIT, value);
+        super(UNSIGNED_EIGHT_BIT_INT, UNSIGNED_INTEGER, size, value);
 
-        int id;
+        setId(computeId(size));
+    }
 
-        switch (size){
-
-            case EIGHT_BIT:
-                id = SIGNED_EIGHT_BIT_INT;
-                break;
-
-            case SIXTEEN_BIT:
-                id = SIGNED_SIXTEEN_BIT_INT;
-                break;
-
-            case TWENTY_FOUR_BIT:
-                id = SIGNED_TWENTY_FOUR_BIT_INT;
-                break;
-
-            case THIRTY_TWO_BIT:
-                id = SIGNED_THIRTY_TWO_BIT_INT;
-                break;
-
-            case FORTY_BIT:
-                id = SIGNED_FORTY_BIT_INT;
-                break;
-
-            case FORTY_EIGHT_BIT:
-                id = SIGNED_FORTY_EIGHT_BIT_INT;
-                break;
-
-            case FIFTY_SIX_BIT:
-                id = SIGNED_FIFTY_SIX_BIT_INT;
-                break;
-
-            case SIXTY_FOUR_BIT:
-                id = SIGNED_SIXTY_FOUR_BIT_INT;
-                break;
-
-            default:
-                id = SIGNED_EIGHT_BIT_INT;
-                setSize(1);
-                break;
-
-        }
-
-        setId(id);
+    public JUnsignedInteger(byte[] value) {
+        setValue(value);
     }
 
     //==================================================================================================================
@@ -84,6 +45,22 @@ public class JUnsignedInteger extends JInteger{
         return super.getValue() < 0 ? 0 : super.getValue();
     }
 
+    @Override
+    public void setValue(int value) {
+        super.setValue(value);
+        setName(UNSIGNED_INTEGER);
+        setId(computeId(getSize()));
+
+    }
+
+    public void setValue(byte[] byteInt) {
+        int value = 0;
+        for(int i=0; i<byteInt.length; i++) {
+            value+= byteInt[i] << (i*8);
+        }
+        setSize(byteInt.length);
+        setValue(value);
+    }
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
@@ -92,7 +69,8 @@ public class JUnsignedInteger extends JInteger{
     @Override
     public byte[] toByte() {
         byte[] byteArray = new byte[getSize()];
-        byteArray[0] = (byte) getValue();
+        for(int i=0; i<getSize(); i++)
+            byteArray[i] = (byte) ((this.getValue()>>(i*8))&0xff);
         return byteArray;
     }
 
@@ -118,4 +96,99 @@ public class JUnsignedInteger extends JInteger{
     // Private Functions(s)
     //==================================================================================================================
 
+    private int computeId(JDataSizes size) {
+
+        int id;
+
+        switch (size) {
+
+            case EIGHT_BIT:
+                id = UNSIGNED_EIGHT_BIT_INT;
+                break;
+
+            case SIXTEEN_BIT:
+                id = UNSIGNED_SIXTEEN_BIT_INT;
+                break;
+
+            case TWENTY_FOUR_BIT:
+                id = UNSIGNED_TWENTY_FOUR_BIT_INT;
+                break;
+
+            case THIRTY_TWO_BIT:
+                id = UNSIGNED_THIRTY_TWO_BIT_INT;
+                break;
+
+            case FORTY_BIT:
+                id = UNSIGNED_FORTY_BIT_INT;
+                break;
+
+            case FORTY_EIGHT_BIT:
+                id = UNSIGNED_FORTY_EIGHT_BIT_INT;
+                break;
+
+            case FIFTY_SIX_BIT:
+                id = UNSIGNED_FIFTY_SIX_BIT_INT;
+                break;
+
+            case SIXTY_FOUR_BIT:
+                id = UNSIGNED_SIXTY_FOUR_BIT_INT;
+                break;
+
+            default:
+                id = UNSIGNED_EIGHT_BIT_INT;
+                setSize(1);
+                break;
+
+        }
+
+        return id;
+    }
+
+    private int computeId(int size) {
+
+        int id;
+
+        switch (size){
+
+            case 1:
+                id = UNSIGNED_EIGHT_BIT_INT;
+                break;
+
+            case 2:
+                id = UNSIGNED_SIXTEEN_BIT_INT;
+                break;
+
+            case 3:
+                id = UNSIGNED_TWENTY_FOUR_BIT_INT;
+                break;
+
+            case 4:
+                id = UNSIGNED_THIRTY_TWO_BIT_INT;
+                break;
+
+            case 5:
+                id = UNSIGNED_FORTY_BIT_INT;
+                break;
+
+            case 6:
+                id = UNSIGNED_FORTY_EIGHT_BIT_INT;
+                break;
+
+            case 7:
+                id = UNSIGNED_FIFTY_SIX_BIT_INT;
+                break;
+
+            case 8:
+                id = UNSIGNED_SIXTY_FOUR_BIT_INT;
+                break;
+
+            default:
+                id = UNSIGNED_EIGHT_BIT_INT;
+                setSize(1);
+                break;
+
+        }
+
+        return id;
+    }
 } /*********************************************END OF FILE*************************************************************/

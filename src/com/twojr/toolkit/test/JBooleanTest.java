@@ -1,4 +1,7 @@
 package com.twojr.toolkit.test;
+import static com.twojr.toolkit.DataTypes.BOOLEAN;
+import static com.twojr.toolkit.JDataSizes.EIGHT_BIT;
+import static com.twojr.toolkit.JDataSizes.NULL;
 import static org.junit.Assert.*;
 
 import com.twojr.toolkit.JBoolean;
@@ -9,6 +12,18 @@ import org.junit.Test;
  * Created by Jason on 1/17/2017.
  */
 public class JBooleanTest {
+
+    @Test
+    public void evaluateByteInitializer() {
+        byte[] byteBit = {0x01};
+        JBoolean bitByte = new JBoolean(byteBit);
+
+        assertEquals(0x01,bitByte.toByte()[0]);
+
+        bitByte.setValue(false);
+        assertEquals(0x00, bitByte.toByte()[0]);
+    }
+
     @Test
     public void evaluateToByte1() {
         boolean value = true;
@@ -19,7 +34,7 @@ public class JBooleanTest {
         JBoolean boolean1 = new JBoolean(value);
 
         assertEquals(size,boolean1.toByte().length);
-        assertEquals(0x01, boolean1.toByte()[0]);
+        assertEquals((byte) 0x01, boolean1.toByte()[0]);
     }
 
     @Test
@@ -71,7 +86,7 @@ public class JBooleanTest {
 
 
         JBoolean jBoolean = new JBoolean(value);
-        assertEquals(id, jBoolean.getId());
+        assertEquals(BOOLEAN, jBoolean.getId());
     }
 
     @Test
@@ -85,7 +100,7 @@ public class JBooleanTest {
 
         JBoolean jBoolean = new JBoolean(value);
 
-        assertEquals(name, jBoolean.getName());
+        assertEquals("Boolean", jBoolean.getName());
     }
 
     @Test
@@ -133,7 +148,7 @@ public class JBooleanTest {
         JBoolean jBoolean = new JBoolean();
 
 
-        assertEquals(0, jBoolean.getId());
+        assertEquals(BOOLEAN, jBoolean.getId());
         jBoolean.setId(12);
         assertEquals(12, jBoolean.getId());
 
@@ -143,9 +158,9 @@ public class JBooleanTest {
     public void evaluateSetSize() {
         JBoolean jBoolean = new JBoolean();
 
-        assertEquals(0, jBoolean.getSize());
-        jBoolean.setSize(1);
-        assertEquals(1, jBoolean.getSize());
+        assertEquals(EIGHT_BIT.ordinal(), jBoolean.getSize());
+        jBoolean.setSize(NULL.ordinal());
+        assertEquals(NULL.ordinal(), jBoolean.getSize());
 
     }
 
@@ -153,7 +168,7 @@ public class JBooleanTest {
     public void evaluateSetName() {
         JBoolean jBoolean = new JBoolean();
 
-        assertEquals(null, jBoolean.getName());
+        assertEquals("Boolean", jBoolean.getName());
         jBoolean.setName("name");
         assertEquals("name", jBoolean.getName());
     }
