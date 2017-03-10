@@ -1,8 +1,10 @@
 package com.twojr.protocol;
 
+import com.twojr.protocol.aps.commands.CheckInCommand;
 import com.twojr.toolkit.JData;
 import com.twojr.toolkit.JIdentity;
 import com.twojr.toolkit.JInteger;
+import com.twojr.toolkit.integer.JUnsignedInteger;
 
 /**
  * Created by rcunni002c on 11/17/2016.
@@ -23,10 +25,26 @@ public abstract class Command extends JData{
         this.jId = jId;
     }
 
+    public Command(byte id){
+
+        JUnsignedInteger uint = new JUnsignedInteger(new byte[]{id});
+
+        this.jId = uint;
+
+    }
+
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
     //==================================================================================================================
+
+    public JInteger getjId() {
+        return jId;
+    }
+
+    public void setjId(JInteger jId) {
+        this.jId = jId;
+    }
 
 
     //==================================================================================================================
@@ -54,8 +72,11 @@ public abstract class Command extends JData{
         return new byte[0];
     }
 
-
     public abstract void execute();
+
+    public static Command createCommand(byte id){
+        return new CheckInCommand();
+    }
 
     //==================================================================================================================
     // Private Functions(s)

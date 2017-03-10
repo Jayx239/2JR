@@ -3,6 +3,7 @@ package com.twojr.protocol.aps;
 import com.twojr.protocol.Command;
 import com.twojr.protocol.Packet;
 import com.twojr.toolkit.JInteger;
+import com.twojr.toolkit.integer.JUnsignedInteger;
 
 
 /**
@@ -13,6 +14,7 @@ public class ApsPacket extends Packet {
     private Command commandFrame;
     private EndPoint endPoint;
     private AttributeControl attrCtrl;
+    private LengthControl lengthControl;
 
 
 
@@ -23,11 +25,50 @@ public class ApsPacket extends Packet {
     public ApsPacket() {
     }
 
+    public ApsPacket(JInteger sequenceNumber, byte[] payload, Command commandFrame, EndPoint endPoint, AttributeControl attrCtrl, LengthControl lengthControl) {
+        super(sequenceNumber, payload);
+        this.commandFrame = commandFrame;
+        this.endPoint = endPoint;
+        this.attrCtrl = attrCtrl;
+        this.lengthControl = lengthControl;
+    }
+
     public ApsPacket(JInteger sequenceNumber, byte[] payload, Command commandFrame, EndPoint endPoint, AttributeControl attrCtrl) {
         super(sequenceNumber, payload);
         this.commandFrame = commandFrame;
         this.endPoint = endPoint;
         this.attrCtrl = attrCtrl;
+    }
+
+    public ApsPacket(byte[] data){
+
+        int payloadSize;
+
+        JUnsignedInteger sequenceNumber = new JUnsignedInteger(new byte[]{data[0]});
+        this.commandFrame = Command.createCommand(data[1]);
+        this.endPoint = new EndPoint(data[2]);
+        this.attrCtrl = new AttributeControl(new byte[]{data[3]});
+
+        if(attrCtrl.isLengthControl()){
+
+            this.lengthControl = new LengthControl(new byte[]{data[4]});
+            payloadSize = 4 - data.length;
+
+
+        }else {
+
+            payloadSize = 3 - data.length;
+
+        }
+
+        byte[] payload = new byte[4 - data.length];
+
+        for(int i  = 0; i < payloadSize + 1; i++){
+
+            payload[i] = data[i+ data.length - payloadSize];
+
+        }
+
     }
 
     //==================================================================================================================
