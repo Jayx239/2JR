@@ -81,18 +81,17 @@ public class SpringDemo {
         int dataType;
         boolean suppressTestAttrPrompt = false;
 
-        try {
-            if (dataTypeIn >= 0 && dataTypeIn < 10) {
-                dataType = dataTypeIn;
-                suppressTestAttrPrompt = true;
-            }
-            else {
-                printDataTypes();
-                System.out.println("Enter the data type you would like to build: ");
-                dataType = Integer.parseInt(reader.nextLine());
-            }
-
             while (invalidDatatype) {
+                try {
+                    if (dataTypeIn >= 0 && dataTypeIn < 10) {
+                        dataType = dataTypeIn;
+                        suppressTestAttrPrompt = true;
+                    }
+                    else {
+                        printDataTypes();
+                        System.out.println("Enter the data type you would like to build: ");
+                        dataType = Integer.parseInt(reader.nextLine());
+                    }
                 switch (dataType) {
                     case 0:
                         // Address
@@ -373,13 +372,11 @@ public class SpringDemo {
                         printDataTypes();
                         break;
                 }
+                } catch (NumberFormatException ex) {
+                    System.out.println("Invalid input\n Error message: " + ex.getMessage());
+                }
             }
-        }catch (NumberFormatException ex) {
-            System.out.println("Invalid input\n Error message: " + ex.getMessage());
-        }
-        finally {
             return null;
-        }
     }
 
     public void printJDataMethods() {
@@ -405,9 +402,8 @@ public class SpringDemo {
         boolean quit;
         System.out.println("Object attribute tester\nEnter -cmd for options");
         //printJDataMethods();
-        try {
-
-            while (!invalidDatatype){
+        while (!invalidDatatype){
+            try {
                 switch (objId) {
                     case 0:
                         // Address
@@ -914,9 +910,9 @@ public class SpringDemo {
                     default:
                         break;
                 }
+            }catch (NumberFormatException ex) {
+                System.out.println("Invalid input\n Error message: " + ex.getMessage());
             }
-        }catch (NumberFormatException ex) {
-            System.out.println("Invalid input\n Error message: " + ex.getMessage());
         }
     }
 
