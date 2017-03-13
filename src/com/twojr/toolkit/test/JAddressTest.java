@@ -2,6 +2,7 @@ package com.twojr.toolkit.test;
 
 import com.twojr.toolkit.DataTypes;
 import com.twojr.toolkit.JAddress;
+import com.twojr.toolkit.JArray;
 import com.twojr.toolkit.JString;
 import org.junit.Test;
 
@@ -24,6 +25,18 @@ public class JAddressTest {
 
         assertEquals(jAddress.toByte(),address);
 
+    }
+
+    @Test
+    public void evaluateLongInitializer() {
+        JAddress jAddress = new JAddress(192832);
+        long val = 192832;
+        byte[] asByteArr = new byte[8];
+        int offset = 0;
+        for(byte b : asByteArr) {
+            b = (byte)((val>>>(offset*8))&0xFF);
+            assertEquals(b, jAddress.toByte()[offset++]);
+        }
     }
 
     @Test

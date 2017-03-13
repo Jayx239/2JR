@@ -21,9 +21,9 @@ public class JDataTest {
     {
         int size = 1;
 
-        JData data = new JString(EIGHT_BIT,"");
+        JData data = new JString(EIGHT_BIT,"A");
 
-        assertEquals(data.getSize(),size);
+        assertEquals(size,data.getSize());
 
     }
 
@@ -37,7 +37,7 @@ public class JDataTest {
         JData data = new JString(EIGHT_BIT,"");
 
         data.setSize(size2);
-        assertEquals(data.getSize(),size2);
+        assertEquals(size2,data.getSize());
 
     }
 
