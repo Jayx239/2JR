@@ -87,7 +87,6 @@ public class JUnsignedInteger extends JInteger{
     @Override
     public String print() {
         String val = Integer.toString(getValue());
-        System.out.println(val);
         return val;
     }
 
