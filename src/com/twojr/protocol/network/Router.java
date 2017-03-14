@@ -1,9 +1,6 @@
 package com.twojr.protocol.network;
 
-import com.twojr.toolkit.JData;
-import com.twojr.toolkit.JDataSizes;
-import com.twojr.toolkit.JDouble;
-import com.twojr.toolkit.JString;
+import com.twojr.toolkit.*;
 import com.twojr.toolkit.integer.JSignedInteger;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 
@@ -107,7 +104,7 @@ public class Router extends TwoJRDevice {
     public void discover() {
         JUnsignedInteger sequenceNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT, 1);
         JUnsignedInteger networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT, IPacket.networkControlFlags.ROUTER.ordinal());
-        JDouble macAddress = new JDouble(100202);
+        JAddress macAddress = new JAddress(100202);
         JUnsignedInteger commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT, IPacket.networkLayerCommands.REJOIN.ordinal());
 
 

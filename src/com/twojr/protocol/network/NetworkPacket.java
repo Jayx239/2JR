@@ -22,7 +22,7 @@ public class NetworkPacket implements IPacket{
 
     }
 
-    public NetworkPacket(JUnsignedInteger sequenceNumber, JUnsignedInteger networkControl, JDouble macAddress, JUnsignedInteger commandFrame, byte[] payload) {
+    public NetworkPacket(JUnsignedInteger sequenceNumber, JUnsignedInteger networkControl, JAddress macAddress, JUnsignedInteger commandFrame, byte[] payload) {
         this.sequenceNumber = sequenceNumber;
         this.networkControl = networkControl;
         this.macAddress = macAddress;
@@ -30,7 +30,7 @@ public class NetworkPacket implements IPacket{
         this.payload = payload;
     }
 
-    public NetworkPacket(JUnsignedInteger sequenceNumber, JUnsignedInteger networkControl, JDouble macAddress, JUnsignedInteger commandFrame) {
+    public NetworkPacket(JUnsignedInteger sequenceNumber, JUnsignedInteger networkControl, JAddress macAddress, JUnsignedInteger commandFrame) {
         this.sequenceNumber = sequenceNumber;
         this.networkControl = networkControl;
         this.macAddress = macAddress;
@@ -46,7 +46,7 @@ public class NetworkPacket implements IPacket{
         this.networkControl = new JUnsignedInteger(singleTemp);
 
         byte[] mByteAddr = new byte[]{encodedPacket[2],encodedPacket[3],encodedPacket[4],encodedPacket[5],encodedPacket[6],encodedPacket[7],encodedPacket[8],encodedPacket[9]};
-        this.macAddress = new JDouble(mByteAddr);
+        this.macAddress = new JAddress(mByteAddr);
 
         singleTemp[0] = encodedPacket[networkPacketByteOffset[networkPacketMasks.COMMAND_FRAME.ordinal()]];
         this.commandFrame = (new JUnsignedInteger(singleTemp));
@@ -65,10 +65,10 @@ public class NetworkPacket implements IPacket{
 
     private JUnsignedInteger sequenceNumber;
     private JUnsignedInteger networkControl;
-    private JDouble macAddress;
+    private JAddress macAddress;
 
     private JUnsignedInteger commandFrame;
-    byte[] payload;
+    private byte[] payload;
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
@@ -90,11 +90,11 @@ public class NetworkPacket implements IPacket{
         this.networkControl = networkControl;
     }
 
-    public JDouble getMacAddress() {
+    public JAddress getMacAddress() {
         return macAddress;
     }
 
-    public void setMacAddress(JDouble macAddress) {
+    public void setMacAddress(JAddress macAddress) {
         this.macAddress = macAddress;
     }
 

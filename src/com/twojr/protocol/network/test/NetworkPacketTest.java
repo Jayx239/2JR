@@ -2,10 +2,7 @@ package com.twojr.protocol.network.test;
 
 import com.twojr.protocol.network.IPacket;
 import com.twojr.protocol.network.NetworkPacket;
-import com.twojr.toolkit.JDataSizes;
-import com.twojr.toolkit.JDouble;
-import com.twojr.toolkit.JInteger;
-import com.twojr.toolkit.JString;
+import com.twojr.toolkit.*;
 import com.twojr.toolkit.integer.JSignedInteger;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 import org.junit.Assert;
@@ -48,7 +45,15 @@ public class NetworkPacketTest {
         // Check data objects
         assertEquals(0x32, testPacket.getSequenceNumber().getValue());
         assertEquals((byte)IPacket.networkControlFlags.ENCRYPTED.ordinal(), testPacket.getNetworkControl().getValue());
-        assertEquals(256093.212,testPacket.getMacAddress().getValue(),1);
+        assertEquals(0x41,testPacket.getMacAddress().toByte()[0]);
+        assertEquals(0x0F,testPacket.getMacAddress().toByte()[1]);
+        assertEquals(0x42,testPacket.getMacAddress().toByte()[2]);
+        assertEquals((byte)0xE9,testPacket.getMacAddress().toByte()[3]);
+        assertEquals((byte)0xB2,testPacket.getMacAddress().toByte()[4]);
+        assertEquals((byte)0x2D,testPacket.getMacAddress().toByte()[5]);
+        assertEquals((byte)0x0E,testPacket.getMacAddress().toByte()[6]);
+        assertEquals((byte)0x56,testPacket.getMacAddress().toByte()[7]);
+
         assertEquals(IPacket.networkLayerCommands.ROUTE_RESPONSE.ordinal(),testPacket.getCommandFrame().getValue());
         assertEquals((byte) 0x39,testPacket.getPayload()[0]);
         assertEquals(0x42,testPacket.getPayload()[1]);
@@ -60,7 +65,7 @@ public class NetworkPacketTest {
     public void evaluateToByte() {
         JUnsignedInteger seqNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT,0);
         JUnsignedInteger networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT, IPacket.networkControlFlags.ENCRYPTED.ordinal());
-        JDouble macAddress = new JDouble(100938);
+        JAddress macAddress = new JAddress(100938);
         JUnsignedInteger commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT,IPacket.networkLayerCommands.REJOIN.ordinal());
         byte payload[] = new byte[2];
         payload[0] = (byte) 0xFF;
@@ -71,10 +76,10 @@ public class NetworkPacketTest {
         // 0x00 0x00 0x47c52500 0x00 0xFFCA
         assertEquals((byte) 0x00,netPack.toByte()[0]);
         assertEquals((byte) 0x00,netPack.toByte()[1]);
-        assertEquals((byte) 0x40,netPack.toByte()[2]);
-        assertEquals((byte) 0xF8,netPack.toByte()[3]);
-        assertEquals((byte) 0xA4,netPack.toByte()[4]);
-        assertEquals((byte) 0xA0,netPack.toByte()[5]);
+        assertEquals((byte) 0x4A,netPack.toByte()[2]);
+        assertEquals((byte) 0x8A,netPack.toByte()[3]);
+        assertEquals((byte) 0x01,netPack.toByte()[4]);
+        assertEquals((byte) 0x00,netPack.toByte()[5]);
         assertEquals((byte) 0x00, netPack.toByte()[6]);
         assertEquals((byte) 0x00, netPack.toByte()[7]);
         assertEquals((byte) 0x00, netPack.toByte()[8]);
@@ -88,7 +93,7 @@ public class NetworkPacketTest {
     public void evaluateSetSequenceNumber() {
         JUnsignedInteger seqNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT,5);
         JUnsignedInteger networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT, IPacket.networkControlFlags.ENCRYPTED.ordinal());
-        JDouble macAddress = new JDouble(100938);
+        JAddress macAddress = new JAddress(100938);
         JUnsignedInteger commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT,IPacket.networkLayerCommands.REJOIN.ordinal());
         byte payload[] = new byte[2];
         payload[0] = (byte) 0xFF;
@@ -104,7 +109,7 @@ public class NetworkPacketTest {
     public void evaluateSetNetworkControl() {
         JUnsignedInteger seqNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT,5);
         JUnsignedInteger networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT, IPacket.networkControlFlags.ENCRYPTED.ordinal());
-        JDouble macAddress = new JDouble(100938);
+        JAddress macAddress = new JAddress(100938);
         JUnsignedInteger commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT,IPacket.networkLayerCommands.REJOIN.ordinal());
         byte payload[] = new byte[2];
         payload[0] = (byte) 0xFF;
@@ -120,7 +125,7 @@ public class NetworkPacketTest {
     public void evaluateSetMacAddress() {
         JUnsignedInteger seqNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT,5);
         JUnsignedInteger networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT, IPacket.networkControlFlags.ENCRYPTED.ordinal());
-        JDouble macAddress = new JDouble(100938);
+        JAddress macAddress = new JAddress(100938);
         JUnsignedInteger commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT,IPacket.networkLayerCommands.REJOIN.ordinal());
         byte payload[] = new byte[2];
         payload[0] = (byte) 0xFF;
@@ -136,7 +141,7 @@ public class NetworkPacketTest {
     public void evaluateSetCommandFrame() {
         JUnsignedInteger seqNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT,5);
         JUnsignedInteger networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT, IPacket.networkControlFlags.ENCRYPTED.ordinal());
-        JDouble macAddress = new JDouble(100938);
+        JAddress macAddress = new JAddress(100938);
         JUnsignedInteger commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT,IPacket.networkLayerCommands.REJOIN.ordinal());
         byte payload[] = new byte[2];
         payload[0] = (byte) 0xFF;
@@ -152,7 +157,7 @@ public class NetworkPacketTest {
     public void evaluateSetPayload() {
         JUnsignedInteger seqNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT,5);
         JUnsignedInteger networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT, IPacket.networkControlFlags.ENCRYPTED.ordinal());
-        JDouble macAddress = new JDouble(100938);
+        JAddress macAddress = new JAddress(100938);
         JUnsignedInteger commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT,IPacket.networkLayerCommands.REJOIN.ordinal());
         byte payload[] = new byte[2];
         payload[0] = (byte) 0xFF;
