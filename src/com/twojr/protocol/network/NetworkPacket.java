@@ -114,6 +114,10 @@ public class NetworkPacket implements IPacket{
         this.payload = payload;
     }
 
+    //==================================================================================================================
+    // Public Functions(s)
+    //==================================================================================================================
+
     @Override
     public byte[] toByte() {
 
@@ -146,5 +150,45 @@ public class NetworkPacket implements IPacket{
     public int getSize() {
         int size = sequenceNumber.getSize() + networkControl.getSize() + macAddress.getSize() + getCommandFrame().getSize() + payload.length;
         return size;
+    }
+
+    @Override
+    public String print() {
+        return print(true);
+    }
+
+    public String print(boolean byteFormatted) {
+        String output = "";
+        output += "Sequence number: " + sequenceNumber.getValue() + "\n";
+        output += "Network control: " + networkControlFlags.values()[networkControl.getValue()] + "\n";
+        output += "Mac address: " + macAddress.print();
+        output += "Command frame: " + networkLayerCommands.values()[commandFrame.getValue()] + "\n";
+        output += "Payload: \n";
+        output += printPayload(byteFormatted);
+
+        return output;
+    }
+
+    public String printPayload(boolean byteFormatted) {
+        int bInd = 0;
+        String output = "";
+
+        if(byteFormatted) {
+            for(byte b : payload) {
+
+                output += "Payload [" + bInd + "]: " + (b>>7 & 0x01) +
+                        (b>>6 & 0x01) + (b>>5 & 0x01) + (b>>4 & 0x01) +
+                        (b>>3 & 0x01) + (b>>2 & 0x01) + (b>>1 & 0x01) +
+                        (b & 0x01) + "\n";
+                bInd++;
+            }
+        }
+        else {
+            for(int i=0; i < payload.length; i++) {
+                output +="Payload [" + i + "]: " + payload[i] + "\n";
+            }
+        }
+
+        return output;
     }
 }
