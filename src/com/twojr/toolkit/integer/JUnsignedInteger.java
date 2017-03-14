@@ -56,7 +56,7 @@ public class JUnsignedInteger extends JInteger{
     public void setValue(byte[] byteInt) {
         int value = 0;
         for(int i=0; i<byteInt.length; i++) {
-            value+= byteInt[i] << (i*8);
+            value+= (int)((byteInt[i]&0xFF) << (i*8));
         }
         setSize(byteInt.length);
         setValue(value);
@@ -87,7 +87,6 @@ public class JUnsignedInteger extends JInteger{
     @Override
     public String print() {
         String val = Integer.toString(getValue());
-        System.out.println(val);
         return val;
     }
 
