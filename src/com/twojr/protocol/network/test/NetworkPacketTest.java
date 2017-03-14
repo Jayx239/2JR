@@ -169,7 +169,25 @@ public class NetworkPacketTest {
         assertEquals(payload, netPack.getPayload());
     }
 
+    @Test
+    public void evaluatePrint() {
+        byte[] byteInput = {0x32,(byte)IPacket.networkControlFlags.ENCRYPTED.ordinal(),0x41, 0x0F, 0x42, (byte) 0xE9, (byte) 0xB2, 0x2D, 0x0E, 0x56, (byte) (IPacket.networkLayerCommands.ROUTE_RESPONSE.ordinal()&0xff), 0x39,0x42};
+        NetworkPacket testPacket = new NetworkPacket(byteInput);
+        assertEquals("Sequence number: 50\n" +
+                "Network control: ENCRYPTED\n" +
+                "Mac address: Address: 86:14:45:-78:-23:66:15:65:\n" +
+                "Command frame: ROUTE_RESPONSE\n" +
+                "Payload: \n" +
+                "Payload [0]: 57\n" +
+                "Payload [1]: 66\n",testPacket.print(false));
 
+        assertEquals("Sequence number: 50\n" +
+                "Network control: ENCRYPTED\n" +
+                "Mac address: Address: 86:14:45:-78:-23:66:15:65:\n" +
+                "Command frame: ROUTE_RESPONSE\n" +
+                "Payload: \n" +
+                "Payload [0]: 00111001\n" +
+                "Payload [1]: 01000010\n",testPacket.print());
 
-
+    }
 }

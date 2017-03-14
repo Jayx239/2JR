@@ -7,7 +7,7 @@ public interface IPacket {
 
     byte[] toByte();
     int getSize();
-
+    String print();
     //------------------------------------------------------------------------------------------------------------------
     // Enum used for indexing networkMasks and byteOffset arrays
 
