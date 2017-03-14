@@ -379,7 +379,7 @@ public class SpringDemo {
 
                         NetworkPacket netPacket = new NetworkPacket(seqNumber,networkControl,macAddress,commandFrame,payload.toByte());
                         System.out.println("Encoding network packet: ");
-                        System.out.print(netPacket.toByte());
+                        printByteB(netPacket.toByte());
 
                         System.out.println("Decoding: ");
                         System.out.print(new NetworkPacket(netPacket.toByte()));
@@ -961,9 +961,12 @@ public class SpringDemo {
                 case "-dt":
                     // Print data types
                     demo.printDataTypes();
+                    break;
                 case "build":
                     // Run object build process
                     demo.build();
+                    break;
+
             }
         }
     }
