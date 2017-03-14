@@ -76,12 +76,24 @@ public class JUnsignedInteger extends JInteger{
 
     @Override
     public byte[] compress() {
-        return new byte[0];
+        byte[] byteVal = toByte();
+        int len = byteVal.length;
+        for(int i=byteVal.length-1; i>=0; i--) {
+            if(byteVal[i] != (byte) 0x00)
+                break;
+            len--;
+        }
+
+        byte[] output = new byte[len];
+        for(int i=0; i<len; i++) {
+            output[i] = byteVal[i];
+        }
+        return output;
     }
 
     @Override
     public int getSavings() {
-        return 0;
+        return toByte().length-compress().length;
     }
 
     @Override
