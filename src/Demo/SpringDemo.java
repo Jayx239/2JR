@@ -1,4 +1,5 @@
 package Demo;
+import com.twojr.protocol.network.NetworkPacket;
 import com.twojr.toolkit.*;
 import com.twojr.toolkit.integer.JSignedInteger;
 import com.twojr.toolkit.integer.JUnsignedInteger;
@@ -360,6 +361,28 @@ public class SpringDemo {
                     case 9:
                         // Network Packet
                         System.out.println("Network Packet Builder");
+
+                        System.out.print("Enter sequence number: ");
+                        JUnsignedInteger seqNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT,Integer.parseInt(reader.nextLine()));
+
+                        System.out.print("Select network control: ");
+                        JUnsignedInteger networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT,Integer.parseInt(reader.nextLine()));
+
+                        System.out.print("Enter mac address: ");
+                        JAddress macAddress = new JAddress(Long.parseLong(reader.nextLine()));
+
+                        System.out.print("Enter command frame: ");
+                        JUnsignedInteger commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT,Integer.parseInt(reader.nextLine()));
+
+                        System.out.print("Enter payload: ");
+                        JBitmap payload = (JBitmap) build(3);
+
+                        NetworkPacket netPacket = new NetworkPacket(seqNumber,networkControl,macAddress,commandFrame,payload.toByte());
+                        System.out.println("Encoding network packet: ");
+                        System.out.print(netPacket.toByte());
+
+                        System.out.println("Decoding: ");
+                        System.out.print(new NetworkPacket(netPacket.toByte()));
                         invalidDatatype = false;
                         break;
                     default:
