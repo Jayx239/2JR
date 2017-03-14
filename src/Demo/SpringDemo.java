@@ -1,4 +1,5 @@
 package Demo;
+import com.twojr.protocol.network.IPacket;
 import com.twojr.protocol.network.NetworkPacket;
 import com.twojr.toolkit.*;
 import com.twojr.toolkit.integer.JSignedInteger;
@@ -73,6 +74,19 @@ public class SpringDemo {
         System.out.println();
     }
 
+    public void printNetworkControlTypes() {
+        System.out.println("Network Control Types");
+        for(int i=0; i< IPacket.networkControlFlags.values().length; i++) {
+            System.out.println( i + ": " + IPacket.networkControlFlags.values()[i]);
+        }
+    }
+    public void printNetworkCommandFrameTypes() {
+        System.out.println("Network Command Frame Types");
+        for(int i=0; i< IPacket.networkControlFlags.values().length; i++) {
+            System.out.println( i + ": " + IPacket.networkLayerCommands.values()[i]);
+        }
+    }
+
     public JData build() {
         return build(-1);
     }
@@ -82,17 +96,17 @@ public class SpringDemo {
         int dataType;
         boolean suppressTestAttrPrompt = false;
 
-            while (invalidDatatype) {
-                try {
-                    if (dataTypeIn >= 0 && dataTypeIn < 10) {
-                        dataType = dataTypeIn;
-                        suppressTestAttrPrompt = true;
-                    }
-                    else {
-                        printDataTypes();
-                        System.out.println("Enter the data type you would like to build: ");
-                        dataType = Integer.parseInt(reader.nextLine());
-                    }
+        while (invalidDatatype) {
+            try {
+                if (dataTypeIn >= 0 && dataTypeIn < 10) {
+                    dataType = dataTypeIn;
+                    suppressTestAttrPrompt = true;
+                }
+                else {
+                    printDataTypes();
+                    System.out.println("Enter the data type you would like to build: ");
+                    dataType = Integer.parseInt(reader.nextLine());
+                }
                 switch (dataType) {
                     case 0:
                         // Address
@@ -220,7 +234,7 @@ public class SpringDemo {
 
                         // Initialize bitmap with user input
                         for (int i = numBytes - 1; i >= 0; i--) {
-                            System.out.print("Enter a bitmap in binary to encode: ");
+                            System.out.print("Enter the value of the next byte in the bitmap: ");
                             jBitmap.setValue(Integer.parseInt(reader.nextLine()), i);
                         }
 
@@ -299,7 +313,7 @@ public class SpringDemo {
 
                         if (sign == 1) {
                             // Initialize Unsigned
-                            JUnsignedInteger jInt = new JUnsignedInteger(JDataSizes.THIRTY_TWO_BIT, intVal);
+                            JUnsignedInteger jInt = new JUnsignedInteger(new JUnsignedInteger(JDataSizes.THIRTY_TWO_BIT, intVal).compress());
 
                             // Encode
                             System.out.println("Encoding: ");
@@ -316,7 +330,7 @@ public class SpringDemo {
                             return jInt;
                         } else if (sign == 0) {
                             // Initialize Signed
-                            JSignedInteger jInt = new JSignedInteger(JDataSizes.THIRTY_TWO_BIT, intVal);
+                            JSignedInteger jInt = new JSignedInteger(new JSignedInteger(JDataSizes.THIRTY_TWO_BIT, intVal).compress());
 
                             // Encode
                             System.out.println("Encoding: ");
@@ -365,12 +379,14 @@ public class SpringDemo {
                         System.out.print("Enter sequence number: ");
                         JUnsignedInteger seqNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT,Integer.parseInt(reader.nextLine()));
 
+                        printNetworkControlTypes();
                         System.out.print("Select network control: ");
                         JUnsignedInteger networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT,Integer.parseInt(reader.nextLine()));
 
                         System.out.print("Enter mac address: ");
                         JAddress macAddress = new JAddress(Long.parseLong(reader.nextLine()));
 
+                        printNetworkCommandFrameTypes();
                         System.out.print("Enter command frame: ");
                         JUnsignedInteger commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT,Integer.parseInt(reader.nextLine()));
 
@@ -382,9 +398,12 @@ public class SpringDemo {
                         printByteB(netPacket.toByte());
 
                         System.out.println("Decoding: ");
-                        System.out.print(new NetworkPacket(netPacket.toByte()));
+                        System.out.print(new NetworkPacket(netPacket.toByte()).print());
                         invalidDatatype = false;
+
+                        testNetworkPacketAttributes(netPacket);
                         break;
+
                     default:
 
                         if (dataType == -1) {
@@ -395,14 +414,15 @@ public class SpringDemo {
                         printDataTypes();
                         break;
                 }
-                } catch (NumberFormatException ex) {
-                    System.out.println("Invalid input\n Error message: " + ex.getMessage());
-                }
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid input\n Error message: " + ex.getMessage());
             }
-            return null;
+        }
+        return null;
     }
 
     public void printJDataMethods() {
+        System.out.println("JData Methods");
         System.out.println("-cmd: print commands");
         System.out.println("0: getSize()");
         System.out.println("1: setSize()");
@@ -412,6 +432,111 @@ public class SpringDemo {
         System.out.println("5: toByte()");
         System.out.println("-1: cancel");
 
+    }
+
+    public void printNetworkPacketMethods() {
+        System.out.println("Network Packet Methods");
+        System.out.println("-cmd: print commands");
+        System.out.println("0: getSequenceNumber()");
+        System.out.println("1: setSequenceNumber()");
+        System.out.println("2: getNetworkControl()");
+        System.out.println("3: setNetworkControl()");
+        System.out.println("4: getMacAddress()");
+        System.out.println("5: setMacAddress()");
+        System.out.println("6: getCommandFrame()");
+        System.out.println("7: setCommandFrame()");
+        System.out.println("8: getPayload()");
+        System.out.println("9: setPayload()");
+        System.out.println("10: toByte()");
+        System.out.println("11: print()");
+        System.out.println("12: printPayload()");
+        System.out.println("-1: Exit Network Packet Attribute Utility");
+
+    }
+
+    public void testNetworkPacketAttributes(NetworkPacket networkPacket) {
+        boolean invalidDatatype = false;
+        int command;
+        String commandStr = "";
+        boolean quit;
+        System.out.println("Network Packet Attribute Utility\nEnter -cmd for options");
+
+        while (!invalidDatatype){
+            try {
+                System.out.println("Network Packet Method: ");
+                commandStr = reader.nextLine();
+
+                if(commandStr.equals("-cmd")) {
+                    printNetworkPacketMethods();
+                    continue;
+                }
+
+                command = Integer.parseInt(commandStr);
+                switch (command) {
+                    case 0:
+                        // Get sequence number
+                        testAttributes(networkPacket.getSequenceNumber(),7,1);
+                        break;
+                    case 1:
+                        // Set sequence number
+                        networkPacket.setSequenceNumber((JUnsignedInteger) build(7));
+                        break;
+                    case 2:
+                        // Get network control
+                        testAttributes(networkPacket.getNetworkControl(),7,1);
+                        break;
+                    case 3:
+                        // Set network control
+                        networkPacket.setNetworkControl((JUnsignedInteger) build(7));
+                        break;
+                    case 4:
+                        // Get mac address
+                        testAttributes(networkPacket.getMacAddress(),7,1);
+                        break;
+                    case 5:
+                        // Set mac address
+                        networkPacket.setMacAddress((JAddress) build(0));
+                        break;
+                    case 6:
+                        // Get command frame
+                        testAttributes(networkPacket.getCommandFrame(),7,1);
+                        break;
+                    case 7:
+                        // Set command frame
+                        networkPacket.setCommandFrame((JUnsignedInteger) build(7));
+                        break;
+                    case 8:
+                        // print payload
+                        printByteB(networkPacket.getPayload());
+                        break;
+                    case 9:
+                        // Set payload
+                        networkPacket.setPayload(build(4).toByte());
+                        break;
+                    case 10:
+                        // toByte method
+                        printByteB(networkPacket.toByte());
+                        break;
+                    case 11:
+                        // Print method
+                        System.out.print(networkPacket.print());
+                        break;
+                    case 12:
+                        // print payload
+                        System.out.print(networkPacket.printPayload(true));
+                        break;
+                    case -1:
+                        // Exit
+                        invalidDatatype = true;
+                        break;
+                    default:
+                        System.out.println("Unrecognized command");
+                        break;
+                }
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid input\n Error message: " + ex.getMessage());
+            }
+        }
     }
 
     public void testAttributes(JData jObj, int objId) {
@@ -424,7 +549,7 @@ public class SpringDemo {
         String commandStr = "";
         boolean quit;
         System.out.println("Object attribute tester\nEnter -cmd for options");
-        //printJDataMethods();
+
         while (!invalidDatatype){
             try {
                 switch (objId) {
