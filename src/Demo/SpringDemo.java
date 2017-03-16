@@ -302,6 +302,29 @@ public class SpringDemo {
 
                     case 6:
                         // Enumeration
+                        System.out.print("Enter the byte value of the enumerable: ");
+                        int enumVal = Integer.parseInt(reader.nextLine());
+
+                        // Convert user input to byte
+                        byte[] enumB = new byte[1];
+                        enumB[0] = (byte) enumVal;
+
+                        // Declare enum
+                        JEnumeration jEnum = new JEnumeration();
+                        jEnum.setValue(enumB);
+
+                        // Encode
+                        System.out.println("Encoding: ");
+                        printByteB(jEnum.toByte());
+
+                        // Decode
+                        System.out.println("Decoding: \n" + jEnum.print());
+
+                        // Test attributes
+                        if(!suppressTestAttrPrompt)
+                            testAttributes(jEnum,6);
+
+                        return jEnum;
                     case 7:
                         // Integer
                         System.out.println("Signed(0) or Unsigned (1): ");
@@ -430,6 +453,8 @@ public class SpringDemo {
         System.out.println("3: setValue()");
         System.out.println("4: print()");
         System.out.println("5: toByte()");
+        System.out.println("6: compress()");
+        System.out.println("7: getSavings()");
         System.out.println("-1: cancel");
 
     }
@@ -600,6 +625,12 @@ public class SpringDemo {
                                     // to Byte
                                     printByteB(jAddr.toByte());
                                     break;
+                                case 6:
+                                    printByteB(jAddr.compress());
+                                    break;
+                                case 7:
+                                    System.out.println(jAddr.getSavings());
+                                    break;
                                 case -1:
                                     // Quit
                                     quit = true;
@@ -658,6 +689,12 @@ public class SpringDemo {
                                 case 5:
                                     // to Byte
                                     printByteB(jArr.toByte());
+                                    break;
+                                case 6:
+                                    printByteB(jArr.compress());
+                                    break;
+                                case 7:
+                                    System.out.println(jArr.getSavings());
                                     break;
                                 case -1:
                                     // Quit
@@ -725,6 +762,11 @@ public class SpringDemo {
                                 case 5:
                                     // to Byte
                                     printByteB(jBit.toByte());
+                                case 6:
+                                    printByteB(jBit.compress());
+                                    break;
+                                case 7:
+                                    System.out.println(jBit.getSavings());
                                     break;
                                 case -1:
                                     // Quit
@@ -791,6 +833,12 @@ public class SpringDemo {
                                     // to Byte
                                     printByteB(jBitmap.toByte());
                                     break;
+                                case 6:
+                                    printByteB(jBitmap.compress());
+                                    break;
+                                case 7:
+                                    System.out.println(jBitmap.getSavings());
+                                    break;
                                 case -1:
                                     // Quit
                                     quit = true;
@@ -856,6 +904,12 @@ public class SpringDemo {
                                     // to Byte
                                     printByteB(jBool.toByte());
                                     break;
+                                case 6:
+                                    printByteB(jBool.compress());
+                                    break;
+                                case 7:
+                                    System.out.println(jBool.getSavings());
+                                    break;
                                 case -1:
                                     // Quit
                                     quit = true;
@@ -915,8 +969,15 @@ public class SpringDemo {
                                     // to Byte
                                     printByteB(jDoub.toByte());
                                     break;
+                                case 6:
+                                    printByteB(jDoub.compress());
+                                    break;
+                                case 7:
+                                    System.out.println(jDoub.getSavings());
+                                    break;
                                 case -1:
                                     // Quit
+                                    System.err.println();
                                     quit = true;
                                     break;
                                 default:
@@ -930,6 +991,69 @@ public class SpringDemo {
 
                     case 6:
                         // Enumeration
+                        JEnumeration jEnumeration = (JEnumeration) jObj;
+                        quit = false;
+                        while(!quit) {
+                            // Prompt for input / get user input
+                            System.out.print("Enter method command: ");
+                            commandStr = reader.nextLine();
+
+                            // Check for cmd command
+                            if(commandStr.equals("-cmd")) {
+                                printJDataMethods();
+                                continue;
+                            }
+
+                            // Parse command
+                            command = Integer.parseInt(commandStr);
+
+                            // Perform command
+                            switch (command) {
+                                case 0:
+                                    // Get size
+                                    System.out.println(jEnumeration.getSize());
+                                    break;
+                                case 1:
+                                    // Set size
+                                    System.out.print("Enter size: ");
+                                    jEnumeration.setSize(Integer.parseInt(reader.nextLine()));
+                                    break;
+                                case 2:
+                                    // Get value
+                                    System.out.println(jEnumeration.getValue());
+                                    break;
+                                case 3:
+                                    // Set value
+                                    System.out.print("Enter byte value for enumeration: ");
+                                    byte nextB = (byte) (Integer.parseInt(reader.nextLine()));
+                                    printByteB(new byte[]{nextB});
+                                    break;
+                                case 4:
+                                    // Print
+                                    System.out.println(jEnumeration.print());
+                                    break;
+                                case 5:
+                                    // to Byte
+                                    printByteB(jEnumeration.toByte());
+                                    break;
+                                case 6:
+                                    printByteB(jEnumeration.compress());
+                                    break;
+                                case 7:
+                                    System.out.println(jEnumeration.getSavings());
+                                    break;
+                                case -1:
+                                    // Quit
+                                    quit = true;
+                                    break;
+                                default:
+                                    // Invalid entry
+                                    System.out.println("Invalid Entry");
+                                    break;
+                            }
+                        }
+                        invalidDatatype = true;
+                        break;
                     case 7:
                         // Integer
                         JInteger jInteger;
@@ -980,6 +1104,12 @@ public class SpringDemo {
                                 case 5:
                                     // to Byte
                                     printByteB(jInteger.toByte());
+                                    break;
+                                case 6:
+                                    printByteB(jInteger.compress());
+                                    break;
+                                case 7:
+                                    System.out.println(jInteger.getSavings());
                                     break;
                                 case -1:
                                     // Quit
@@ -1039,6 +1169,12 @@ public class SpringDemo {
                                 case 5:
                                     // to Byte
                                     printByteB(jStr.toByte());
+                                    break;
+                                case 6:
+                                    printByteB(jStr.compress());
+                                    break;
+                                case 7:
+                                    System.out.println(jStr.getSavings());
                                     break;
                                 case -1:
                                     // Quit
