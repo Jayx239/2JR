@@ -516,7 +516,7 @@ public class SpringDemo {
                         break;
                     case 4:
                         // Get mac address
-                        testAttributes(networkPacket.getMacAddress(),7,1);
+                        testAttributes(networkPacket.getMacAddress(),0);
                         break;
                     case 5:
                         // Set mac address
