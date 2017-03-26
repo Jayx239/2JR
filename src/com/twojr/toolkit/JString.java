@@ -33,7 +33,7 @@ public class JString extends JData {
             setId(LONG_CHARARACTER_STRING);
         }
 
-        this.value = value;
+        setValue(value);
     }
 
     public JString(byte[] byteString) {
@@ -64,7 +64,7 @@ public class JString extends JData {
             value+=(char) byteChar;
         }
 
-        setName(value);
+        setValue(value);
     }
     //==================================================================================================================
     // Public Functions(s)
@@ -91,11 +91,7 @@ public class JString extends JData {
     public String print() {
 
         String output = "String Value: " + value + "\n";
-
-        System.out.print(output);
-
         return output;
-
     }
 
     //==================================================================================================================

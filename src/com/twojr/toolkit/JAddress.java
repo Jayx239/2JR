@@ -22,6 +22,10 @@ public class JAddress extends JData{
         super(DataTypes.IEEE_ADDRESS, ADDRESS, JDataSizes.SIXTY_FOUR_BIT);
         this.address = address;
     }
+    public JAddress(long addr) {
+        super(DataTypes.IEEE_ADDRESS, ADDRESS, JDataSizes.SIXTY_FOUR_BIT);
+        setAddress(addr);
+    }
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
@@ -35,6 +39,16 @@ public class JAddress extends JData{
         this.address = address;
     }
 
+    public void setAddress(long addr) {
+
+        byte[]  bArray = new byte[getSize()];
+
+        for(int i=0; i<getSize(); i++) {
+            bArray[i] = (byte) ((addr >> (i*8)) & 0xff);
+        }
+
+        this.address = bArray;
+    }
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
@@ -54,14 +68,10 @@ public class JAddress extends JData{
 
         String output = "Address: ";
 
-        for(byte bits : address)
-        {
-            output  += bits + ":";
-
+        for(int i=7; i>=0; i--) {
+            output  += address[i] + ":";
         }
-
         output += "\n";
-
         return output;
 
     }
