@@ -169,4 +169,31 @@ public class JSignedIntegerTest {
     }
 
     // TODO: implement and write tests for compress and savings methods
+
+    @Test
+    public void evaluateCompress() {
+        JSignedInteger jSigned = new JSignedInteger(THIRTY_TWO_BIT,1024);
+
+        assertEquals(THIRTY_TWO_BIT.ordinal(),jSigned.getSize());
+        assertEquals(2, jSigned.compress().length);
+
+        assertEquals(jSigned.toByte()[0], jSigned.compress()[0]);
+        assertEquals(jSigned.toByte()[1], jSigned.compress()[1]);
+
+    }
+
+    @Test
+    public void evaluateGetSavings() {
+        JSignedInteger jSigned = new JSignedInteger(THIRTY_TWO_BIT,1024);
+
+        assertEquals(THIRTY_TWO_BIT.ordinal(),jSigned.getSize());
+        assertEquals(2, jSigned.compress().length);
+
+        assertEquals(jSigned.toByte()[0], jSigned.compress()[0]);
+        assertEquals(jSigned.toByte()[1], jSigned.compress()[1]);
+
+        assertEquals(2,jSigned.getSavings());
+    }
+
+
 }

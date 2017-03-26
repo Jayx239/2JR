@@ -94,14 +94,14 @@ public class JArrayTest {
         JArray jArray = new JArray(array);
 
         String output = "";
-
+        int i = 0;
         for(JData data : jArray.getValue()){
 
-            output += data.print();
+            output += "["+ i++ +"]: " + data.print() + "\n";
 
         }
         
-        assertEquals(jArray.print(),output);
+        assertEquals(output,jArray.print());
 
     }
 
