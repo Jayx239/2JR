@@ -38,7 +38,7 @@ public class DataTypes {
     public static final int UNSIGNED_THIRTY_TWO_BIT_INT = 0x23;
     public static final int UNSIGNED_FORTY_BIT_INT = 0x24;
     public static final int UNSIGNED_FORTY_EIGHT_BIT_INT = 0x25;
-    public static final int UNSIGNED_FIFTY_SIX_BIT_INT = 026;
+    public static final int UNSIGNED_FIFTY_SIX_BIT_INT = 0x26;
     public static final int UNSIGNED_SIXTY_FOUR_BIT_INT = 0x27;
 
     //signed
@@ -64,9 +64,9 @@ public class DataTypes {
     public static final int OCTET_STRING = 0x41;
     public static final int CHARACTER_STRING = 0x42;
     public static final int LONG_OCTET_STRING = 0x43;
-    public static final int LONG_CHARARACTER_STRING = 0x44;
+    public static final int LONG_CHARACTER_STRING = 0x44;
 
-    //Ordered Seqeunce
+    //Ordered Sequence
     public static final int ARRAY = 0x48;
     public static final int STRUCTURE = 0x4C;
 
@@ -84,7 +84,7 @@ public class DataTypes {
     public static final int ATTRIBUTE_ID = 0xE9;
     public static final int BACNET_OID = 0xEA;
 
-    //Miscelleneous
+    //Miscellaneous
     public static final int IEEE_ADDRESS = 0xF0;
     public static final int SECURITY_KEY = 0xF1;
 

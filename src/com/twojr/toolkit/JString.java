@@ -20,7 +20,7 @@ public class JString extends JData {
         super(CHARACTER_STRING, STRING_NAME, 1);
 
         if(getSize() > 8){
-            setId(LONG_CHARARACTER_STRING);
+            setId(LONG_CHARACTER_STRING);
         }
 
     }
@@ -30,7 +30,7 @@ public class JString extends JData {
         super(CHARACTER_STRING, STRING_NAME, size);
 
         if(getSize() > 8){
-            setId(LONG_CHARARACTER_STRING);
+            setId(LONG_CHARACTER_STRING);
         }
 
         setValue(value);
@@ -55,7 +55,7 @@ public class JString extends JData {
         setSize(value.length());
         setName(STRING_NAME);
         if(getSize()>8) {
-            setId(LONG_CHARARACTER_STRING);
+            setId(LONG_CHARACTER_STRING);
         }
     }
     public void setValue(byte[] byteString) {
