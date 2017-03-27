@@ -2,10 +2,6 @@ package com.twojr.toolkit;
 
 import com.twojr.toolkit.integer.JSignedInteger;
 import com.twojr.toolkit.integer.JUnsignedInteger;
-import com.twojr.toolkit.test.JDataTest;
-
-import javax.xml.crypto.Data;
-import java.util.ArrayList;
 
 import static com.twojr.toolkit.DataTypes.*;
 
@@ -209,7 +205,7 @@ public class JArray extends JData{
             case OCTET_STRING:
             case CHARACTER_STRING:
             case LONG_OCTET_STRING:
-            case LONG_CHARARACTER_STRING:
+            case LONG_CHARACTER_STRING:
                 return new JString(byteData);
             default:
                 return null;
