@@ -19,6 +19,9 @@ public class JBitTest {
 
         bitByte.setValue(false);
         assertEquals(0x00, bitByte.toByte()[0]);
+
+        JBit jbit = new JBit(null);
+        assertEquals(null, jbit.toByte()[0]);
     }
 
     @Test
@@ -58,6 +61,9 @@ public class JBitTest {
 
         JBit bit = new JBit(name,JDataSizes.EIGHT_BIT,value);
         assertEquals(size, bit.getSize());
+        bit = new JBit(null);
+        assertEquals(size,bit.getSize());
+        System.out.println("test");
     }
 
     @Test

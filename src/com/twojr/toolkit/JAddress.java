@@ -68,12 +68,16 @@ public class JAddress extends JData{
 
         String output = "Address: ";
 
-        for(int i=7; i>=0; i--) {
-            output  += address[i] + ":";
+        if(address == null){
+            return null;
         }
-        output += "\n";
-        return output;
-
+        else{
+            for(int i=7; i>=0; i--) {
+                output  += address[i] + ":";
+            }
+            output += "\n";
+            return output;
+        }
     }
 
     @Override

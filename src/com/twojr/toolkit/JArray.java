@@ -27,6 +27,10 @@ public class JArray extends JData{
     public JArray(JData[] value) {
 
         super(ARRAY, ARRAY_NAME, 0);
+        if(value == null){
+            System.err.println("null pointer exception");
+            return;
+        }
         this.value = value;
         setSize(computeSize());
         if(value.length > 0)
@@ -105,17 +109,19 @@ public class JArray extends JData{
 
     @Override
     public String print() {
-
-        String output = "";
-        int index = 0;
-        for(JData data : value){
-            output += "[" + index++ + "]: ";
-            output += data.print();
-            output += "\n";
+        if(value==null){
+            return null;
         }
-
-        return output;
-
+        else{
+            String output = "";
+            int index = 0;
+            for(JData data : value){
+                output += "[" + index++ + "]: ";
+                output += data.print();
+                output += "\n";
+            }
+            return output;
+        }
     }
 
     @Override
@@ -150,11 +156,15 @@ public class JArray extends JData{
     private int computeSize() {
 
         int size = 0;
-        for(JData data : value){
-            size += data.toByte().length;
+        if(value==null){
+            return size;
         }
-
-        return size;
+        else{
+            for(JData data : value){
+                size += data.toByte().length;
+            }
+            return size;
+        }
     }
 
     private JData initializeElement(int dataType,byte[] byteData) {
