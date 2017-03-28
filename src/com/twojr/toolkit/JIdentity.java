@@ -17,6 +17,9 @@ public abstract class JIdentity implements IPrintable{
     public JIdentity(int id, String name) {
         this.id = id;
         this.name = name;
+        if(name == null){
+            throw new IllegalArgumentException("JIdentity input name cannot be null");
+        }
     }
 
 

@@ -24,14 +24,15 @@ public class JDouble extends JData {
     }
 
     public JDouble(double value) {
-
         super(DOUBLE_PRECISION, DOUBLE, SIXTY_FOUR_BIT);
         this.value = value;
-
     }
 
     public JDouble(byte[] byteDouble) {
         super(DOUBLE_PRECISION, DOUBLE, SIXTY_FOUR_BIT);
+        if(byteDouble == null){
+            throw new IllegalArgumentException("JData input byteDouble cannot be null");
+        }
         setValue(byteDouble);
     }
 

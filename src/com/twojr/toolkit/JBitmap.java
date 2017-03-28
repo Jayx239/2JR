@@ -18,20 +18,24 @@ public class JBitmap extends JData {
     //==================================================================================================================
 
     public JBitmap() {
-
         super(EIGHT_BIT_MAP_DATA, BITMAP, EIGHT_BIT);
         value = new byte[EIGHT_BIT.ordinal()];
     }
 
     public JBitmap(JDataSizes size) {
-
         super(EIGHT_BIT_MAP_DATA, BITMAP, size);
+        if(size == null){
+            throw new IllegalArgumentException("JBitmap input size cannot be null");
+        }
         setId(computeId(size));
         value = new byte[size.ordinal()];
     }
 
     public JBitmap(byte[] value) {
         super(EIGHT_BIT_MAP_DATA, BITMAP, value.length);
+        if(value == null){
+            throw new IllegalArgumentException("JBitmap input byte array value cannot be null");
+        }
         setValue(value);
     }
 

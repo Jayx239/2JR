@@ -22,6 +22,9 @@ public class JKey extends JData{
 
     public JKey(byte[] value) {
         super(SECURITY_KEY, KEY, HUNDRED_TWENTY_EIGHT_BIT);
+        if(value == null){
+            throw new IllegalArgumentException("JKey input value cannot be null");
+        }
         this.value = value;
     }
 

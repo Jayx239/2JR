@@ -20,14 +20,11 @@ public class JAddressTest {
     {
 
         byte[] address = {00,00,00,00,00,00,00,00};
+
         JAddress jAddress = new JAddress(address);
 
         assertEquals(jAddress.toByte(),address);
 
-        address = null;
-        jAddress = new JAddress(null);
-
-        assertEquals(address, jAddress.toByte());
     }
 
     @Test
@@ -50,7 +47,7 @@ public class JAddressTest {
 
         JAddress jAddress = new JAddress(address);
 
-        assertEquals(address,jAddress.getAddress());
+        assertEquals(jAddress.getAddress(),address);
     }
 
     @Test
@@ -65,8 +62,6 @@ public class JAddressTest {
         jAddress.setAddress(address2);
         assertEquals(jAddress.getAddress(),address2);
 
-        jAddress = new JAddress(null);
-        assertEquals(null,jAddress.getAddress());
     }
 
 
@@ -91,9 +86,6 @@ public class JAddressTest {
 
         assertEquals(jAddress.print(),output);
 
-
-        jAddress.setAddress(null);
-        assertEquals(null, jAddress.print());
     }
 
 }

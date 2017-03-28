@@ -27,13 +27,6 @@ public class JArrayTest {
         for(int i=0; i<array.length; i++) {
             assertEquals(array[i],jArray1.toByte()[i]);
         }
-
-        jArray = new JArray(new JData[]{null,null});
-        jArray1 = new JArray(jArray.toByte(),DataTypes.DOUBLE_PRECISION);
-        array = jArray.toByte();
-        for(int i=0; i<array.length; i++) {
-            assertEquals(array[i],jArray1.toByte()[i]);
-        }
     }
 
     @Test
@@ -59,8 +52,6 @@ public class JArrayTest {
         for(int i=0; i < (3*SIXTY_FOUR_BIT.ordinal()); i++)
                 assertEquals(expected[i],output[i]);
 
-        jArray = new JArray(null);
-        assertEquals(null, jArray.toByte());
     }
 
     @Test
@@ -73,8 +64,6 @@ public class JArrayTest {
 
         assertEquals(jArray.getValue(),array);
 
-        jArray = new JArray(null);
-        assertEquals(null, jArray.getValue());
     }
 
     @Test
@@ -94,8 +83,6 @@ public class JArrayTest {
         jArray.setValue(array2);
         assertEquals(jArray.getValue(),array2);
 
-        jArray.setValue(null);
-        assertEquals(null, jArray.getValue());
     }
 
     @Test
@@ -116,7 +103,7 @@ public class JArrayTest {
         
         assertEquals(output,jArray.print());
 
-        jArray = new JArray(null);
-        assertEquals(null,jArray.print());
     }
+
+
 }

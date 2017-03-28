@@ -20,6 +20,9 @@ public class JAddress extends JData{
 
     public JAddress(byte[] address) {
         super(DataTypes.IEEE_ADDRESS, ADDRESS, JDataSizes.SIXTY_FOUR_BIT);
+        if(address == null){
+            throw new IllegalArgumentException("JAddress input byte array address cannot be null");
+        }
         this.address = address;
     }
     public JAddress(long addr) {
@@ -68,16 +71,12 @@ public class JAddress extends JData{
 
         String output = "Address: ";
 
-        if(address == null){
-            return null;
+        for(int i=7; i>=0; i--) {
+            output  += address[i] + ":";
         }
-        else{
-            for(int i=7; i>=0; i--) {
-                output  += address[i] + ":";
-            }
-            output += "\n";
-            return output;
-        }
+        output += "\n";
+        return output;
+
     }
 
     @Override

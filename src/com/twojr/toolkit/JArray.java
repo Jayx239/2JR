@@ -25,11 +25,9 @@ public class JArray extends JData{
     }
 
     public JArray(JData[] value) {
-
         super(ARRAY, ARRAY_NAME, 0);
         if(value == null){
-            System.err.println("null pointer exception");
-            return;
+            throw new IllegalArgumentException("JArray input JData value cannot be null");
         }
         this.value = value;
         setSize(computeSize());
@@ -43,6 +41,9 @@ public class JArray extends JData{
     }
 
     public JArray(byte[] byteArray, int dataType) {
+        if(byteArray == null){
+            throw new IllegalArgumentException("JArray input byteArray cannot be null");
+        }
         setValue(byteArray,dataType);
     }
 
@@ -109,19 +110,17 @@ public class JArray extends JData{
 
     @Override
     public String print() {
-        if(value==null){
-            return null;
+
+        String output = "";
+        int index = 0;
+        for(JData data : value){
+            output += "[" + index++ + "]: ";
+            output += data.print();
+            output += "\n";
         }
-        else{
-            String output = "";
-            int index = 0;
-            for(JData data : value){
-                output += "[" + index++ + "]: ";
-                output += data.print();
-                output += "\n";
-            }
-            return output;
-        }
+
+        return output;
+
     }
 
     @Override
@@ -156,15 +155,11 @@ public class JArray extends JData{
     private int computeSize() {
 
         int size = 0;
-        if(value==null){
-            return size;
+        for(JData data : value){
+            size += data.toByte().length;
         }
-        else{
-            for(JData data : value){
-                size += data.toByte().length;
-            }
-            return size;
-        }
+
+        return size;
     }
 
     private JData initializeElement(int dataType,byte[] byteData) {
