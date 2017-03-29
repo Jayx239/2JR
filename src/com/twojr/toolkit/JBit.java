@@ -12,16 +12,25 @@ public class JBit extends JData{
     //==================================================================================================================
 
     public JBit(){
-
+        //Is there a reason this is empty?
     }
 
     public JBit(String name, JDataSizes size, boolean value) {
         super(DataTypes.EIGHT_BIT_DATA, name, size);
+        if(name == null){
+            throw new IllegalArgumentException("JBit input name cannot be null");
+        }
+        if(size == null){
+            throw new IllegalArgumentException("JBit input size cannot be null");
+        }
         this.value = value;
     }
 
     public JBit(byte[] bitByte) {
         super(DataTypes.EIGHT_BIT_DATA,BIT_NAME,bitByte.length);
+        if(bitByte == null){
+            throw new IllegalArgumentException("JBit input byteArray cannot be null");
+        }
         setValue(bitByte);
     }
 

@@ -25,8 +25,14 @@ public class JEnumeration extends JData {
     }
 
     public JEnumeration(JDataSizes size, byte[] value) {
-
         super(EIGHT_BIT_ENUMERATION, ENUMERATION, 1);
+
+        if(size == null){
+            throw new IllegalArgumentException("JEnumeration input size cannot be null");
+        }
+        if(value == null){
+            throw new IllegalArgumentException("JEnumeration input value cannot be null");
+        }
 
         int id;
         switch (size){

@@ -29,6 +29,13 @@ public class JString extends JData {
 
         super(CHARACTER_STRING, STRING_NAME, size);
 
+        if(size == null){
+            throw new IllegalArgumentException("JString input size cannot be null");
+        }
+        if(value == null){
+            throw new IllegalArgumentException("JString input value cannot be null");
+        }
+
         if(getSize() > 8){
             setId(LONG_CHARACTER_STRING);
         }
@@ -38,6 +45,9 @@ public class JString extends JData {
 
     public JString(byte[] byteString) {
         super(CHARACTER_STRING,STRING_NAME,byteString.length);
+        if(byteString == null){
+            throw new IllegalArgumentException("JString input byteString cannot be null");
+        }
         setValue(byteString);
     }
 

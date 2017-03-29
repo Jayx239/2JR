@@ -26,6 +26,9 @@ public class JBoolean extends JData{
 
     public JBoolean(byte[] boolByte) {
         super(DataTypes.BOOLEAN,BOOLEAN_NAME,EIGHT_BIT);
+        if(boolByte == null){
+            throw new IllegalArgumentException("JBoolean input byte array cannot be null");
+        }
         setValue(boolByte);
     }
 

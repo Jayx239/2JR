@@ -29,12 +29,17 @@ public class JUnsignedInteger extends JInteger{
     public JUnsignedInteger(JDataSizes size, int value) {
 
         super(UNSIGNED_EIGHT_BIT_INT, UNSIGNED_INTEGER, size, value);
-
+        if(size == null){
+            throw new IllegalArgumentException("JUnsignedInteger input size cannot be null");
+        }
         setId(computeId(size));
     }
 
     public JUnsignedInteger(byte[] value) {
         setValue(value);
+        if(value == null){
+            throw new IllegalArgumentException("JUnsignedInteger input byte array value cannot be null");
+        }
     }
 
     //==================================================================================================================

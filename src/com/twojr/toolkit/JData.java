@@ -17,15 +17,21 @@ public abstract class JData extends JIdentity implements ISendable{
     }
 
     public JData(int id, String name, int size) {
-        
         super(id, name);
+        if(name == null){
+            throw new IllegalArgumentException("JData input name cannot be null");
+        }
         this.size = size;
-
     }
 
     public JData(int id, String name, JDataSizes size) {
         super(id, name);
-
+        if(name == null){
+            throw new IllegalArgumentException("JData input name cannot be null");
+        }
+        if(size == null){
+            throw new IllegalArgumentException("JData input size cannot be null");
+        }
         this.size = size.ordinal();
     }
 

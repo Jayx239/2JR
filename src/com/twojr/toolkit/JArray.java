@@ -25,8 +25,10 @@ public class JArray extends JData{
     }
 
     public JArray(JData[] value) {
-
         super(ARRAY, ARRAY_NAME, 0);
+        if(value == null){
+            throw new IllegalArgumentException("JArray input JData value cannot be null");
+        }
         this.value = value;
         setSize(computeSize());
         if(value.length > 0)
@@ -39,6 +41,9 @@ public class JArray extends JData{
     }
 
     public JArray(byte[] byteArray, int dataType) {
+        if(byteArray == null){
+            throw new IllegalArgumentException("JArray input byteArray cannot be null");
+        }
         setValue(byteArray,dataType);
     }
 

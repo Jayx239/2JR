@@ -17,11 +17,20 @@ public abstract class JInteger extends JData {
 
     public JInteger(int id, String name, int size, int value) {
         super(id, name, size);
+        if(name == null){
+            throw new IllegalArgumentException("JInteger input name cannot be null");
+        }
         this.value = value;
     }
 
     public JInteger(int id, String name, JDataSizes size, int value) {
         super(id, name, size);
+        if(name == null){
+            throw new IllegalArgumentException("JInteger input name cannot be null");
+        }
+        if(size == null){
+            throw new IllegalArgumentException("JInteger input size cannot be null");
+        }
         this.value = value;
     }
 
