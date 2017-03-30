@@ -127,7 +127,7 @@ public class ReceiverRunnable implements Runnable {
             if (DEBUG)
                 ex.printStackTrace();
         } catch (InterruptedException iEx) {
-            System.err.println("Reciever Interrupted Exception");
+            System.err.println("Receiver Interrupted Exception");
             if (DEBUG)
                 iEx.printStackTrace();
         }
