@@ -33,7 +33,7 @@ public class ReceiverRunnable implements Runnable {
     private ReentrantLock lock;
     private boolean running;
     private int sleepTime;
-    private int packetSize = 128;
+    private int packetSize = 127;
 
     public void setPacketSize(int packetSize) {
         this.packetSize = packetSize;

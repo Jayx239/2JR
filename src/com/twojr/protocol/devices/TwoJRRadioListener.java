@@ -16,7 +16,6 @@ public class TwoJRRadioListener{
 
     public TwoJRRadioListener(String portName) {
         this.portName = portName;
-        apsCommandFactory = new ApsCommandFactory();
         radioRunning = false;
     }
 
@@ -24,7 +23,6 @@ public class TwoJRRadioListener{
     private String portName;
     private InputStream inRadioStream;
     private OutputStream outRadioStream;
-    private ApsCommandFactory apsCommandFactory;
     private boolean radioRunning;
     private TransmitterRunnable transmitter;
     private ReceiverRunnable receiver;
