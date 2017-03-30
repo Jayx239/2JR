@@ -448,7 +448,13 @@ public class TwoJRTerminal {
                         JUnsignedInteger networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT, Integer.parseInt(reader.nextLine()));
 
                         System.out.print("Enter mac address: ");
-                        JAddress macAddress = new JAddress(Long.parseLong(reader.nextLine()));
+                        String macAddrStr = reader.nextLine();
+                        JAddress macAddress;
+
+                        if(!macAddrStr.contains(":"))
+                            macAddress = new JAddress(Long.parseLong(macAddrStr));
+                        else
+                            macAddress = new JAddress(macAddrStr);
 
                         printNetworkCommandFrameTypes();
                         System.out.print("Enter command frame: ");
