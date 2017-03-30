@@ -173,7 +173,7 @@ public class NetworkPacketTest {
         NetworkPacket testPacket = new NetworkPacket(byteInput);
         assertEquals("Sequence number: 50\n" +
                 "Network control: ENCRYPTED\n" +
-                "Mac address: Address: 86:14:45:-78:-23:66:15:65:\n" +
+                "Mac address: Address: 86:14:45:-78:-23:66:15:65\n" +
                 "Command frame: ROUTE_RESPONSE\n" +
                 "Payload: \n" +
                 "Payload [0]: 57\n" +
@@ -181,11 +181,22 @@ public class NetworkPacketTest {
 
         assertEquals("Sequence number: 50\n" +
                 "Network control: ENCRYPTED\n" +
-                "Mac address: Address: 86:14:45:-78:-23:66:15:65:\n" +
+                "Mac address: Address: 86:14:45:-78:-23:66:15:65\n" +
                 "Command frame: ROUTE_RESPONSE\n" +
                 "Payload: \n" +
                 "Payload [0]: 00111001\n" +
                 "Payload [1]: 01000010\n",testPacket.print());
 
+    }
+
+    @Test
+    public void evaluateNullChecks() {
+        NetworkPacket newPacket = new NetworkPacket();
+        assertEquals("Sequence number: null\n" +
+                "Network control: null\n" +
+                "Mac address: null\n" +
+                "Command frame: null\n" +
+                "Payload: \n" +
+                "null",newPacket.print());
     }
 }
