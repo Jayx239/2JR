@@ -44,6 +44,7 @@ public class TransmitterRunnable implements Runnable {
     private int sleepTimeNs;
     private int packetSize;
 
+    // Method for setting debug flag
     public void setDEBUG(boolean value) {
         DEBUG = value;
     }

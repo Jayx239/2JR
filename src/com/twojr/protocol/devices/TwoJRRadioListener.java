@@ -30,6 +30,7 @@ public class TwoJRRadioListener{
     private ReceiverRunnable receiver;
     private int packetSize;
 
+    // Method for setting packet size
     public void setPacketSize(int packetSize) {
         if(receiver == null || transmitter == null)
             return;
@@ -40,10 +41,12 @@ public class TwoJRRadioListener{
         }
     }
 
+    // Method for setting debug flag
     public void setDEBUG(boolean val) {
         DEBUG = val;
     }
 
+    // Method for checking if the readio is running
     public boolean isRadioRunning() {
             return radioRunning;
     }
