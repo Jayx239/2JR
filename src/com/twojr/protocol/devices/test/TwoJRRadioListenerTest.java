@@ -24,7 +24,9 @@ public class TwoJRRadioListenerTest {
         sender.start();
         receiver.start();
 
-        NetworkPacket netPacket = new NetworkPacket(new JUnsignedInteger(JDataSizes.EIGHT_BIT, 102), new JUnsignedInteger(JDataSizes.EIGHT_BIT, 2), new JAddress(2839283), new JUnsignedInteger(JDataSizes.EIGHT_BIT, 2));
+        NetworkPacket netPacket = new NetworkPacket(new JUnsignedInteger(JDataSizes.EIGHT_BIT, 102),
+                new JUnsignedInteger(JDataSizes.EIGHT_BIT, 2), new JAddress(2839283),
+                new JUnsignedInteger(JDataSizes.EIGHT_BIT, 2));
         sender.send(netPacket);
 
         receiver.listen();
@@ -38,13 +40,14 @@ public class TwoJRRadioListenerTest {
         TwoJRRadioListener receiver = new TwoJRRadioListener("COM4");
         sender.start();
         receiver.start();
-        receiver.setPacketSize(32);
         LinkedList<NetworkPacket> networkPackets = new LinkedList<>();
         NetworkPacket testArray[] = new NetworkPacket[3];
         for (int i = 1; i < 4; i++) {
             JString nextString = new JString(JDataSizes.SIXTY_FOUR_BIT, "hello there packet #" + Integer.toString(i));
-            networkPackets.push(new NetworkPacket(i, INetPacket.networkControlFlags.ROUTER.ordinal(), 123, INetPacket.networkLayerCommands.ADDRESS_REQUEST.ordinal(), nextString.toByte()));
-            testArray[i - 1] = new NetworkPacket(i, INetPacket.networkControlFlags.ROUTER.ordinal(), 123, INetPacket.networkLayerCommands.ADDRESS_REQUEST.ordinal(), nextString.toByte());
+            networkPackets.push(new NetworkPacket(i, INetPacket.networkControlFlags.ROUTER.ordinal(), 123,
+                    INetPacket.networkLayerCommands.ADDRESS_REQUEST.ordinal(), nextString.toByte()));
+            testArray[i - 1] = new NetworkPacket(i, INetPacket.networkControlFlags.ROUTER.ordinal(),
+                    123, INetPacket.networkLayerCommands.ADDRESS_REQUEST.ordinal(), nextString.toByte());
         }
 
         sender.send(networkPackets);

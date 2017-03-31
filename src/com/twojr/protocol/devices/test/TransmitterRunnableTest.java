@@ -9,6 +9,8 @@ import org.junit.Assert.*;
 
 import java.util.LinkedList;
 
+import static junit.framework.TestCase.assertEquals;
+
 /**
  * Created by Jason on 3/30/2017.
  */
@@ -32,8 +34,13 @@ public class TransmitterRunnableTest {
 
             transmitter.queuePackets(netPackets2);
             LinkedList<NetworkPacket> queue = transmitter.getQueuedPackets();
-            for (NetworkPacket packet : queue)
+            int expectedSequenceNumber = 0;
+
+            for (NetworkPacket packet : queue) {
+                expectedSequenceNumber = expectedSequenceNumber == 3 ? 10 : expectedSequenceNumber+1;
+                assertEquals(expectedSequenceNumber,packet.getSequenceNumber().getValue());
                 System.err.println(packet.print());
+            }
 
 
         } catch (PortInUseException ex) {

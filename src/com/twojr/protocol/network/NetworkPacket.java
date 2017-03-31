@@ -12,7 +12,7 @@ public class NetworkPacket extends JData implements INetPacket {
     // Constructor(s)
     //==================================================================================================================
     public NetworkPacket() {
-
+        packetSize = MAXPACKETSIZE;
     }
 
     public NetworkPacket(int sequenceNumber, int networkControl, long macAddress, int commandFrame, byte[] payload) {
@@ -20,7 +20,8 @@ public class NetworkPacket extends JData implements INetPacket {
         this.networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT, networkControl);
         this.macAddress = new JAddress(macAddress);
         this.commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT, commandFrame);
-        this.payload = payload;
+        this.packetSize = MAXPACKETSIZE;
+        this.setPayload(payload);
     }
 
     public NetworkPacket(JUnsignedInteger sequenceNumber, JUnsignedInteger networkControl, JAddress macAddress, JUnsignedInteger commandFrame, byte[] payload) {
@@ -28,7 +29,8 @@ public class NetworkPacket extends JData implements INetPacket {
         this.networkControl = networkControl;
         this.macAddress = macAddress;
         this.commandFrame = commandFrame;
-        this.payload = payload;
+        this.packetSize = MAXPACKETSIZE;
+        this.setPayload(payload);
     }
 
     public NetworkPacket(JUnsignedInteger sequenceNumber, JUnsignedInteger networkControl, JAddress macAddress, JUnsignedInteger commandFrame) {
@@ -36,6 +38,9 @@ public class NetworkPacket extends JData implements INetPacket {
         this.networkControl = networkControl;
         this.macAddress = macAddress;
         this.commandFrame = commandFrame;
+        this.packetSize = MAXPACKETSIZE;
+        byte[] defaultPayload = {0x00};
+        this.setPayload(defaultPayload);
     }
 
     public NetworkPacket(byte[] encodedPacket) {
@@ -52,11 +57,20 @@ public class NetworkPacket extends JData implements INetPacket {
         singleTemp[0] = encodedPacket[networkPacketByteOffset[networkPacketMasks.COMMAND_FRAME.ordinal()]];
         this.commandFrame = (new JUnsignedInteger(singleTemp));
 
+        this.packetSize = MAXPACKETSIZE;
+
         int sizeOfPayload = encodedPacket.length - networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()];
-        this.payload = new byte[sizeOfPayload];
+        this.payload = new byte[this.packetSize - networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()]];
+
+        if(sizeOfPayload < 0)
+            sizeOfPayload = 0;
 
         for (int i = 0; i < sizeOfPayload; i++)
             this.payload[i] = encodedPacket[i + networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()]];
+
+        for(int i=sizeOfPayload; i < payload.length; i++) {
+            this.payload[i] = (byte) 0x00;
+        }
 
     }
 
@@ -70,6 +84,7 @@ public class NetworkPacket extends JData implements INetPacket {
 
     private JUnsignedInteger commandFrame;
     private byte[] payload;
+    private int packetSize;
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
@@ -112,7 +127,29 @@ public class NetworkPacket extends JData implements INetPacket {
     }
 
     public void setPayload(byte[] payload) {
-        this.payload = payload;
+        int payloadSize = this.packetSize - networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()];
+        this.payload = new byte[payloadSize];
+        if(payload != null) {
+            for (int i = 0; i < payload.length; i++)
+                this.payload[i] = payload[i];
+
+            for (int i = payload.length; i < payloadSize; i++) {
+                this.payload[i] = (byte) 0x00;
+            }
+        }
+        else {
+            for(int i=0; i < payloadSize; i++) {
+                this.payload[i] = 0x00;
+            }
+        }
+    }
+
+    public int getPacketSize() {
+        return packetSize;
+    }
+
+    public void setPacketSize(int newPacketSize) {
+        packetSize = newPacketSize;
     }
 
     //==================================================================================================================

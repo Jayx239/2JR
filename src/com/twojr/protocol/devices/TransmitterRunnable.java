@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static com.twojr.protocol.network.INetPacket.MAXPACKETSIZE;
+
 /**
  * Created by Jason on 3/29/2017.
  */
@@ -17,14 +19,19 @@ public class TransmitterRunnable implements Runnable {
         this.outStream = outStream;
         lock = new ReentrantLock();
         running = true;
-        this.sleepTime = sleepTime;
+        this.sleepTimeMs = sleepTimeMs;
+        this.sleepTimeNs = sleepTimeNs;;
+        this.packetSize = MAXPACKETSIZE;
     }
 
     public TransmitterRunnable(OutputStream outStream) {
-        netPackets = new LinkedList<NetworkPacket>();
+        this.netPackets = new LinkedList<NetworkPacket>();
         this.outStream = outStream;
-        lock = new ReentrantLock();
-        running = true;
+        this.lock = new ReentrantLock();
+        this.running = true;
+        this.sleepTimeMs = 0;
+        this.sleepTimeNs = 100;
+        this.packetSize = MAXPACKETSIZE;
     }
 
     private boolean DEBUG = false;
@@ -33,13 +40,19 @@ public class TransmitterRunnable implements Runnable {
     private Thread transmitThread;
     private ReentrantLock lock;
     private boolean running;
-    private int sleepTime;
+    private int sleepTimeMs;
+    private int sleepTimeNs;
     private int packetSize;
 
+    public void setDEBUG(boolean value) {
+        DEBUG = value;
+    }
+    // Method for setting packet size
     public void setPacketSize(int packetSize) {
         this.packetSize = packetSize;
     }
 
+    // Method for adding packets to queue for transmission
     public void queuePackets(LinkedList<NetworkPacket> newPackets) {
         lock.lock();
         for (NetworkPacket netPacket : newPackets) {
@@ -49,10 +62,12 @@ public class TransmitterRunnable implements Runnable {
         lock.unlock();
     }
 
+    // Method for retrieving network packets queued for transmission
     public LinkedList<NetworkPacket> getQueuedPackets() {
         return netPackets;
     }
 
+    // Method to start the thread
     public void start() {
         running = true;
         if (transmitThread == null) {
@@ -61,18 +76,19 @@ public class TransmitterRunnable implements Runnable {
         }
     }
 
+    // Method for stopping thread, breaks run loop
     public void stop() {
         running = false;
     }
 
+    // Method containing transmitter thread logic
     @Override
     public void run() {
         try {
             while (running) {
                 lock.lock();
                 while (netPackets.size() > 0 && running) {
-                    // Transmit
-                    outStream.write(0x07);
+                    // Transmit packet when packets are queued
                     outStream.write(netPackets.removeLast().toByte());
                 }
                 lock.unlock();

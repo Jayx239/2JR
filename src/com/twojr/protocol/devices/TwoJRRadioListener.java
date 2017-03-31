@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.LinkedList;
 
+import static com.twojr.protocol.network.INetPacket.*;
+
 /**
  * Created by rcunni002c on 11/17/2016.
  */
@@ -15,7 +17,8 @@ public class TwoJRRadioListener{
 
     public TwoJRRadioListener(String portName) {
         this.portName = portName;
-        radioRunning = false;
+        this.radioRunning = false;
+        this.packetSize = MAXPACKETSIZE;
     }
 
     private RXTXPort rxtxPort;
@@ -30,9 +33,11 @@ public class TwoJRRadioListener{
     public void setPacketSize(int packetSize) {
         if(receiver == null || transmitter == null)
             return;
-        this.packetSize = packetSize;
-        receiver.setPacketSize(packetSize);
-        transmitter.setPacketSize(packetSize);
+        if(packetSize <= MAXPACKETSIZE && packetSize >= MINPACKETSIZE) {
+            this.packetSize = packetSize;
+            receiver.setPacketSize(packetSize);
+            transmitter.setPacketSize(packetSize);
+        }
     }
 
     public void setDEBUG(boolean val) {
@@ -43,8 +48,8 @@ public class TwoJRRadioListener{
             return radioRunning;
     }
 
+    // Start method, Opens serial port, initializes transmitter and receiver threads
     public void start() {
-
         try{
             // Open rxtx port and initialize io streams
             rxtxPort = new RXTXPort(portName);
@@ -53,7 +58,6 @@ public class TwoJRRadioListener{
             radioRunning = true;
             transmitter = new TransmitterRunnable(outRadioStream);
             receiver = new ReceiverRunnable(inRadioStream);
-
         }catch (PortInUseException ex) {
             System.err.println("Radio listener port in use\nPort name: " + portName );
             radioRunning = false;
@@ -62,36 +66,25 @@ public class TwoJRRadioListener{
         }
     }
 
+    // Send method for transmitting single network packet
     public void send(NetworkPacket netPacket) {
         LinkedList<NetworkPacket> netPacketWrapped = new LinkedList<>();
         netPacketWrapped.push(netPacket);
         send(netPacketWrapped);
     }
 
+    // Send method for transmitting stream of network packets
     public void send(LinkedList<NetworkPacket> networkPackets) {
         transmitter.queuePackets(networkPackets);
         transmitter.start();
     }
 
-    public NetworkPacket tryGetNextPacket() {
-        NetworkPacket nextPacket = receiver.getNextPacket();
-        if(nextPacket == null)
-            System.err.println("Error retrieving incoming packet, no packet available");
-        return nextPacket;
-    }
-
-    public LinkedList<NetworkPacket> tryGetIncomingPackets() {
-        LinkedList<NetworkPacket> packets = receiver.getAllPackets();
-        if(packets == null)
-            System.err.println("Error retrieving incoming packets, no packets available");
-        return packets;
-    }
-
-    // Can return null
+    // Method to start the radio listener
     public void listen() {
         receiver.start();
     }
 
+    // Method for closing radioListener, stops receiver and transmitter threads
     public void close() {
         try {
             transmitter.stop();
@@ -108,4 +101,25 @@ public class TwoJRRadioListener{
                 ex.printStackTrace();
         }
     }
+
+    // Method for retrieving next received packet from receiver
+    // May return null
+    public NetworkPacket tryGetNextPacket() {
+        NetworkPacket nextPacket = receiver.getNextPacket();
+        if(nextPacket == null)
+            if(DEBUG)
+                System.err.println("Error retrieving incoming packet, no packet available");
+        return nextPacket;
+    }
+
+    // Method for trying to retrieve all packets from radio receiver
+    // May return null
+    public LinkedList<NetworkPacket> tryGetIncomingPackets() {
+        LinkedList<NetworkPacket> packets = receiver.getAllPackets();
+        if(packets == null)
+            if(DEBUG)
+                System.err.println("Error retrieving incoming packets, no packets available");
+        return packets;
+    }
+
 }

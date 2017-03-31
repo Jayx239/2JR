@@ -16,10 +16,12 @@ public class TwoJRRadioListenerSenderTest {
 
     public static void main(String[] args) {
         TwoJRRadioListener tjrRadio = new TwoJRRadioListener("COM3");
-        tjrRadio.setDEBUG(true);
+        //tjrRadio.setDEBUG(true);
         tjrRadio.start();
 
-        byte[] byteInput = {0x32, (byte) INetPacket.networkControlFlags.ENCRYPTED.ordinal(), 0x41, 0x0F, 0x42, (byte) 0xE9, (byte) 0xB2, 0x2D, 0x0E, 0x56, (byte) (INetPacket.networkLayerCommands.ROUTE_RESPONSE.ordinal() & 0xff), 0x39, 0x42};
+        byte[] byteInput = {0x32, (byte) INetPacket.networkControlFlags.ENCRYPTED.ordinal(), 0x41, 0x0F, 0x42,
+                (byte) 0xE9, (byte) 0xB2, 0x2D, 0x0E, 0x56,
+                (byte) (INetPacket.networkLayerCommands.ROUTE_RESPONSE.ordinal() & 0xff), 0x39, 0x42};
         NetworkPacket testPacket = new NetworkPacket(byteInput);
         LinkedList<NetworkPacket> packets = new LinkedList<NetworkPacket>();
         packets.push(testPacket);
