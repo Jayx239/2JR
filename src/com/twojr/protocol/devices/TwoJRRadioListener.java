@@ -1,5 +1,4 @@
 package com.twojr.protocol.devices;
-import com.twojr.protocol.aps.commands.ApsCommandFactory;
 import com.twojr.protocol.network.NetworkPacket;
 import gnu.io.*;
 
