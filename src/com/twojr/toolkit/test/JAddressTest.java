@@ -40,6 +40,13 @@ public class JAddressTest {
     }
 
     @Test
+    public void evaluateStringInitializer() {
+        String strAddress = "123:43:98:23:5:1:7:29";
+        JAddress address = new JAddress(strAddress);
+        assertEquals("Address: " + strAddress + "\n",address.print());
+    }
+
+    @Test
     public void evaluateGetAddress()
     {
 
@@ -75,13 +82,15 @@ public class JAddressTest {
 
         String output = "Address: ";
 
+        int index = 0;
         for(byte bits : address)
         {
-            output  += bits + ":";
-
+            output  += bits;
+            if(index != 7)
+                output += ":";
+            index++;
         }
-
-        output += "\n";
+        output += '\n';
 
 
         assertEquals(jAddress.print(),output);

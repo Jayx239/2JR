@@ -11,9 +11,17 @@ public class NetworkPacket implements INetPacket {
     //==================================================================================================================
     // Constructor(s)
     //==================================================================================================================
-
     public NetworkPacket() {
+        packetSize = MAXPACKETSIZE;
+    }
 
+    public NetworkPacket(int sequenceNumber, int networkControl, long macAddress, int commandFrame, byte[] payload) {
+        this.sequenceNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT, sequenceNumber);
+        this.networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT, networkControl);
+        this.macAddress = new JAddress(macAddress);
+        this.commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT, commandFrame);
+        this.packetSize = MAXPACKETSIZE;
+        this.setPayload(payload);
     }
 
     public NetworkPacket(JUnsignedInteger sequenceNumber, JUnsignedInteger networkControl, JAddress macAddress, JUnsignedInteger commandFrame, byte[] payload) {
@@ -21,7 +29,8 @@ public class NetworkPacket implements INetPacket {
         this.networkControl = networkControl;
         this.macAddress = macAddress;
         this.commandFrame = commandFrame;
-        this.payload = payload;
+        this.packetSize = MAXPACKETSIZE;
+        this.setPayload(payload);
     }
 
     public NetworkPacket(JUnsignedInteger sequenceNumber, JUnsignedInteger networkControl, JAddress macAddress, JUnsignedInteger commandFrame) {
@@ -29,6 +38,9 @@ public class NetworkPacket implements INetPacket {
         this.networkControl = networkControl;
         this.macAddress = macAddress;
         this.commandFrame = commandFrame;
+        this.packetSize = MAXPACKETSIZE;
+        byte[] defaultPayload = {0x00};
+        this.setPayload(defaultPayload);
     }
 
     public NetworkPacket(byte[] encodedPacket) {
@@ -39,17 +51,26 @@ public class NetworkPacket implements INetPacket {
         singleTemp[0] = encodedPacket[networkPacketMasks.NETWORK_CONTROL.ordinal()];
         this.networkControl = new JUnsignedInteger(singleTemp);
 
-        byte[] mByteAddr = new byte[]{encodedPacket[2],encodedPacket[3],encodedPacket[4],encodedPacket[5],encodedPacket[6],encodedPacket[7],encodedPacket[8],encodedPacket[9]};
+        byte[] mByteAddr = new byte[]{encodedPacket[2], encodedPacket[3], encodedPacket[4], encodedPacket[5], encodedPacket[6], encodedPacket[7], encodedPacket[8], encodedPacket[9]};
         this.macAddress = new JAddress(mByteAddr);
 
         singleTemp[0] = encodedPacket[networkPacketByteOffset[networkPacketMasks.COMMAND_FRAME.ordinal()]];
         this.commandFrame = (new JUnsignedInteger(singleTemp));
 
-        int sizeOfPayload = encodedPacket.length- networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()];
-        this.payload = new byte[sizeOfPayload];
+        this.packetSize = MAXPACKETSIZE;
 
-        for(int i=0; i<sizeOfPayload;i++)
-            this.payload[i] = encodedPacket[i+networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()]];
+        int sizeOfPayload = encodedPacket.length - networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()];
+        this.payload = new byte[this.packetSize - networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()]];
+
+        if(sizeOfPayload < 0)
+            sizeOfPayload = 0;
+
+        for (int i = 0; i < sizeOfPayload; i++)
+            this.payload[i] = encodedPacket[i + networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()]];
+
+        for(int i=sizeOfPayload; i < payload.length; i++) {
+            this.payload[i] = (byte) 0x00;
+        }
 
     }
 
@@ -63,6 +84,7 @@ public class NetworkPacket implements INetPacket {
 
     private JUnsignedInteger commandFrame;
     private byte[] payload;
+    private int packetSize;
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
@@ -105,7 +127,29 @@ public class NetworkPacket implements INetPacket {
     }
 
     public void setPayload(byte[] payload) {
-        this.payload = payload;
+        int payloadSize = this.packetSize - networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()];
+        this.payload = new byte[payloadSize];
+        if(payload != null) {
+            for (int i = 0; i < payload.length; i++)
+                this.payload[i] = payload[i];
+
+            for (int i = payload.length; i < payloadSize; i++) {
+                this.payload[i] = (byte) 0x00;
+            }
+        }
+        else {
+            for(int i=0; i < payloadSize; i++) {
+                this.payload[i] = 0x00;
+            }
+        }
+    }
+
+    public int getPacketSize() {
+        return packetSize;
+    }
+
+    public void setPacketSize(int newPacketSize) {
+        packetSize = newPacketSize;
     }
 
     //==================================================================================================================
@@ -117,35 +161,47 @@ public class NetworkPacket implements INetPacket {
 
         byte[] output = new byte[getSize()];
         int index = 0;
-        for(byte sequence : sequenceNumber.toByte()) {
-            output[index++] = sequence;
-        }
-
-        for(byte control : networkControl.toByte()) {
-            output[index++] = control;
-        }
-
-        for(byte mac : macAddress.toByte()) {
-            output[index++] = mac;
-        }
-
-        for(byte command : commandFrame.toByte()) {
-            output[index++] = command;
-        }
-
-        for(byte pay : payload) {
-            output[index++] = pay;
-        }
+        if (sequenceNumber != null)
+            for (byte sequence : sequenceNumber.toByte()) {
+                output[index++] = sequence;
+            }
+        if (networkControl != null)
+            for (byte control : networkControl.toByte()) {
+                output[index++] = control;
+            }
+        if (macAddress != null)
+            for (byte mac : macAddress.toByte()) {
+                output[index++] = mac;
+            }
+        if (commandFrame != null)
+            for (byte command : commandFrame.toByte()) {
+                output[index++] = command;
+            }
+        if (payload != null)
+            for (byte pay : payload) {
+                output[index++] = pay;
+            }
 
         return output;
     }
 
     @Override
     public int getSize() {
-        int size = sequenceNumber.getSize() + networkControl.getSize() + macAddress.getSize() + getCommandFrame().getSize() + payload.length;
+        int size = 0;
+        if (sequenceNumber != null)
+            size += sequenceNumber.getSize();
+        if (networkControl != null)
+            size += networkControl.getSize();
+        if (macAddress != null)
+            size += macAddress.getSize();
+        if (commandFrame != null)
+            size += commandFrame.getSize();
+        if (payload != null)
+            size += payload.length;
+
         return size;
     }
-
+    
     @Override
     public String print() {
         return print(true);
@@ -153,10 +209,10 @@ public class NetworkPacket implements INetPacket {
 
     public String print(boolean byteFormatted) {
         String output = "";
-        output += "Sequence number: " + sequenceNumber.getValue() + "\n";
-        output += "Network control: " + networkControlFlags.values()[networkControl.getValue()] + "\n";
-        output += "Mac address: " + macAddress.print();
-        output += "Command frame: " + networkLayerCommands.values()[commandFrame.getValue()] + "\n";
+        output += "Sequence number: " + (sequenceNumber != null ? sequenceNumber.getValue() : null) + "\n";
+        output += "Network control: " + (networkControl != null ? networkControlFlags.values()[networkControl.getValue()] : null) + "\n";
+        output += "Mac address: " + (macAddress != null ? macAddress.print() : null + "\n");
+        output += "Command frame: " + (commandFrame != null ? networkLayerCommands.values()[commandFrame.getValue()] : null) + "\n";
         output += "Payload: \n";
         output += printPayload(byteFormatted);
 
@@ -166,20 +222,20 @@ public class NetworkPacket implements INetPacket {
     public String printPayload(boolean byteFormatted) {
         int bInd = 0;
         String output = "";
+        if (payload == null)
+            return null;
+        if (byteFormatted) {
+            for (byte b : payload) {
 
-        if(byteFormatted) {
-            for(byte b : payload) {
-
-                output += "Payload [" + bInd + "]: " + (b>>7 & 0x01) +
-                        (b>>6 & 0x01) + (b>>5 & 0x01) + (b>>4 & 0x01) +
-                        (b>>3 & 0x01) + (b>>2 & 0x01) + (b>>1 & 0x01) +
+                output += "Payload [" + bInd + "]: " + (b >> 7 & 0x01) +
+                        (b >> 6 & 0x01) + (b >> 5 & 0x01) + (b >> 4 & 0x01) +
+                        (b >> 3 & 0x01) + (b >> 2 & 0x01) + (b >> 1 & 0x01) +
                         (b & 0x01) + "\n";
                 bInd++;
             }
-        }
-        else {
-            for(int i=0; i < payload.length; i++) {
-                output +="Payload [" + i + "]: " + payload[i] + "\n";
+        } else {
+            for (int i = 0; i < payload.length; i++) {
+                output += "Payload [" + i + "]: " + payload[i] + "\n";
             }
         }
 

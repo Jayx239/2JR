@@ -25,11 +25,36 @@ public class JAddress extends JData{
         }
         this.address = address;
     }
+
     public JAddress(long addr) {
         super(DataTypes.IEEE_ADDRESS, ADDRESS, JDataSizes.SIXTY_FOUR_BIT);
         setAddress(addr);
     }
 
+    public JAddress(String address) {
+        super(DataTypes.IEEE_ADDRESS, ADDRESS, JDataSizes.SIXTY_FOUR_BIT);
+        setAddress(address);
+    }
+
+    private void setAddress(String address) {
+        long tempAddress = 0;
+        String tempValue = "";
+        int offset = 7;
+        byte byteAddr[] = new byte[8];
+
+        for(int i=0; i<address.length(); i++) {
+            if(address.charAt(i) == ':') {
+                byteAddr[offset--] = (byte) (Integer.parseInt(tempValue) & 0xFF);
+                tempValue = "";
+            }
+            else
+                tempValue+=address.charAt(i);
+        }
+
+        byteAddr[offset--] = (byte) (Integer.parseInt(tempValue) & 0xFF);
+        setAddress(byteAddr);
+
+    }
     //==================================================================================================================
     // Getter(s) & Setter(s)
     //==================================================================================================================
@@ -71,9 +96,10 @@ public class JAddress extends JData{
 
         String output = "Address: ";
 
-        for(int i=7; i>=0; i--) {
+        for(int i=7; i>0; i--) {
             output  += address[i] + ":";
         }
+        output+= address[0];
         output += "\n";
         return output;
 

@@ -10,9 +10,14 @@ public interface INetPacket extends IPrintable {
 
     byte[] toByte();
     int getSize();
+
+    // Network Packet Size Limits
+    int MAXPACKETSIZE = 127;    // Maximum packet size supported by IEEE 802.15.4 protocol
+    int MINPACKETSIZE = 17;     // Minimum packet size for 2JR 11 Byte Network header + 6 Byte Application header
+
     //------------------------------------------------------------------------------------------------------------------
     // Enum used for indexing networkMasks and byteOffset arrays
-
+    //------------------------------------------------------------------------------------------------------------------
     enum networkPacketMasks {
         SEQUENCE_NUMBER,
         NETWORK_CONTROL,
@@ -57,4 +62,5 @@ public interface INetPacket extends IPrintable {
         ADDRESS_REQUEST,
         ADDRESS_RESPONSE
     }
+
 }
