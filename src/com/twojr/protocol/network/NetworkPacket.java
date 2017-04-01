@@ -6,7 +6,7 @@ import com.twojr.toolkit.integer.JUnsignedInteger;
 /**
  * Created by Jason on 2/14/2017.
  */
-public class NetworkPacket implements INetPacket {
+public class NetworkPacket extends JData implements INetPacket {
 
     //==================================================================================================================
     // Constructor(s)
@@ -201,7 +201,17 @@ public class NetworkPacket implements INetPacket {
 
         return size;
     }
-    
+
+    @Override
+    public byte[] compress() {
+        return new byte[0];
+    }
+
+    @Override
+    public int getSavings() {
+        return 0;
+    }
+
     @Override
     public String print() {
         return print(true);
