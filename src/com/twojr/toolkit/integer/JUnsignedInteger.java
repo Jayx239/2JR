@@ -29,12 +29,17 @@ public class JUnsignedInteger extends JInteger{
     public JUnsignedInteger(JDataSizes size, int value) {
 
         super(UNSIGNED_EIGHT_BIT_INT, UNSIGNED_INTEGER, size, value);
-
+        if(size == null){
+            throw new IllegalArgumentException("JUnsignedInteger input size cannot be null");
+        }
         setId(computeId(size));
     }
 
     public JUnsignedInteger(byte[] value) {
         setValue(value);
+        if(value == null){
+            throw new IllegalArgumentException("JUnsignedInteger input byte array value cannot be null");
+        }
     }
 
     //==================================================================================================================
@@ -56,7 +61,7 @@ public class JUnsignedInteger extends JInteger{
     public void setValue(byte[] byteInt) {
         int value = 0;
         for(int i=0; i<byteInt.length; i++) {
-            value+= byteInt[i] << (i*8);
+            value+= (int)((byteInt[i]&0xFF) << (i*8));
         }
         setSize(byteInt.length);
         setValue(value);
@@ -76,18 +81,29 @@ public class JUnsignedInteger extends JInteger{
 
     @Override
     public byte[] compress() {
-        return new byte[0];
+        byte[] byteVal = toByte();
+        int len = byteVal.length;
+        for(int i=byteVal.length-1; i>=0; i--) {
+            if(byteVal[i] != (byte) 0x00)
+                break;
+            len--;
+        }
+
+        byte[] output = new byte[len];
+        for(int i=0; i<len; i++) {
+            output[i] = byteVal[i];
+        }
+        return output;
     }
 
     @Override
     public int getSavings() {
-        return 0;
+        return toByte().length-compress().length;
     }
 
     @Override
     public String print() {
         String val = Integer.toString(getValue());
-        System.out.println(val);
         return val;
     }
 

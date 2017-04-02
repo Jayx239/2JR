@@ -2,10 +2,6 @@ package com.twojr.toolkit;
 
 import com.twojr.toolkit.integer.JSignedInteger;
 import com.twojr.toolkit.integer.JUnsignedInteger;
-import com.twojr.toolkit.test.JDataTest;
-
-import javax.xml.crypto.Data;
-import java.util.ArrayList;
 
 import static com.twojr.toolkit.DataTypes.*;
 
@@ -17,7 +13,7 @@ public class JArray extends JData{
     public static final String ARRAY_NAME = "Array";
 
     private JData[] value;
-
+    private int elementType;
     //==================================================================================================================
     // Constructor(s)
     //==================================================================================================================
@@ -29,10 +25,14 @@ public class JArray extends JData{
     }
 
     public JArray(JData[] value) {
-
         super(ARRAY, ARRAY_NAME, 0);
+        if(value == null){
+            throw new IllegalArgumentException("JArray input JData value cannot be null");
+        }
         this.value = value;
         setSize(computeSize());
+        if(value.length > 0)
+            this.elementType = value[0].getId();
     }
 
     public JArray(int size) {
@@ -41,6 +41,9 @@ public class JArray extends JData{
     }
 
     public JArray(byte[] byteArray, int dataType) {
+        if(byteArray == null){
+            throw new IllegalArgumentException("JArray input byteArray cannot be null");
+        }
         setValue(byteArray,dataType);
     }
 
@@ -61,13 +64,19 @@ public class JArray extends JData{
     }
 
     public void setValue(JData[] value) {
+        if (value == null)
+            return;
 
         this.value = value;
         setSize(computeSize());
+        if(computeSize() > 0)
+            this.elementType = value[0].getId();
 
     }
 
     public void setValue(byte[] byteArray, int dataType) {
+        if(byteArray == null || byteArray.length == 0)
+            return;
 
         int dataSize = DataTypes.dataSizeMap.get(dataType);
         int arrayLen = byteArray.length/dataSize;
@@ -79,8 +88,10 @@ public class JArray extends JData{
             for(int j=0; j< dataSize; j++)
                 nextIn[j] = byteArray[(i*dataSize)+j];
             jArray[i] = initializeElement(dataType,nextIn);
+            this.elementType = jArray[i].getId();
         }
         this.value = jArray;
+        this.setSize(this.computeSize());
     }
 
     //==================================================================================================================
@@ -101,11 +112,11 @@ public class JArray extends JData{
     public String print() {
 
         String output = "";
-
+        int index = 0;
         for(JData data : value){
-
+            output += "[" + index++ + "]: ";
             output += data.print();
-
+            output += "\n";
         }
 
         return output;
@@ -118,7 +129,7 @@ public class JArray extends JData{
         if(value == null || value.length == 0)
             return null;
 
-        int size = value.length*(value[0].toByte().length);
+        int size = this.computeSize();
         byte bytes[] = new byte[size];
         int arrayIndex = 0;
 
@@ -134,6 +145,9 @@ public class JArray extends JData{
         return bytes;
     }
 
+    public int getElementId() {
+        return elementType;
+    }
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================
@@ -142,7 +156,7 @@ public class JArray extends JData{
 
         int size = 0;
         for(JData data : value){
-            size += data.getSize();
+            size += data.toByte().length;
         }
 
         return size;
@@ -196,7 +210,7 @@ public class JArray extends JData{
             case OCTET_STRING:
             case CHARACTER_STRING:
             case LONG_OCTET_STRING:
-            case LONG_CHARARACTER_STRING:
+            case LONG_CHARACTER_STRING:
                 return new JString(byteData);
             default:
                 return null;

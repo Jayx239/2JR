@@ -20,7 +20,7 @@ public class JString extends JData {
         super(CHARACTER_STRING, STRING_NAME, 1);
 
         if(getSize() > 8){
-            setId(LONG_CHARARACTER_STRING);
+            setId(LONG_CHARACTER_STRING);
         }
 
     }
@@ -29,15 +29,25 @@ public class JString extends JData {
 
         super(CHARACTER_STRING, STRING_NAME, size);
 
-        if(getSize() > 8){
-            setId(LONG_CHARARACTER_STRING);
+        if(size == null){
+            throw new IllegalArgumentException("JString input size cannot be null");
+        }
+        if(value == null){
+            throw new IllegalArgumentException("JString input value cannot be null");
         }
 
-        this.value = value;
+        if(getSize() > 8){
+            setId(LONG_CHARACTER_STRING);
+        }
+
+        setValue(value);
     }
 
     public JString(byte[] byteString) {
         super(CHARACTER_STRING,STRING_NAME,byteString.length);
+        if(byteString == null){
+            throw new IllegalArgumentException("JString input byteString cannot be null");
+        }
         setValue(byteString);
     }
 
@@ -55,7 +65,7 @@ public class JString extends JData {
         setSize(value.length());
         setName(STRING_NAME);
         if(getSize()>8) {
-            setId(LONG_CHARARACTER_STRING);
+            setId(LONG_CHARACTER_STRING);
         }
     }
     public void setValue(byte[] byteString) {
@@ -64,7 +74,7 @@ public class JString extends JData {
             value+=(char) byteChar;
         }
 
-        setName(value);
+        setValue(value);
     }
     //==================================================================================================================
     // Public Functions(s)
@@ -91,11 +101,7 @@ public class JString extends JData {
     public String print() {
 
         String output = "String Value: " + value + "\n";
-
-        System.out.print(output);
-
         return output;
-
     }
 
     //==================================================================================================================

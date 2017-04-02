@@ -174,4 +174,28 @@ public class JUnsignedIntegerTest {
     }
 
     // TODO: implement and write tests for compress and savings methods
+    @Test
+    public void evaluateCompress() {
+        JUnsignedInteger jUnsigned = new JUnsignedInteger(THIRTY_TWO_BIT,1024);
+
+        assertEquals(THIRTY_TWO_BIT.ordinal(),jUnsigned.getSize());
+        assertEquals(2, jUnsigned.compress().length);
+
+        assertEquals(jUnsigned.toByte()[0], jUnsigned.compress()[0]);
+        assertEquals(jUnsigned.toByte()[1], jUnsigned.compress()[1]);
+
+    }
+
+    @Test
+    public void evaluateGetSavings() {
+        JUnsignedInteger jUnsigned = new JUnsignedInteger(THIRTY_TWO_BIT,1024);
+
+        assertEquals(THIRTY_TWO_BIT.ordinal(),jUnsigned.getSize());
+        assertEquals(2, jUnsigned.compress().length);
+
+        assertEquals(jUnsigned.toByte()[0], jUnsigned.compress()[0]);
+        assertEquals(jUnsigned.toByte()[1], jUnsigned.compress()[1]);
+
+        assertEquals(2,jUnsigned.getSavings());
+    }
 }

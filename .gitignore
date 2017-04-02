@@ -1,6 +1,7 @@
 2JR.iml
 .idea/
 .metadata
+out/
 /bin/
 tmp/
 *.tmp

@@ -11,7 +11,6 @@ import com.twojr.toolkit.integer.JUnsignedInteger;
  */
 public abstract class Command extends JData{
 
-    private JInteger jId;
 
     //==================================================================================================================
     // Constructor(s)
@@ -20,16 +19,13 @@ public abstract class Command extends JData{
     public Command() {
     }
 
-    public Command(int id, String name, int size, JInteger jId) {
-        super(id, name, size);
-        this.jId = jId;
+    public Command(byte id, String name) {
+        super(id, name, 1);
     }
 
     public Command(byte id){
 
-        JUnsignedInteger uint = new JUnsignedInteger(new byte[]{id});
-
-        this.jId = uint;
+        setId(id);
 
     }
 
@@ -37,15 +33,6 @@ public abstract class Command extends JData{
     //==================================================================================================================
     // Getter(s) & Setter(s)
     //==================================================================================================================
-
-    public JInteger getjId() {
-        return jId;
-    }
-
-    public void setjId(JInteger jId) {
-        this.jId = jId;
-    }
-
 
     //==================================================================================================================
     // Public Functions(s)
