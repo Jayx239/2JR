@@ -81,6 +81,25 @@ public class JBitmap extends JData {
         setBitValue(value,bitOffset,0);
     }
 
+    public boolean getBitValue(int byteOffset,int bitOffset){
+
+        if(!isValidBitOffset(bitOffset) || !isValidByteOffset(byteOffset)) {
+            return false;
+        }
+
+        byte data = this.value[byteOffset];
+
+        return (data & (1 << bitOffset)) != 0;
+
+
+    }
+
+
+    public boolean getBitValue(int bitOffset){
+
+        return getBitValue(0, bitOffset);
+
+    }
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================

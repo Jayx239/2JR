@@ -4,6 +4,7 @@ import com.twojr.protocol.Attribute;
 import com.twojr.toolkit.JData;
 import com.twojr.toolkit.JIdentity;
 import com.twojr.toolkit.JInteger;
+import com.twojr.toolkit.integer.JUnsignedInteger;
 
 
 import java.util.ArrayList;
@@ -28,6 +29,12 @@ public class EndPoint extends JData{
         super(jId.getValue(), name, 1);
         this.jId = jId;
         this.attributes = attributes;
+    }
+
+    public EndPoint(byte id){
+
+        this.jId = new JUnsignedInteger(new byte[] {id});
+        this.attributes = null;
     }
 
 //==================================================================================================================

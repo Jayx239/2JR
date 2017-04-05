@@ -28,6 +28,13 @@ public class AttributeControl extends JBitmap{
         this.lengthControl = lengthControl;
     }
 
+    public AttributeControl(byte[] data){
+
+        super(data);
+        this.attributeMap = null;
+        this.lengthControl = getBitValue(getSize()*8 -1);
+
+    }
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
@@ -41,6 +48,13 @@ public class AttributeControl extends JBitmap{
         this.attributeMap = attributeMap;
     }
 
+    public boolean isLengthControl() {
+        return lengthControl;
+    }
+
+    public void setLengthControl(boolean lengthControl) {
+        this.lengthControl = lengthControl;
+    }
 
     //==================================================================================================================
     // Public Functions(s)
