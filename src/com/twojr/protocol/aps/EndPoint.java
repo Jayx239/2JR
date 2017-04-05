@@ -84,12 +84,25 @@ public class EndPoint extends JData{
 
     @Override
     public String print() {
-        return null;
+
+        String str = "";
+
+        for(Attribute attribute : attributes){
+
+            str += attribute.getName() + "\n" + attribute.getData().print();
+
+        }
+
+        System.out.println(str);
+
+        return str;
+
     }
 
     @Override
     public byte[] toByte() {
-        return new byte[0];
+
+        return jId.toByte();
     }
 
     @Override

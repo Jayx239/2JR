@@ -1,60 +1,40 @@
 package com.twojr.protocol;
 
-import com.twojr.toolkit.IPrintable;
-import com.twojr.toolkit.JInteger;
+import com.digi.xbee.api.models.XBee16BitAddress;
+import com.digi.xbee.api.models.XBee64BitAddress;
+import com.twojr.protocol.network.NetworkPacket;
 
 /**
- * Created by rcunni002c on 11/17/2016.
+ * Created by rcunni002c on 4/4/2017.
  */
-public abstract class Packet implements IPrintable {
+public class TwoJrDataGram {
 
-    private JInteger sequenceNumber;
-    private byte[] payload;
+    private XBee64BitAddress destinationLong;
+    private XBee16BitAddress desintationShort;
+    private NetworkPacket packet;
 
     //==================================================================================================================
     // Constructor(s)
     //==================================================================================================================
 
-    public Packet(){
-
-    }
-
-    public Packet(JInteger sequenceNumber, byte[] payload) {
-        this.sequenceNumber = sequenceNumber;
-        this.payload = payload;
+    public TwoJrDataGram(XBee64BitAddress destinationLong, XBee16BitAddress desintationShort, NetworkPacket packet) {
+        this.destinationLong = destinationLong;
+        this.desintationShort = desintationShort;
+        this.packet = packet;
     }
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
     //==================================================================================================================
 
-    public JInteger getSequenceNumber() {
-        return sequenceNumber;
-    }
-
-    public void setSequenceNumber(JInteger sequenceNumber) {
-        this.sequenceNumber = sequenceNumber;
-    }
-
-    public byte[] getPayload() {
-        return payload;
-    }
-
-    public void setPayload(byte[] payload) {
-        this.payload = payload;
-    }
-
-
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
-    public abstract  byte[] toByte();
-
-    public abstract int getSize();
 
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================
 
 }/*********************************************END OF FILE*************************************************************/
+
 
