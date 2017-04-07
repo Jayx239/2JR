@@ -29,6 +29,9 @@ public abstract class Command extends JData{
 
     }
 
+    public Command(int id, String name, int size, JInteger jId) {
+    }
+
 
     //==================================================================================================================
     // Getter(s) & Setter(s)

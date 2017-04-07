@@ -1,46 +1,62 @@
 package com.twojr.protocol.devices;
 
+import com.digi.xbee.api.Raw802Device;
+import com.digi.xbee.api.XBeeDevice;
+import com.digi.xbee.api.exceptions.XBeeException;
+import com.digi.xbee.api.models.XBee64BitAddress;
+import com.twojr.protocol.aps.EndPoint;
 import com.twojr.toolkit.JIdentity;
 import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.JString;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+
 /**
  * Created by rcunni002c on 11/17/2016.
  */
-public abstract class TwoJRDevice extends JIdentity {
+public abstract class TwoJRDevice extends Raw802Device {
 
-    private TwoJRRadioListener radioListener;
+    private TwoJrDataListener radioListener;
     private JString modelID;
     private JString manufacturer;
     private JInteger applicationVersion;
+    private HashMap<XBee64BitAddress,LinkedList<EndPoint>> endPoints;
 
 
     //==================================================================================================================
     // Constructor(s)
     //==================================================================================================================
 
-    public TwoJRDevice(){
-
-    }
-
-    public TwoJRDevice(int id, String name, TwoJRRadioListener radioListener, JString modelID, JString manufacturer, JInteger applicationVersion) {
-        super(id, name);
+    public TwoJRDevice(String port, int baudRate, TwoJrDataListener radioListener, JString modelID, JString manufacturer,
+                       JInteger applicationVersion, HashMap<XBee64BitAddress, LinkedList<EndPoint>> endPoints) {
+        super(port, baudRate);
         this.radioListener = radioListener;
         this.modelID = modelID;
         this.manufacturer = manufacturer;
         this.applicationVersion = applicationVersion;
+        this.endPoints = endPoints;
+
     }
 
+    public TwoJRDevice(String port, int baudRate, TwoJrDataListener radioListener, JString modelID, JString manufacturer, JInteger applicationVersion) {
+        super(port, baudRate);
+        this.radioListener = radioListener;
+        this.modelID = modelID;
+        this.manufacturer = manufacturer;
+        this.applicationVersion = applicationVersion;
+        this.endPoints = new HashMap<>();
+    }
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
     //==================================================================================================================
 
-    public TwoJRRadioListener getRadioListener() {
+    public TwoJrDataListener getRadioListener() {
         return radioListener;
     }
 
-    public void setRadioListener(TwoJRRadioListener radioListener) {
+    public void setRadioListener(TwoJrDataListener radioListener) {
         this.radioListener = radioListener;
     }
 
@@ -68,14 +84,21 @@ public abstract class TwoJRDevice extends JIdentity {
         this.applicationVersion = applicationVersion;
     }
 
+    public HashMap<XBee64BitAddress, LinkedList<EndPoint>> getEndPoints() {
+        return endPoints;
+    }
+
+    public void setEndPoints(HashMap<XBee64BitAddress, LinkedList<EndPoint>> endPoints) {
+        this.endPoints = endPoints;
+    }
 
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
 
-    public abstract void start();
-    public abstract void close();
-    public abstract void send();
+    public abstract void start() throws XBeeException;
+    public abstract void stop();
+    public abstract void send() throws XBeeException;
     public abstract void read();
     public abstract void discover();
 

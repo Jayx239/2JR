@@ -1,5 +1,6 @@
 package com.twojr.protocol.devices.end_device;
 
+import com.twojr.protocol.devices.TwoJrDataListener;
 import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.JString;
 import com.twojr.protocol.devices.TwoJRDevice;
@@ -17,11 +18,8 @@ public class EndDevice extends TwoJRDevice{
     // Constructor(s)
     //==================================================================================================================
 
-    public EndDevice() {
-    }
-
-    public EndDevice(int id, String name, TwoJRRadioListener radioListener, JString modelID, JString manufacturer, JInteger applicationVersion, int sleepInterval) {
-        super(id, name, radioListener, modelID, manufacturer, applicationVersion);
+    public EndDevice(String port, int baudRate, TwoJrDataListener radioListener, JString modelID, JString manufacturer, JInteger applicationVersion, int sleepInterval) {
+        super(port, baudRate, radioListener, modelID, manufacturer, applicationVersion);
         this.sleepInterval = sleepInterval;
     }
 
@@ -49,7 +47,7 @@ public class EndDevice extends TwoJRDevice{
     }
 
     @Override
-    public void close() {
+    public void stop() {
 
     }
 
@@ -68,10 +66,6 @@ public class EndDevice extends TwoJRDevice{
 
     }
 
-    @Override
-    public String print() {
-        return null;
-    }
 
     //==================================================================================================================
     // Private Functions(s)

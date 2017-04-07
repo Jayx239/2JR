@@ -8,13 +8,15 @@ import com.twojr.toolkit.integer.JUnsignedInteger;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
+import static com.twojr.protocol.aps.IApsPacket.apsCommands.*;
+
 
 /**
  * Created by rcunni002c on 11/17/2016.
  */
-public class ApsPacket extends Packet implements  IApsPacket {
+public class ApsPacket extends Packet implements IApsPacket {
 
-    private Command commandFrame;
+    private apsCommands commandFrame;
     private EndPoint endPoint;
     private int attributeCtrlLength;
     private AttributeControl attrCtrl;
@@ -27,16 +29,21 @@ public class ApsPacket extends Packet implements  IApsPacket {
     public ApsPacket() {
     }
 
-    public ApsPacket(JInteger sequenceNumber, byte[] payload, Command commandFrame, EndPoint endPoint, AttributeControl attrCtrl, LengthControl lengthControl) {
+    public ApsPacket(JInteger sequenceNumber, byte[] payload, apsCommands commandFrame, EndPoint endPoint, AttributeControl attrCtrl, LengthControl lengthControl) {
+
         super(sequenceNumber, payload);
+
         this.commandFrame = commandFrame;
         this.endPoint = endPoint;
         this.attrCtrl = attrCtrl;
         this.lengthControl = lengthControl;
         this.attributeCtrlLength = attrCtrl.getSize();
+
     }
 
-    public ApsPacket(JInteger sequenceNumber, byte[] payload, Command commandFrame, EndPoint endPoint, AttributeControl attrCtrl) {
+
+
+    public ApsPacket(JInteger sequenceNumber, byte[] payload, apsCommands commandFrame, EndPoint endPoint, AttributeControl attrCtrl) {
         super(sequenceNumber, payload);
         this.commandFrame = commandFrame;
         this.endPoint = endPoint;
@@ -53,7 +60,7 @@ public class ApsPacket extends Packet implements  IApsPacket {
         setSequenceNumber(sequenceNumber);
         count++;
 
-        this.commandFrame = Command.createCommand(data[count]);
+        this.commandFrame = getApsCommand(data[count]);
         count++;
 
         this.endPoint = new EndPoint(data[count]);
@@ -86,11 +93,11 @@ public class ApsPacket extends Packet implements  IApsPacket {
     // Getter(s) & Setter(s)
     //==================================================================================================================
 
-    public Command getCommandFrame() {
+    public apsCommands getCommandFrame() {
         return commandFrame;
     }
 
-    public void setCommandFrame(Command commandFrame) {
+    public void setCommandFrame(apsCommands commandFrame) {
         this.commandFrame = commandFrame;
     }
 
@@ -127,6 +134,7 @@ public class ApsPacket extends Packet implements  IApsPacket {
     public byte[] toByte() {
 
         byte[] data;
+        int count = 0;
 
         if(attrCtrl.isLengthControl()){
 
@@ -138,31 +146,30 @@ public class ApsPacket extends Packet implements  IApsPacket {
 
         }
 
-        data[0] = commandFrame.toByte()[0];
-        data[1] = endPoint.toByte()[0];
-        data[2] = (byte)attributeCtrlLength;
+        data[count++] = getSequenceNumber().toByte()[0];
 
+        data[count++] = commandFrame.getId();
+
+        data[count++] = endPoint.toByte()[0];
+
+        data[count++] = (byte)attributeCtrlLength;
+
+
+        for(int i  = count; i < 4 + attributeCtrlLength; i++){
+
+            data[count++] = attrCtrl.toByte()[i-4];
+
+        }
 
         if(attrCtrl.isLengthControl()){
 
-            data[3] = lengthControl.toByte()[0];
+            for(int i  = count; i < 4 + attributeCtrlLength *2; i++){
 
-            for(int i  = 4; i < data.length; i++){
-
-                data[i] = getPayload()[i-4];
-
-            }
-
-        }else {
-
-            for(int i  = 3; i < data.length; i++){
-
-                data[i] = getPayload()[i-3];
+                data[count++] = lengthControl.toByte()[i- (4 + attributeCtrlLength)];
 
             }
 
         }
-
 
         return data;
 
@@ -173,11 +180,12 @@ public class ApsPacket extends Packet implements  IApsPacket {
 
         if(attrCtrl.isLengthControl()){
 
-            return getPayload().length + 4;
+            return getPayload().length + getAttrCtrl().getSize()*2+ 4;
 
         }else {
 
-            return getPayload().length + 3;
+            return getPayload().length + getAttrCtrl().getSize() + 4;
+
         }
 
     }
@@ -187,7 +195,7 @@ public class ApsPacket extends Packet implements  IApsPacket {
 
         String str = "";
 
-        str += commandFrame.print();
+        str += commandFrame.getId();
         str += endPoint.print();
         str += attrCtrl.print();
 
@@ -208,6 +216,42 @@ public class ApsPacket extends Packet implements  IApsPacket {
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================
+
+    public apsCommands getApsCommand(byte id){
+
+        switch (id){
+
+            case 0x00:
+                return READ;
+            case 0x01:
+                return READ_RESPONSE;
+            case 0x02:
+                return WRITE;
+            case 0x03:
+                return WRITE_RESPONSE;
+            case 0x04:
+                return DISCOVER;
+            case 0x05:
+                return  DISCOVER_RESPONSE;
+            case 0x06:
+                return CHECK_IN;
+            case 0x07:
+                return  CHECK_IN_RESPONSE;
+            case 0x08:
+                return WAKE_DEVICE;
+            case 0x09:
+                return WAKE_DEVICE_RESPONSE;
+            case 0x0A:
+                return SLEEP_DEVICE;
+            case 0x0B:
+                return SLEEP_DEVICE_RESPONSE;
+            default:
+                return MANF;
+
+
+        }
+
+    }
 
 }/*********************************************END OF FILE*************************************************************/
 

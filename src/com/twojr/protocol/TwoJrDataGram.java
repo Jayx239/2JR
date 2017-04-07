@@ -23,9 +23,39 @@ public class TwoJrDataGram {
         this.packet = packet;
     }
 
+    public TwoJrDataGram(XBee64BitAddress destinationLong, NetworkPacket packet) {
+        this.destinationLong = destinationLong;
+        this.packet = packet;
+    }
+
     //==================================================================================================================
     // Getter(s) & Setter(s)
     //==================================================================================================================
+
+    public XBee64BitAddress getDestinationLong() {
+        return destinationLong;
+    }
+
+    public void setDestinationLong(XBee64BitAddress destinationLong) {
+        this.destinationLong = destinationLong;
+    }
+
+    public XBee16BitAddress getDesintationShort() {
+        return desintationShort;
+    }
+
+    public void setDesintationShort(XBee16BitAddress desintationShort) {
+        this.desintationShort = desintationShort;
+    }
+
+    public NetworkPacket getPacket() {
+        return packet;
+    }
+
+    public void setPacket(NetworkPacket packet) {
+        this.packet = packet;
+    }
+
 
     //==================================================================================================================
     // Public Functions(s)
