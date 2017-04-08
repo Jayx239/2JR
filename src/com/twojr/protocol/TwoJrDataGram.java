@@ -18,9 +18,9 @@ public class TwoJrDataGram {
     // Constructor(s)
     //==================================================================================================================
 
-    public TwoJrDataGram(XBee64BitAddress destinationLong, XBee16BitAddress desintationShort, NetworkPacket packet) {
+    public TwoJrDataGram(XBee64BitAddress destinationLong, XBee16BitAddress destinationShort, NetworkPacket packet) {
         this.destinationLong = destinationLong;
-        this.destinationShort = desintationShort;
+        this.destinationShort = destinationShort;
         this.packet = packet;
     }
 
