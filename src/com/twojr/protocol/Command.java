@@ -1,6 +1,4 @@
 package com.twojr.protocol;
-
-import com.twojr.protocol.aps.commands.CheckInCommand;
 import com.twojr.toolkit.JData;
 import com.twojr.toolkit.JIdentity;
 import com.twojr.toolkit.JInteger;
@@ -64,9 +62,9 @@ public abstract class Command extends JData{
 
     public abstract void execute();
 
-    public static Command createCommand(byte id){
+    /*public static Command createCommand(byte id){
         return new CheckInCommand();
-    }
+    }*/
 
     //==================================================================================================================
     // Private Functions(s)

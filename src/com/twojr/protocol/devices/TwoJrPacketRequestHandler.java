@@ -2,11 +2,7 @@ package com.twojr.protocol.devices;
 
 import com.twojr.protocol.TwoJrDataGram;
 import com.twojr.protocol.aps.ApsPacket;
-import com.twojr.protocol.aps.IApsPacket;
-import com.twojr.protocol.aps.IApsPacket.apsCommands;
 import com.twojr.protocol.network.NetworkPacket;
-
-import static com.twojr.protocol.aps.IApsPacket.apsCommands.*;
 
 /**
  * Created by rcunni002c on 4/7/2017.
