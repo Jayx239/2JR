@@ -1,11 +1,10 @@
 package com.twojr.protocol.devices;
 
 import com.digi.xbee.api.Raw802Device;
-import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.exceptions.XBeeException;
 import com.digi.xbee.api.models.XBee64BitAddress;
+import com.twojr.protocol.TwoJrDatagramQueue;
 import com.twojr.protocol.aps.EndPoint;
-import com.twojr.toolkit.JIdentity;
 import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.JString;
 
@@ -22,7 +21,8 @@ public abstract class TwoJRDevice extends Raw802Device {
     private JString manufacturer;
     private JInteger applicationVersion;
     private HashMap<XBee64BitAddress,LinkedList<EndPoint>> endPoints;
-
+    private TwoJrDatagramQueue inMessageQueue;
+    private TwoJrDatagramQueue outMessageQueue;
 
     //==================================================================================================================
     // Constructor(s)
@@ -36,7 +36,8 @@ public abstract class TwoJRDevice extends Raw802Device {
         this.manufacturer = manufacturer;
         this.applicationVersion = applicationVersion;
         this.endPoints = endPoints;
-
+        this.inMessageQueue = new TwoJrDatagramQueue();
+        this.outMessageQueue = new TwoJrDatagramQueue();
     }
 
     public TwoJRDevice(String port, int baudRate, TwoJrDataListener radioListener, JString modelID, JString manufacturer, JInteger applicationVersion) {
@@ -46,6 +47,8 @@ public abstract class TwoJRDevice extends Raw802Device {
         this.manufacturer = manufacturer;
         this.applicationVersion = applicationVersion;
         this.endPoints = new HashMap<>();
+        this.inMessageQueue = new TwoJrDatagramQueue();
+        this.outMessageQueue = new TwoJrDatagramQueue();
     }
 
     //==================================================================================================================
