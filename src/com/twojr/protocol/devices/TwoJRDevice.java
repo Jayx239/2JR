@@ -95,6 +95,13 @@ public abstract class TwoJRDevice extends Raw802Device {
         this.endPoints = endPoints;
     }
 
+    public TwoJrDatagramQueue getInMessageQueue() {
+        return inMessageQueue;
+    }
+
+    public TwoJrDatagramQueue getOutMessageQueue() {
+        return outMessageQueue;
+    }
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================

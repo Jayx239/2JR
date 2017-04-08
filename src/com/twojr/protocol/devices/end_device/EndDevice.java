@@ -1,13 +1,12 @@
 package com.twojr.protocol.devices.end_device;
 
-import com.digi.xbee.api.exceptions.XBeeDeviceException;
 import com.digi.xbee.api.exceptions.XBeeException;
+import com.digi.xbee.api.models.XBeeMessage;
 import com.twojr.protocol.TwoJrDataGram;
+import com.twojr.protocol.devices.TwoJRDevice;
 import com.twojr.protocol.devices.TwoJrDataListener;
 import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.JString;
-import com.twojr.protocol.devices.TwoJRDevice;
-import com.twojr.protocol.devices.TwoJRRadioListener;
 
 /**
  * Created by rcunni002c on 11/17/2016.
@@ -65,12 +64,23 @@ public class EndDevice extends TwoJRDevice{
 
     @Override
     public void send() throws XBeeException {
+        // Get next queued message
+        TwoJrDataGram nextMessage = getOutMessageQueue().getNext();
 
+        // Send message
+        super.sendData(nextMessage.getDestinationLong(),nextMessage.toByte());
     }
 
     @Override
     public void read() {
+        // Read encoded data
+        XBeeMessage nextMessage = super.readData();
 
+        // Strip datagram data
+        TwoJrDataGram nextDatagram = new TwoJrDataGram(nextMessage.getData());
+
+        // Store datagram in inbound queue
+        getInMessageQueue().insert(nextDatagram);
     }
 
     @Override
