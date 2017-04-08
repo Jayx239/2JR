@@ -1,5 +1,8 @@
 package com.twojr.protocol.devices.end_device;
 
+import com.digi.xbee.api.exceptions.XBeeDeviceException;
+import com.digi.xbee.api.exceptions.XBeeException;
+import com.twojr.protocol.TwoJrDataGram;
 import com.twojr.protocol.devices.TwoJrDataListener;
 import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.JString;
@@ -12,8 +15,8 @@ import com.twojr.protocol.devices.TwoJRRadioListener;
 public class EndDevice extends TwoJRDevice{
 
 
-    public int sleepInterval;
-
+    private int sleepInterval;
+    private boolean running = false;
     //==================================================================================================================
     // Constructor(s)
     //==================================================================================================================
@@ -36,6 +39,9 @@ public class EndDevice extends TwoJRDevice{
         this.sleepInterval = sleepInterval;
     }
 
+    public boolean isRunning() {
+        return this.running;
+    }
 
     //==================================================================================================================
     // Public Functions(s)
@@ -43,7 +49,13 @@ public class EndDevice extends TwoJRDevice{
 
     @Override
     public void start() {
-
+        try {
+            this.open();
+            this.running = true;
+        }
+        catch (XBeeException ex) {
+            this.running = false;
+        }
     }
 
     @Override
@@ -52,7 +64,7 @@ public class EndDevice extends TwoJRDevice{
     }
 
     @Override
-    public void send() {
+    public void send() throws XBeeException {
 
     }
 
@@ -63,7 +75,7 @@ public class EndDevice extends TwoJRDevice{
 
     @Override
     public void discover() {
-
+        this.getNetwork();
     }
 
 

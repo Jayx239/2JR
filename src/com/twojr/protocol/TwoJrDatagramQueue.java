@@ -39,5 +39,14 @@ public class TwoJrDatagramQueue {
         valuesList.addFirst(nextFirst);
     }
 
+    // Returns the size of the queue
+    public int getSize() {
+        return valuesList.size();
+    }
+
+    // Clears all elements from the queue
+    public void clearQueue() {
+        valuesList.clear();
+    }
 
 }

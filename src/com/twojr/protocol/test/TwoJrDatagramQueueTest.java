@@ -1,4 +1,4 @@
-package com.twojr.protocol.aps.test;
+package com.twojr.protocol.test;
 
 import com.digi.xbee.api.models.XBee64BitAddress;
 import com.twojr.protocol.TwoJrDataGram;

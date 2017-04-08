@@ -4,7 +4,7 @@ import com.twojr.protocol.Attribute;
 import com.twojr.protocol.aps.ApsPacket;
 import com.twojr.protocol.aps.AttributeControl;
 import com.twojr.protocol.aps.EndPoint;
-import com.twojr.protocol.aps.commands.CheckInCommand;
+import com.twojr.protocol.aps.IApsPacket;
 import com.twojr.toolkit.JDataSizes;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 import junit.framework.Assert;
@@ -27,7 +27,8 @@ public class ApsPacketTest {
 
         JUnsignedInteger sequenceNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT,34);
         byte[] payload = new byte[]{3,5,2,1,6,8,23};
-        CheckInCommand commandFrame = new CheckInCommand();
+        //CheckInCommand commandFrame = new CheckInCommand();
+        IApsPacket.apsCommands commandFrame = IApsPacket.apsCommands.DISCOVER;
         EndPoint endPoint = new EndPoint("Endpoint 1", new JUnsignedInteger(JDataSizes.EIGHT_BIT,32),new ArrayList<Attribute>(){});
         AttributeControl attributeControl = new AttributeControl(JDataSizes.EIGHT_BIT, new HashMap<Integer,Attribute>(),false);
         ApsPacket apsPacket = new ApsPacket(sequenceNumber,payload,commandFrame,endPoint,attributeControl);
@@ -37,8 +38,8 @@ public class ApsPacketTest {
         for(int i=0; i<payload.length; i++)
             assertEquals(payload[i],apsPacket.getPayload()[i]);
 
-        for(int i=0; i<commandFrame.toByte().length; i++)
-            assertEquals(commandFrame.toByte()[i],apsPacket.getCommandFrame().toByte()[i]);
+        //for(int i=0; i<commandFrame.toByte().length; i++)
+            assertEquals(commandFrame.ordinal(),apsPacket.getCommandFrame());
 
         for(int i=0; i<endPoint.toByte().length; i++)
             assertEquals(endPoint.toByte()[i],apsPacket.getEndPoint().toByte()[i]);
@@ -52,7 +53,8 @@ public class ApsPacketTest {
 
         JUnsignedInteger sequenceNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT,34);
         byte[] payload = new byte[]{3,5,2,1,6,8,23};
-        CheckInCommand commandFrame = new CheckInCommand();
+        //CheckInCommand commandFrame = new CheckInCommand()
+        IApsPacket.apsCommands commandFrame = IApsPacket.apsCommands.DISCOVER;
         EndPoint endPoint = new EndPoint("Endpoint 1", new JUnsignedInteger(JDataSizes.EIGHT_BIT,32),new ArrayList<Attribute>(){});
         AttributeControl attributeControl = new AttributeControl(JDataSizes.EIGHT_BIT, new HashMap<Integer,Attribute>(),false);
 
@@ -65,8 +67,8 @@ public class ApsPacketTest {
         for(int i=0; i<payload.length; i++)
             packetByteVector.add(payload[i]);
 
-        for(int i=0; i<commandFrame.toByte().length; i++)
-            packetByteVector.add(commandFrame.toByte()[i]);
+        //for(int i=0; i<commandFrame.toByte().length; i++)
+            packetByteVector.add((byte) commandFrame.ordinal());
 
         for(int i=0; i<endPoint.toByte().length; i++)
             packetByteVector.add(endPoint.toByte()[i]);
@@ -87,7 +89,8 @@ public class ApsPacketTest {
 
         JUnsignedInteger sequenceNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT,34);
         byte[] payload = new byte[]{3,5,2,1,6,8,23};
-        CheckInCommand commandFrame = new CheckInCommand();
+        //CheckInCommand commandFrame = new CheckInCommand();
+        IApsPacket.apsCommands commandFrame = IApsPacket.apsCommands.DISCOVER;
         EndPoint endPoint = new EndPoint("Endpoint 1", new JUnsignedInteger(JDataSizes.EIGHT_BIT,32),new ArrayList<Attribute>(){});
         AttributeControl attributeControl = new AttributeControl(JDataSizes.EIGHT_BIT, new HashMap<Integer,Attribute>(),false);
         ApsPacket apsPacket = new ApsPacket(sequenceNumber,payload,commandFrame,endPoint,attributeControl);
@@ -100,8 +103,7 @@ public class ApsPacketTest {
         for(int i=0; i<payload.length; i++)
             packetByteVector.add(payload[i]);
 
-        for(int i=0; i<commandFrame.toByte().length; i++)
-            packetByteVector.add(commandFrame.toByte()[i]);
+        packetByteVector.add((byte) commandFrame.ordinal());
 
         for(int i=0; i<endPoint.toByte().length; i++)
             packetByteVector.add(endPoint.toByte()[i]);
@@ -113,7 +115,9 @@ public class ApsPacketTest {
         for(int i=0; i<array.length; i++)
             array[i] = packetByteVector.elementAt(i);
 
-        Assert.assertEquals(apsPacket.toByte(),array);
+        int index = 0;
+        for(byte b : apsPacket.toByte())
+            assertEquals(b,array[index++]);
 
 
 
