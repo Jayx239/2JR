@@ -41,7 +41,7 @@ public class AttributeControl extends JBitmap{
 
         }
 
-        this.lengthControl = getBitValue(getSize()*8 -1);
+        this.lengthControl = this.getBitValue(getSize()-1,7);
 
     }
 

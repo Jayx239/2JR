@@ -39,7 +39,7 @@ public class ApsPacketTest {
             assertEquals(payload[i],apsPacket.getPayload()[i]);
 
         //for(int i=0; i<commandFrame.toByte().length; i++)
-            assertEquals(commandFrame.ordinal(),apsPacket.getCommandFrame());
+            assertEquals(commandFrame,apsPacket.getCommandFrame());
 
         for(int i=0; i<endPoint.toByte().length; i++)
             assertEquals(endPoint.toByte()[i],apsPacket.getEndPoint().toByte()[i]);
@@ -82,6 +82,10 @@ public class ApsPacketTest {
 
         ApsPacket byteConstructed = new ApsPacket(array);
 
+        for(int i=0; i<array.length; i++) {
+            assertEquals(array[i],byteConstructed.toByte()[i]);
+        }
+
     }
 
     @Test
@@ -97,28 +101,33 @@ public class ApsPacketTest {
         Vector<Byte> packetByteVector = new Vector<>();
 
 
-        for(int i=0; i<sequenceNumber.toByte().length; i++)
+        for(int i=0; i<sequenceNumber.getSize(); i++)
             packetByteVector.add(sequenceNumber.toByte()[i]);
+
+        packetByteVector.add((byte) commandFrame.getId());
+
+        for(int i=0; i<endPoint.getSize(); i++)
+            packetByteVector.add(endPoint.toByte()[i]);
+
+        packetByteVector.add((byte) attributeControl.getSize());
+
+        for(int i=0; i<attributeControl.getSize(); i++)
+            packetByteVector.add(attributeControl.toByte()[i]);
 
         for(int i=0; i<payload.length; i++)
             packetByteVector.add(payload[i]);
-
-        packetByteVector.add((byte) commandFrame.ordinal());
-
-        for(int i=0; i<endPoint.toByte().length; i++)
-            packetByteVector.add(endPoint.toByte()[i]);
-
-        for(int i=0; i<attributeControl.toByte().length; i++)
-            packetByteVector.add(attributeControl.toByte()[i]);
 
         byte[] array = new byte[packetByteVector.size()];
         for(int i=0; i<array.length; i++)
             array[i] = packetByteVector.elementAt(i);
 
-        int index = 0;
-        for(byte b : apsPacket.toByte())
-            assertEquals(b,array[index++]);
+        //System.err.println(Integer.toString(array.length));
 
+        int index = 0;
+        byte[] bytes = apsPacket.toByte();
+        for(int i=0; i<bytes.length; i++) {
+            assertEquals(array[i], bytes[i]);
+        }
 
 
     }

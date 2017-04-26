@@ -57,7 +57,7 @@ public class NetworkPacket extends JData implements INetPacket {
         singleTemp[0] = encodedPacket[networkPacketByteOffset[networkPacketMasks.COMMAND_FRAME.ordinal()]];
         this.commandFrame = (new JUnsignedInteger(singleTemp));
 
-        this.packetSize = MAXPACKETSIZE;
+        this.packetSize = encodedPacket.length;
 
         int sizeOfPayload = encodedPacket.length - networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()];
         this.payload = new byte[this.packetSize - networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()]];
@@ -67,10 +67,6 @@ public class NetworkPacket extends JData implements INetPacket {
 
         for (int i = 0; i < sizeOfPayload; i++)
             this.payload[i] = encodedPacket[i + networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()]];
-
-        for(int i=sizeOfPayload; i < payload.length; i++) {
-            this.payload[i] = (byte) 0x00;
-        }
 
     }
 
@@ -127,29 +123,7 @@ public class NetworkPacket extends JData implements INetPacket {
     }
 
     public void setPayload(byte[] payload) {
-        int payloadSize = this.packetSize - networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()];
-        this.payload = new byte[payloadSize];
-        if(payload != null) {
-            for (int i = 0; i < payload.length; i++)
-                this.payload[i] = payload[i];
-
-            for (int i = payload.length; i < payloadSize; i++) {
-                this.payload[i] = (byte) 0x00;
-            }
-        }
-        else {
-            for(int i=0; i < payloadSize; i++) {
-                this.payload[i] = 0x00;
-            }
-        }
-    }
-
-    public int getPacketSize() {
-        return packetSize;
-    }
-
-    public void setPacketSize(int newPacketSize) {
-        packetSize = newPacketSize;
+        this.payload = payload;
     }
 
     //==================================================================================================================

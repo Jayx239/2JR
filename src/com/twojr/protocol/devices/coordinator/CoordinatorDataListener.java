@@ -1,6 +1,7 @@
 package com.twojr.protocol.devices.coordinator;
 
 import com.digi.xbee.api.models.ExplicitXBeeMessage;
+import com.digi.xbee.api.models.XBeeMessage;
 import com.twojr.protocol.devices.TwoJrDataListener;
 
 /**
@@ -17,6 +18,11 @@ public class CoordinatorDataListener extends TwoJrDataListener {
     public void explicitDataReceived(ExplicitXBeeMessage explicitXBeeMessage) {
 
 
+
+    }
+
+    @Override
+    public void dataReceived(XBeeMessage xBeeMessage) {
 
     }
 

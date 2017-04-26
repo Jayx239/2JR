@@ -3,6 +3,7 @@ package com.twojr.protocol.devices;
 import com.digi.xbee.api.Raw802Device;
 import com.digi.xbee.api.exceptions.XBeeException;
 import com.digi.xbee.api.models.XBee64BitAddress;
+import com.twojr.protocol.TwoJrDataGram;
 import com.twojr.protocol.TwoJrDatagramQueue;
 import com.twojr.protocol.aps.EndPoint;
 import com.twojr.toolkit.JInteger;
@@ -102,6 +103,17 @@ public abstract class TwoJRDevice extends Raw802Device {
     public TwoJrDatagramQueue getOutMessageQueue() {
         return outMessageQueue;
     }
+
+    // Method for queueing messages for transmission
+    public void queueMessageToSend(TwoJrDataGram twoJrDataGram) {
+        outMessageQueue.insert(twoJrDataGram);
+    }
+
+    // Method for inserting incoming message into queue
+    public void queueMessageToRead(TwoJrDataGram twoJrDataGram) {
+        inMessageQueue.insert(twoJrDataGram);
+    }
+
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
@@ -111,8 +123,6 @@ public abstract class TwoJRDevice extends Raw802Device {
     public abstract void send() throws XBeeException;
     public abstract void read();
     public abstract void discover();
-
-
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================
