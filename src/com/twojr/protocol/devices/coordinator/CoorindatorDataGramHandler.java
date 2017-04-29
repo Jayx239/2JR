@@ -17,7 +17,7 @@ public class CoorindatorDataGramHandler extends TwoJRDataGramHandler {
     //==================================================================================================================
 
     public CoorindatorDataGramHandler(Coordinator device) {
-        super(device);
+        super();
     }
 
     //==================================================================================================================

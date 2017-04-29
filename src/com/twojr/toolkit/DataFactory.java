@@ -13,6 +13,8 @@ public class DataFactory {
     public static JData getData(int id, byte[] dataStream) {
 
         switch (id) {
+            case BOOLEAN:
+                return  new JBoolean(dataStream);
             case EIGHT_BIT_MAP_DATA:
             case SIXTEEN_BIT_MAP_DATA:
             case TWENTY_FOUR_BIT_MAP_DATA:
@@ -60,8 +62,14 @@ public class DataFactory {
                 return new JArray();
             case IEEE_ADDRESS:
                 return new JAddress(dataStream);
-                
+
+            default:
+                return null;
 
         }
+
+        return null;
     }
+
+
 }

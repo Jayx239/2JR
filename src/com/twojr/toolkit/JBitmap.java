@@ -112,7 +112,7 @@ public class JBitmap extends JData {
     @Override
     public String print() {
 
-        String output = "Bitmap:\n";
+        String output = "";
         int row = 0;
         for(byte B : value) {
             output += "Row[" + row++ + "]: ";

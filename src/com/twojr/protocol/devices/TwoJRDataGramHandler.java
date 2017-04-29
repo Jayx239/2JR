@@ -15,7 +15,6 @@ import java.util.ArrayList;
  */
 public class TwoJRDataGramHandler {
 
-    private TwoJRDevice device;
     private TwoJRAPSPacketHandler twoJRAPSPacketHandler;
     private TwoJRNetworkPacketHandler twoJRNetworkPacketHandler;
 
@@ -23,8 +22,7 @@ public class TwoJRDataGramHandler {
     // Constructors(s)
     //==================================================================================================================
 
-    public TwoJRDataGramHandler(TwoJRDevice device) {
-        this.device = device;
+    public TwoJRDataGramHandler() {
         twoJRAPSPacketHandler = new TwoJRAPSPacketHandler();
         twoJRNetworkPacketHandler = new TwoJRNetworkPacketHandler();
     }
@@ -33,14 +31,6 @@ public class TwoJRDataGramHandler {
     //==================================================================================================================
     // Getter and Setters(s)
     //==================================================================================================================
-
-    public TwoJRDevice getDevice() {
-        return device;
-    }
-
-    public void setDevice(TwoJRDevice device) {
-        this.device = device;
-    }
 
     public TwoJRAPSPacketHandler getTwoJRAPSPacketHandler() {
         return twoJRAPSPacketHandler;
@@ -62,7 +52,7 @@ public class TwoJRDataGramHandler {
     // Public Functions(s)
     //==================================================================================================================
 
-    public TwoJrDataGram handle(TwoJrDataGram dataGram){
+    public TwoJrDataGram handle(TwoJrDataGram dataGram, TwoJRDevice device){
 
         NetworkPacket networkPacket = dataGram.getPacket();
         ApsPacket apsPacket = new ApsPacket(networkPacket.getPayload());
@@ -78,12 +68,13 @@ public class TwoJRDataGramHandler {
         EndPoint endPoint = device.getLocalEndPoint(apsPacket.getEndPoint().getId());
         AttributeControl attributeControl = apsPacket.getAttrCtrl();
         LengthControl lengthControl = apsPacket.getLengthControl();
-        ArrayList<Attribute> attributes = endPoint.getAttributes(attributeControl);
         byte[] apsPayload = new byte[0];
 
         switch (apsResponse.getCommandFrame()){
 
             case READ_RESPONSE:
+
+                ArrayList<Attribute> attributes = endPoint.getAttributes(attributeControl);
 
                 ArrayList<byte[]> bytes = new ArrayList<>();
 
@@ -99,7 +90,7 @@ public class TwoJRDataGramHandler {
 
             case WRITE_RESPONSE:
 
-
+                endPoint.setAttributes(attributeControl,apsPacket.getPayload());
 
                 break;
 
