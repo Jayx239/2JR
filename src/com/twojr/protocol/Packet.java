@@ -52,6 +52,29 @@ public abstract class Packet implements IPrintable {
 
     public abstract int getSize();
 
+    public String printPayload(boolean byteFormatted) {
+        int bInd = 0;
+        String output = "";
+        if (payload == null)
+            return null;
+        if (byteFormatted) {
+            for (byte b : payload) {
+
+                output += "Payload [" + bInd + "]: " + (b >> 7 & 0x01) +
+                        (b >> 6 & 0x01) + (b >> 5 & 0x01) + (b >> 4 & 0x01) +
+                        (b >> 3 & 0x01) + (b >> 2 & 0x01) + (b >> 1 & 0x01) +
+                        (b & 0x01) + "\n";
+                bInd++;
+            }
+        } else {
+            for (int i = 0; i < payload.length; i++) {
+                output += "Payload [" + i + "]: " + payload[i] + "\n";
+            }
+        }
+
+        return output;
+    }
+
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================

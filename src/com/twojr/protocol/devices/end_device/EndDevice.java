@@ -1,17 +1,12 @@
 package com.twojr.protocol.devices.end_device;
 
-import android.net.Network;
 import com.digi.xbee.api.exceptions.XBeeException;
-import com.digi.xbee.api.listeners.IDataReceiveListener;
 import com.digi.xbee.api.listeners.IExplicitDataReceiveListener;
-import com.digi.xbee.api.listeners.IPacketReceiveListener;
 import com.digi.xbee.api.models.ExplicitXBeeMessage;
 import com.digi.xbee.api.models.XBee64BitAddress;
 import com.digi.xbee.api.models.XBeeMessage;
-import com.digi.xbee.api.packet.XBeePacket;
 import com.twojr.protocol.Attribute;
 import com.twojr.protocol.TwoJrDataGram;
-import com.twojr.protocol.aps.ApsPacket;
 import com.twojr.protocol.aps.EndPoint;
 import com.twojr.protocol.devices.TwoJRDevice;
 import com.twojr.protocol.network.TwoJRNetworkPacketHandler;
@@ -100,11 +95,11 @@ public class EndDevice extends TwoJRDevice implements IExplicitDataReceiveListen
     @Override
     public void send() throws XBeeException {
         // Get next queued message
-        TwoJrDataGram nextMessage = getOutMessageQueue().getNext();
+        //TwoJrDataGram nextMessage = getOutMessageQueue().getNext();
         //NetworkPacket networkPacket = nextMessage.getPacket();
         // Send message
         //super.sendExplicitData(nextMessage.getDestinationLong(),apsPacket.getEndPoint().getId(),apsPacket.getEndPoint().getId(),);  //Data(nextMessage.getDestinationLong(),nextMessage.toByte());
-        super.sendData(nextMessage.getDestinationLong(),nextMessage.toByte());
+        //super.sendData(nextMessage.getDestinationLong(),nextMessage.toByte());
 
     }
 
@@ -120,7 +115,7 @@ public class EndDevice extends TwoJRDevice implements IExplicitDataReceiveListen
         //queueMessageToRead(nextDatagram);
 
         nextMessage.getDevice();
-        super.queueMessageToSend(new TwoJrDataGram(nextMessage.getDevice().get64BitAddress(),new NetworkPacket(new JUnsignedInteger(JDataSizes.EIGHT_BIT,0), new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkControlFlags.END_DEVICE.ordinal()),new JAddress(get64BitAddress().getValue()),new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkLayerCommands.REJOIN_RESPONSE.ordinal()))));
+        //super.queueMessageToSend(new TwoJrDataGram(nextMessage.getDevice().get64BitAddress(),new NetworkPacket(new JUnsignedInteger(JDataSizes.EIGHT_BIT,0), new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkControlFlags.END_DEVICE.ordinal()),new JAddress(get64BitAddress().getValue()),new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkLayerCommands.REJOIN_RESPONSE.ordinal()))));
         try {
             this.send();
         } catch (XBeeException ex) {
@@ -149,7 +144,7 @@ public class EndDevice extends TwoJRDevice implements IExplicitDataReceiveListen
         //ApsPacket responseApsPacket = apsPacketHandler.handle(new ApsPacket(nextDatagram.getPacket.getPayload()));
         //responseNetworkPacket.setPayload(apsPacket.toByte());
         responseDatagram = new TwoJrDataGram(new XBee64BitAddress(responseNetworkPacket.getMacAddress().toByte()),responseNetworkPacket);
-        super.queueMessageToSend(new TwoJrDataGram(explicitXBeeMessage.getDevice().get64BitAddress(),new NetworkPacket(new JUnsignedInteger(JDataSizes.EIGHT_BIT,0), new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkControlFlags.END_DEVICE.ordinal()),new JAddress(get64BitAddress().toString()),new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkLayerCommands.REJOIN_RESPONSE.ordinal()))));
+        //super.queueMessageToSend(new TwoJrDataGram(explicitXBeeMessage.getDevice().get64BitAddress(),new NetworkPacket(new JUnsignedInteger(JDataSizes.EIGHT_BIT,0), new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkControlFlags.END_DEVICE.ordinal()),new JAddress(get64BitAddress().toString()),new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkLayerCommands.REJOIN_RESPONSE.ordinal()))));
         try {
             this.send();
         } catch (XBeeException ex) {

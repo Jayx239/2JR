@@ -34,7 +34,7 @@ public class EndPoint extends JData{
     public EndPoint(byte id){
 
         this.jId = new JUnsignedInteger(new byte[] {id});
-        this.attributes = null;
+        this.attributes = new ArrayList<>();
     }
 
 //==================================================================================================================
@@ -87,13 +87,15 @@ public class EndPoint extends JData{
 
         String str = "";
 
+        str += getId();
+
         for(Attribute attribute : attributes){
 
             str += attribute.getName() + "\n" + attribute.getData().print();
 
         }
 
-        System.out.println(str);
+        //System.out.print(str);
 
         return str;
 
@@ -119,11 +121,11 @@ public class EndPoint extends JData{
 
         ArrayList<Attribute> attributes = new ArrayList<>();
 
-        for(int i = 0; i < attributeControl.getSize(); i++){
+        for(int i = 0; i < attributeControl.getSize() * 8; i++){
 
             if(attributeControl.getBitValue(i)){
 
-                attributes.add(attributes.get(i));
+                attributes.add(this.attributes.get(i));
             }
 
         }

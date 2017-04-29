@@ -59,6 +59,7 @@ public class EndDeviceTest {
             ex.printStackTrace();
         }
 
+        /*
         while((xBeeMessage = endDevice.readData(10000)) == null) {
             if(xBeeMessage != null) {
                 System.out.println("non-null");
@@ -66,10 +67,11 @@ public class EndDeviceTest {
 
         }
 
+
         twoJrDataGram = new TwoJrDataGram(xBeeMessage.getData());
 
         System.err.print(twoJrDataGram.getPacket().print());
-        //System.err.print(twoJrDataGram.getNext().getPacket().print());
+        System.err.print(twoJrDataGram.getNext().getPacket().print());
 
         byte[] packet = twoJrDataGram.toByte();
 
@@ -79,6 +81,8 @@ public class EndDeviceTest {
             System.err.print((char)packet[i]);
         }
         endDevice.stop();
+
+        */
 
     }
 

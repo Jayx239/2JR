@@ -6,6 +6,7 @@ import com.twojr.protocol.TwoJrDataGram;
 import com.twojr.protocol.aps.*;
 import com.twojr.protocol.devices.coordinator.Coordinator;
 import com.twojr.protocol.network.NetworkPacket;
+import com.twojr.protocol.network.TwoJRNetworkPacketHandler;
 
 import java.util.ArrayList;
 
@@ -16,7 +17,7 @@ public class TwoJRDataGramHandler {
 
     private TwoJRDevice device;
     private TwoJRAPSPacketHandler twoJRAPSPacketHandler;
-    //private TwoJRNetworkPAcketHandler twoJRNetworkPAcketHandler;
+    private TwoJRNetworkPacketHandler twoJRNetworkPacketHandler;
 
     //==================================================================================================================
     // Constructors(s)
@@ -25,6 +26,7 @@ public class TwoJRDataGramHandler {
     public TwoJRDataGramHandler(TwoJRDevice device) {
         this.device = device;
         twoJRAPSPacketHandler = new TwoJRAPSPacketHandler();
+        twoJRNetworkPacketHandler = new TwoJRNetworkPacketHandler();
     }
 
 
@@ -48,6 +50,14 @@ public class TwoJRDataGramHandler {
         this.twoJRAPSPacketHandler = twoJRAPSPacketHandler;
     }
 
+    public TwoJRNetworkPacketHandler getTwoJRNetworkPacketHandler() {
+        return twoJRNetworkPacketHandler;
+    }
+
+    public void setTwoJRNetworkPacketHandler(TwoJRNetworkPacketHandler twoJRNetworkPacketHandler) {
+        this.twoJRNetworkPacketHandler = twoJRNetworkPacketHandler;
+    }
+
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
@@ -57,11 +67,11 @@ public class TwoJRDataGramHandler {
         NetworkPacket networkPacket = dataGram.getPacket();
         ApsPacket apsPacket = new ApsPacket(networkPacket.getPayload());
         XBee64BitAddress address = new XBee64BitAddress(networkPacket.getMacAddress().toByte());
-        TwoJrDataGram reponse;
+        TwoJrDataGram response = dataGram;
         NetworkPacket networkResponse;
         ApsPacket apsResponse;
 
-
+        networkResponse = twoJRNetworkPacketHandler.handle(networkPacket);
         apsResponse = twoJRAPSPacketHandler.handle(apsPacket);
 
 
@@ -69,7 +79,7 @@ public class TwoJRDataGramHandler {
         AttributeControl attributeControl = apsPacket.getAttrCtrl();
         LengthControl lengthControl = apsPacket.getLengthControl();
         ArrayList<Attribute> attributes = endPoint.getAttributes(attributeControl);
-        byte[] apsPayload;
+        byte[] apsPayload = new byte[0];
 
         switch (apsResponse.getCommandFrame()){
 
@@ -113,6 +123,11 @@ public class TwoJRDataGramHandler {
                 break;
         }
 
+
+        apsResponse.setPayload(apsPayload);
+        networkResponse.setPayload(apsResponse.toByte());
+        response.setPacket(networkResponse);
+        response.setDestinationLong(address);
 
         return dataGram;
     }
