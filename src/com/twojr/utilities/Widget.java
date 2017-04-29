@@ -10,11 +10,9 @@ import java.util.Scanner;
 public class Widget {
 
     static void main() {
-        TwoJRTerminal demo = new TwoJRTerminal();
         boolean run = true;
         Scanner reader = new Scanner(System.in);
 
-        demo.printHelpMenu();
         while (run) {
             System.out.print("Enter a command: ");
             String command = reader.nextLine();
