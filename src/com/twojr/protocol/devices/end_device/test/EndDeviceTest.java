@@ -45,7 +45,7 @@ public class EndDeviceTest {
         endDevice.start();
         endDevice2.start();
 
-        ExplicitXBeeMessage xBeeMessage;
+        XBeeMessage xBeeMessage;
         TwoJrDataGram twoJrDataGram;
         //endDevice.addDataListener(endDevice);
         //endDevice.addPacketListener(endDevice);
