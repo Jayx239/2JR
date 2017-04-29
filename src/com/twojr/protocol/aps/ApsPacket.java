@@ -1,9 +1,12 @@
 package com.twojr.protocol.aps;
 
+import com.twojr.protocol.Command;
 import com.twojr.protocol.Packet;
 import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.twojr.protocol.aps.IApsPacket.apsCommands.*;
@@ -51,71 +54,40 @@ public class ApsPacket extends Packet implements IApsPacket {
 
     public ApsPacket(byte[] data){
 
-        attributeCtrlLength = 0;
-
-        if(data == null) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
-            return;
-        }
         int payloadSize;
         int count = 0;
-
-        if(data.length <= 1) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
-            return;
-        }
 
         JUnsignedInteger sequenceNumber = new JUnsignedInteger(new byte[]{data[count]});
         setSequenceNumber(sequenceNumber);
         count++;
 
-        if(data.length <= count) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
-            return;
-        }
         this.commandFrame = getApsCommand(data[count]);
         count++;
 
-        if(data.length <= count) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
-            return;
-        }
         this.endPoint = new EndPoint(data[count]);
         count++;
 
-        if(data.length <= count) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
-            return;
-        }
         this.attributeCtrlLength = data[count];
         count++;
 
-        if(data.length <= count) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
-            return;
-        }
         this.attrCtrl = new AttributeControl(Arrays.copyOfRange(data,4,attributeCtrlLength + count),endPoint);
         count += attributeCtrlLength;
 
-        if(data.length <= count) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
-            return;
-        }
-
         if(attrCtrl.isLengthControl()){
+
             this.lengthControl = new LengthControl(Arrays.copyOfRange(data, attributeCtrlLength + 5, attributeCtrlLength * 2 +5), endPoint);
             count += attributeCtrlLength;
+
+
         }
 
         payloadSize = data.length - count;
 
-        if(payloadSize <= 0) {
-            System.err.println("No payload for ApsPacket byte initialization");
-            return;
-        }
-
         byte[] payload = Arrays.copyOfRange(data,count, data.length);
+
         setPayload(payload);
+
+
     }
 
     //==================================================================================================================
@@ -162,14 +134,6 @@ public class ApsPacket extends Packet implements IApsPacket {
     @Override
     public byte[] toByte() {
 
-        if(getPayload() == null)
-            setPayload(new byte[0]);
-
-        if(!validData()) {
-            System.err.println("ApsPacket invalid data");
-            return null;
-        }
-
         byte[] data;
         int count = 0;
 
@@ -206,9 +170,6 @@ public class ApsPacket extends Packet implements IApsPacket {
 
             }
 
-        }
-        for(int i=0; i<getPayload().length;i++) {
-            data[count++] = getPayload()[i];
         }
 
         return data;
@@ -253,6 +214,30 @@ public class ApsPacket extends Packet implements IApsPacket {
 
     }
 
+    public byte[] generatePayload(ArrayList<byte[]> bytes){
+
+        int length = 0;
+
+        for(byte[] array : bytes){
+
+            length+= array.length;
+
+        }
+
+        byte[] payload = new byte[length];
+        int count = 0;
+
+        for(int i = 0; i < bytes.size(); i++){
+            for(int j = 0; j < bytes.get(i).length; j++){
+
+                payload[count] = bytes.get(i)[j];
+                count++;
+            }
+        }
+
+        return payload;
+    }
+
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================
@@ -291,29 +276,6 @@ public class ApsPacket extends Packet implements IApsPacket {
 
         }
 
-    }
-
-    private boolean validData() {
-
-        if(commandFrame == null)
-            return false;
-
-        if(endPoint == null)
-            return false;
-
-        if(commandFrame == null)
-            return false;
-
-        if(endPoint == null)
-            return false;
-
-        if(attrCtrl == null) {
-            return false;
-        }
-        if(lengthControl == null && attrCtrl.isLengthControl()) {
-            return false;
-        }
-        return true;
     }
 
 }/*********************************************END OF FILE*************************************************************/

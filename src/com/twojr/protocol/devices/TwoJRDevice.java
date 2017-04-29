@@ -1,11 +1,12 @@
 package com.twojr.protocol.devices;
 
 import com.digi.xbee.api.Raw802Device;
+import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.exceptions.XBeeException;
+import com.digi.xbee.api.models.XBee16BitAddress;
 import com.digi.xbee.api.models.XBee64BitAddress;
-import com.twojr.protocol.TwoJrDataGram;
-import com.twojr.protocol.TwoJrDatagramQueue;
 import com.twojr.protocol.aps.EndPoint;
+import com.twojr.toolkit.JIdentity;
 import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.JString;
 
@@ -21,24 +22,24 @@ public abstract class TwoJRDevice extends Raw802Device {
     private JString modelID;
     private JString manufacturer;
     private JInteger applicationVersion;
-    private HashMap<XBee64BitAddress,LinkedList<EndPoint>> endPoints;
-    private TwoJrDatagramQueue inMessageQueue;
-    private TwoJrDatagramQueue outMessageQueue;
+    private HashMap<XBee64BitAddress,HashMap<Integer,EndPoint>> remoteEndPoints;
+    private HashMap<Integer,EndPoint> localEndpoints;
+
 
     //==================================================================================================================
     // Constructor(s)
     //==================================================================================================================
 
     public TwoJRDevice(String port, int baudRate, TwoJrDataListener radioListener, JString modelID, JString manufacturer,
-                       JInteger applicationVersion, HashMap<XBee64BitAddress, LinkedList<EndPoint>> endPoints) {
+                       JInteger applicationVersion, HashMap<XBee64BitAddress, HashMap<Integer,EndPoint>> remoteEndPoints,
+                       HashMap<Integer,EndPoint> localEndpoints) {
         super(port, baudRate);
         this.radioListener = radioListener;
         this.modelID = modelID;
         this.manufacturer = manufacturer;
         this.applicationVersion = applicationVersion;
-        this.endPoints = endPoints;
-        this.inMessageQueue = new TwoJrDatagramQueue();
-        this.outMessageQueue = new TwoJrDatagramQueue();
+        this.remoteEndPoints = remoteEndPoints;
+
     }
 
     public TwoJRDevice(String port, int baudRate, TwoJrDataListener radioListener, JString modelID, JString manufacturer, JInteger applicationVersion) {
@@ -47,9 +48,8 @@ public abstract class TwoJRDevice extends Raw802Device {
         this.modelID = modelID;
         this.manufacturer = manufacturer;
         this.applicationVersion = applicationVersion;
-        this.endPoints = new HashMap<>();
-        this.inMessageQueue = new TwoJrDatagramQueue();
-        this.outMessageQueue = new TwoJrDatagramQueue();
+        this.remoteEndPoints = new HashMap<>();
+        this.localEndpoints = new HashMap<>();
     }
 
     //==================================================================================================================
@@ -88,41 +88,44 @@ public abstract class TwoJRDevice extends Raw802Device {
         this.applicationVersion = applicationVersion;
     }
 
-    public HashMap<XBee64BitAddress, LinkedList<EndPoint>> getEndPoints() {
-        return endPoints;
+    public HashMap<XBee64BitAddress, HashMap<Integer, EndPoint>> getRemoteEndPoints() {
+        return remoteEndPoints;
     }
 
-    public void setEndPoints(HashMap<XBee64BitAddress, LinkedList<EndPoint>> endPoints) {
-        this.endPoints = endPoints;
+    public void setRemoteEndPoints(HashMap<XBee64BitAddress, HashMap<Integer, EndPoint>> remoteEndPoints) {
+        this.remoteEndPoints = remoteEndPoints;
     }
 
-    public TwoJrDatagramQueue getInMessageQueue() {
-        return inMessageQueue;
+    public HashMap<Integer, EndPoint> getLocalEndpoints() {
+        return localEndpoints;
     }
 
-    public TwoJrDatagramQueue getOutMessageQueue() {
-        return outMessageQueue;
-    }
-
-    // Method for queueing messages for transmission
-    public void queueMessageToSend(TwoJrDataGram twoJrDataGram) {
-        outMessageQueue.insert(twoJrDataGram);
-    }
-
-    // Method for inserting incoming message into queue
-    public void queueMessageToRead(TwoJrDataGram twoJrDataGram) {
-        inMessageQueue.insert(twoJrDataGram);
+    public void setLocalEndpoints(HashMap<Integer, EndPoint> localEndpoints) {
+        this.localEndpoints = localEndpoints;
     }
 
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
 
+    public EndPoint getRemoteEndPoint(XBee64BitAddress address, int id){
+
+        return remoteEndPoints.get(address).get(id);
+
+    }
+
+    public EndPoint getLocalEndPoint(int id){
+
+        return localEndpoints.get(id);
+    }
+
     public abstract void start() throws XBeeException;
     public abstract void stop();
     public abstract void send() throws XBeeException;
     public abstract void read();
     public abstract void discover();
+
+
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================

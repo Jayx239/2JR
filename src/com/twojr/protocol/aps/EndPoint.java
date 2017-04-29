@@ -115,6 +115,23 @@ public class EndPoint extends JData{
         return 0;
     }
 
+    public ArrayList<Attribute> getAttributes(AttributeControl attributeControl){
+
+        ArrayList<Attribute> attributes = new ArrayList<>();
+
+        for(int i = 0; i < attributeControl.getSize(); i++){
+
+            if(attributeControl.getBitValue(i)){
+
+                attributes.add(attributes.get(i));
+            }
+
+        }
+
+        return attributes;
+
+    }
+
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================
