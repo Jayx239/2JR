@@ -1,5 +1,6 @@
 package com.twojr.protocol.devices;
 
+import com.twojr.protocol.Packet;
 import com.twojr.protocol.TwoJrDataGram;
 import com.twojr.protocol.aps.ApsPacket;
 import com.twojr.protocol.network.NetworkPacket;
@@ -13,8 +14,8 @@ public class TwoJrPacketRequestHandler extends TwoJrPacketHandler {
     // Constructors(s)
     //==================================================================================================================
 
-    public TwoJrPacketRequestHandler(TwoJRDevice device) {
-        super(device);
+    public TwoJrPacketRequestHandler() {
+
     }
 
     //==================================================================================================================
@@ -64,5 +65,9 @@ public class TwoJrPacketRequestHandler extends TwoJrPacketHandler {
     }
 
 
+    @Override
+    public Packet handle(Packet packet) {
+        return null;
+    }
 }/*********************************************END OF FILE*************************************************************/
 

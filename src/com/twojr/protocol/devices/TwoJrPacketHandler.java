@@ -1,5 +1,6 @@
 package com.twojr.protocol.devices;
 
+import com.twojr.protocol.Packet;
 import com.twojr.protocol.TwoJrDataGram;
 
 /**
@@ -8,15 +9,12 @@ import com.twojr.protocol.TwoJrDataGram;
 public abstract class TwoJrPacketHandler {
 
 
-    private TwoJRDevice device;
-
-
     //==================================================================================================================
     // Constructors(s)
     //==================================================================================================================
 
-    public TwoJrPacketHandler(TwoJRDevice device) {
-        this.device = device;
+    public TwoJrPacketHandler() {
+
     }
 
     //==================================================================================================================
@@ -28,7 +26,7 @@ public abstract class TwoJrPacketHandler {
     // Public Functions(s)
     //==================================================================================================================
 
-    public abstract void handle(TwoJrDataGram dataGram);
+    public abstract Packet handle(Packet packet);
 
     //==================================================================================================================
     // Private Functions(s)

@@ -9,7 +9,7 @@ import com.digi.xbee.api.models.XBeeMessage;
 /**
  * Created by rcunni002c on 4/5/2017.
  */
-public abstract class TwoJrDataListener implements IExplicitDataReceiveListener, IDataReceiveListener {
+public abstract class TwoJrDataListener implements IExplicitDataReceiveListener, IDataReceiveListener{
 
     //==================================================================================================================
     // Public Functions

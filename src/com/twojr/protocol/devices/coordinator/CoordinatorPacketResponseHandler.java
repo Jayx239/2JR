@@ -1,5 +1,6 @@
 package com.twojr.protocol.devices.coordinator;
 
+import com.twojr.protocol.Packet;
 import com.twojr.protocol.TwoJrDataGram;
 import com.twojr.protocol.devices.TwoJRDevice;
 import com.twojr.protocol.devices.TwoJrPacketHandler;
@@ -13,8 +14,8 @@ public class CoordinatorPacketResponseHandler extends TwoJrPacketHandler {
     // Constructors(s)
     //==================================================================================================================
 
-    public CoordinatorPacketResponseHandler(Coordinator device) {
-        super(device);
+    public CoordinatorPacketResponseHandler() {
+
     }
 
     //==================================================================================================================
@@ -28,6 +29,11 @@ public class CoordinatorPacketResponseHandler extends TwoJrPacketHandler {
 
     public void handle(TwoJrDataGram dataGram) {
 
+    }
+
+    @Override
+    public Packet handle(Packet packet) {
+        return null;
     }
 
     //==================================================================================================================

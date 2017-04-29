@@ -1,6 +1,7 @@
 package com.twojr.protocol.devices.end_device.test;
 
 import com.digi.xbee.api.exceptions.XBeeException;
+import com.digi.xbee.api.models.ExplicitXBeeMessage;
 import com.digi.xbee.api.models.XBee64BitAddress;
 import com.digi.xbee.api.models.XBeeMessage;
 import com.twojr.protocol.TwoJrDataGram;
@@ -32,7 +33,7 @@ public class EndDeviceTest {
     public void evaluateDeviceReceiver() {
 
         // Device specific configuration
-        XBee64BitAddress endDeviceAddress = new XBee64BitAddress("0x0013A20040D661AA");
+        XBee64BitAddress endDeviceAddress = new XBee64BitAddress("0x0013A20040D661AA"); //0x0013A20040D661AA
         String endDevicePort = "COM7";
         String endDevice2Port = "COM8";
 
@@ -44,9 +45,9 @@ public class EndDeviceTest {
         endDevice.start();
         endDevice2.start();
 
-        XBeeMessage xBeeMessage;
+        ExplicitXBeeMessage xBeeMessage;
         TwoJrDataGram twoJrDataGram;
-        endDevice.addDataListener(endDevice);
+        //endDevice.addDataListener(endDevice);
         //endDevice.addPacketListener(endDevice);
 
         //endDevice.readData();
@@ -103,8 +104,8 @@ public class EndDeviceTest {
         endDevice.start();
         endDevice2.start();
 
-        endDevice.addDataListener(endDevice);
-        endDevice2.addDataListener(endDevice2);
+        //endDevice.addDataListener(endDevice);
+        //endDevice2.addDataListener(endDevice2);
 
         TwoJrDataGram sendDataGram = new TwoJrDataGram(new XBee64BitAddress("0x0013A20040D661AA"),netPacket);
         try {
