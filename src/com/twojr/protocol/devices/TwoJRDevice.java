@@ -5,6 +5,8 @@ import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.exceptions.XBeeException;
 import com.digi.xbee.api.models.XBee16BitAddress;
 import com.digi.xbee.api.models.XBee64BitAddress;
+import com.twojr.protocol.TwoJrDataGram;
+import com.twojr.protocol.TwoJrDatagramQueue;
 import com.twojr.protocol.aps.EndPoint;
 import com.twojr.toolkit.JIdentity;
 import com.twojr.toolkit.JInteger;
@@ -24,7 +26,7 @@ public abstract class TwoJRDevice extends Raw802Device {
     private JInteger applicationVersion;
     private HashMap<XBee64BitAddress,HashMap<Integer,EndPoint>> remoteEndPoints;
     private HashMap<Integer,EndPoint> localEndpoints;
-
+    private TwoJrDatagramQueue outMessageQueue;
 
     //==================================================================================================================
     // Constructor(s)
@@ -39,6 +41,7 @@ public abstract class TwoJRDevice extends Raw802Device {
         this.manufacturer = manufacturer;
         this.applicationVersion = applicationVersion;
         this.remoteEndPoints = remoteEndPoints;
+        this.outMessageQueue = new TwoJrDatagramQueue();
 
     }
 
@@ -50,6 +53,8 @@ public abstract class TwoJRDevice extends Raw802Device {
         this.applicationVersion = applicationVersion;
         this.remoteEndPoints = new HashMap<>();
         this.localEndpoints = new HashMap<>();
+        this.outMessageQueue = new TwoJrDatagramQueue();
+
     }
 
     //==================================================================================================================
@@ -107,6 +112,14 @@ public abstract class TwoJRDevice extends Raw802Device {
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
+
+    public void queueMessageToSend(TwoJrDataGram twoJrDataGram) {
+        outMessageQueue.insert(twoJrDataGram);
+    }
+
+    public TwoJrDatagramQueue getOutMessageQueue() {
+        return outMessageQueue;
+    }
 
     public EndPoint getRemoteEndPoint(XBee64BitAddress address, int id){
 

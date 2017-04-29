@@ -82,7 +82,7 @@ public class EndDevice extends TwoJRDevice implements IExplicitDataReceiveListen
 
             HashMap<XBee64BitAddress,LinkedList<EndPoint>> initEndPoints = new HashMap<>();
             initEndPoints.put(get64BitAddress(),endPoints);
-            setEndPoints(initEndPoints);
+            //setEndPoints(initEndPoints);
 
         }
         catch (XBeeException ex) {
@@ -117,7 +117,7 @@ public class EndDevice extends TwoJRDevice implements IExplicitDataReceiveListen
         TwoJrDataGram nextDatagram = new TwoJrDataGram(nextMessage.getData());
 
         // Store datagram in inbound queue
-        queueMessageToRead(nextDatagram);
+        //queueMessageToRead(nextDatagram);
 
         nextMessage.getDevice();
         super.queueMessageToSend(new TwoJrDataGram(nextMessage.getDevice().get64BitAddress(),new NetworkPacket(new JUnsignedInteger(JDataSizes.EIGHT_BIT,0), new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkControlFlags.END_DEVICE.ordinal()),new JAddress(get64BitAddress().getValue()),new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkLayerCommands.REJOIN_RESPONSE.ordinal()))));
@@ -140,7 +140,7 @@ public class EndDevice extends TwoJRDevice implements IExplicitDataReceiveListen
         TwoJrDataGram nextDatagram = new TwoJrDataGram(explicitXBeeMessage.getData());
 
         // Store datagram in inbound queue
-        queueMessageToRead(nextDatagram);
+        //queueMessageToRead(nextDatagram);
 
         explicitXBeeMessage.getDevice();
 
