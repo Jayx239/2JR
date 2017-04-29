@@ -29,11 +29,13 @@ public class CoordinatorDemo {
 
         Attribute running = new Attribute(new JBoolean(true),"Running");
         Attribute groupMembers = new Attribute(new JSignedInteger(new byte[]{0x09}),"Group Members");
+        Attribute projMembers = new Attribute(new JSignedInteger(new byte[]{0x08}),"Project Members");
+
 
         EndPoint endPoint = new EndPoint((byte) 0x00);
         endPoint.addAttribute(running);
         endPoint.addAttribute(groupMembers);
-        endPoint.addAttribute(groupMembers);
+        endPoint.addAttribute(projMembers);
 
         HashMap<Integer,EndPoint> endpoints = new HashMap<>();
 
@@ -43,15 +45,22 @@ public class CoordinatorDemo {
 
         AttributeControl attributeControl = new AttributeControl(new byte[]{(byte)0x07});
 
-        ApsPacket apsPacket = new ApsPacket(new JSignedInteger(new byte[]{0}),new byte[1], apsCommands.READ,endPoint,attributeControl);
+        byte[] writeData = {0x00, 0x02, 0x03};
+        ApsPacket apsPacket = new ApsPacket(new JSignedInteger(new byte[]{0}),writeData, apsCommands.WRITE,endPoint,attributeControl);
         NetworkPacket networkPacket = new NetworkPacket(0,0,0,0,apsPacket.toByte());
 
         TwoJrDataGram dataGram = new TwoJrDataGram(null,networkPacket);
 
-        TwoJRDataGramHandler handler = new TwoJRDataGramHandler(coordinator);
-        handler.handle(dataGram);
+        System.out.println("Message Recieved----------------");
         System.out.print(dataGram.getPacket().print(true));
         ApsPacket aps = new ApsPacket(dataGram.getPacket().getPayload());
+        aps.print();
+        TwoJRDataGramHandler handler = new TwoJRDataGramHandler();
+        handler.handle(dataGram, coordinator);
+
+        System.out.println("Message Handled----------------");
+        System.out.print(dataGram.getPacket().print(true));
+        aps = new ApsPacket(dataGram.getPacket().getPayload());
         aps.print();
 
 

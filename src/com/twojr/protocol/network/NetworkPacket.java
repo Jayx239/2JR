@@ -183,7 +183,9 @@ public class NetworkPacket extends Packet implements INetPacket {
     }
 
     public String print(boolean byteFormatted) {
-        String output = "";
+        String output = "\n------------------------------\n" +
+                "Network Layer Packet\n";
+        output += "------------------------------\n";
         output += "Sequence number: " + (sequenceNumber != null ? sequenceNumber.getValue() : null) + "\n";
         output += "Network control: " + (networkControl != null ? networkControlFlags.values()[networkControl.getValue()] : null) + "\n";
         output += "Mac address: " + (macAddress != null ? macAddress.print() : null + "\n");

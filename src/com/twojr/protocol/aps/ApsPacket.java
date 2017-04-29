@@ -1,11 +1,10 @@
 package com.twojr.protocol.aps;
 
-import com.twojr.protocol.Command;
+
 import com.twojr.protocol.Packet;
 import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -237,10 +236,11 @@ public class ApsPacket extends Packet implements IApsPacket {
     @Override
     public String print() {
 
-        String str = "Application Layer Packet\n";
+        String str = "\n------------------------------\n" +
+                     "Application Layer Packet\n";
         str += "------------------------------\n";
 
-        str += "Command Frame: " + commandFrame.getId() + "\n";
+        str += "Command Frame: " + (commandFrame != null ? commandFrame : null) + "\n";
         str += "Endpoint: " + endPoint.print() + "\n";
         str += "Attribute Control: " + attrCtrl.print() + "\n";
 
@@ -250,8 +250,7 @@ public class ApsPacket extends Packet implements IApsPacket {
 
         }
 
-
-        printPayload(true);
+        str += printPayload(true);
 
         System.out.println(str);
 

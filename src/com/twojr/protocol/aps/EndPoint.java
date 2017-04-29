@@ -1,6 +1,7 @@
 package com.twojr.protocol.aps;
 
 import com.twojr.protocol.Attribute;
+import com.twojr.toolkit.DataFactory;
 import com.twojr.toolkit.JData;
 import com.twojr.toolkit.JIdentity;
 import com.twojr.toolkit.JInteger;
@@ -8,6 +9,7 @@ import com.twojr.toolkit.integer.JUnsignedInteger;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by rcunni002c on 11/17/2016.
@@ -134,6 +136,28 @@ public class EndPoint extends JData{
 
     }
 
+    public void setAttributes(AttributeControl attributeControl, byte[] payload){
+
+        int count = 0;
+        for(int i = 0; i < attributeControl.getSize() * 8; i++){
+
+            if(attributeControl.getBitValue(i)){
+
+                Attribute attribute = this.attributes.get(i);
+
+                JData data = DataFactory.getData(attribute.getData().getId(),Arrays.copyOfRange(payload,count,count + attribute.getData().getSize()));
+
+                this.attributes.get(i).setData(data);
+
+                count += attribute.getData().getSize();
+
+            }
+
+        }
+
+
+
+    }
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================

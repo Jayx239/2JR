@@ -40,13 +40,11 @@ public class TwoJRAPSPacketHandler extends TwoJrPacketHandler {
             case WRITE:
 
                 apsPacket.setCommandFrame(WRITE_RESPONSE);
-                apsPacket.setPayload(new byte[0]);
                 break;
 
             case DISCOVER:
 
                 apsPacket.setCommandFrame(DISCOVER_RESPONSE);
-                apsPacket.setPayload(new byte[0]);
                 break;
 
             case CHECK_IN:
