@@ -1,19 +1,22 @@
 package com.twojr.protocol.devices.coordinator;
 
+import com.sun.org.apache.bcel.internal.generic.IADD;
 import com.twojr.protocol.TwoJrDataGram;
+import com.twojr.protocol.aps.ApsPacket;
+import com.twojr.protocol.aps.IApsPacket;
+import com.twojr.protocol.devices.TwoJRDataGramHandler;
 import com.twojr.protocol.devices.TwoJRDevice;
-import com.twojr.protocol.devices.TwoJrPacketHandler;
+import com.twojr.protocol.network.NetworkPacket;
 
 /**
- * Created by rcunni002c on 4/7/2017.
+ * Created by rcunni202 on 4/29/2017.
  */
-public class CoordinatorPacketResponseHandler extends TwoJrPacketHandler {
-
+public class CoorindatorDataGramHandler extends TwoJRDataGramHandler {
     //==================================================================================================================
     // Constructors(s)
     //==================================================================================================================
 
-    public CoordinatorPacketResponseHandler(Coordinator device) {
+    public CoorindatorDataGramHandler(Coordinator device) {
         super(device);
     }
 
@@ -21,19 +24,14 @@ public class CoordinatorPacketResponseHandler extends TwoJrPacketHandler {
     // Getter and Setters(s)
     //==================================================================================================================
 
-
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
 
-    public void handle(TwoJrDataGram dataGram) {
-
-    }
 
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================
 
 }/*********************************************END OF FILE*************************************************************/
-
 

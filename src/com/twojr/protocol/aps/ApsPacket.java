@@ -6,6 +6,7 @@ import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.twojr.protocol.aps.IApsPacket.apsCommands.*;
@@ -211,6 +212,30 @@ public class ApsPacket extends Packet implements IApsPacket {
 
         return str;
 
+    }
+
+    public byte[] generatePayload(ArrayList<byte[]> bytes){
+
+        int length = 0;
+
+        for(byte[] array : bytes){
+
+            length+= array.length;
+
+        }
+
+        byte[] payload = new byte[length];
+        int count = 0;
+
+        for(int i = 0; i < bytes.size(); i++){
+            for(int j = 0; j < bytes.get(i).length; j++){
+
+                payload[count] = bytes.get(i)[j];
+                count++;
+            }
+        }
+
+        return payload;
     }
 
     //==================================================================================================================
