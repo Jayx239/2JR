@@ -42,8 +42,6 @@ public class ApsPacket extends Packet implements IApsPacket {
 
     }
 
-
-
     public ApsPacket(JInteger sequenceNumber, byte[] payload, apsCommands commandFrame, EndPoint endPoint, AttributeControl attrCtrl) {
         super(sequenceNumber, payload);
         this.commandFrame = commandFrame;
@@ -51,6 +49,8 @@ public class ApsPacket extends Packet implements IApsPacket {
         this.attrCtrl = attrCtrl;
         this.attributeCtrlLength = attrCtrl.getSize();
     }
+
+
 
     public ApsPacket(byte[] data){
 
@@ -194,19 +194,21 @@ public class ApsPacket extends Packet implements IApsPacket {
     @Override
     public String print() {
 
-        String str = "";
+        String str = "Application Layer Packet\n";
+        str += "------------------------------\n";
 
-        str += commandFrame.getId();
-        str += endPoint.print();
-        str += attrCtrl.print();
+        str += "Command Frame: " + commandFrame.getId() + "\n";
+        str += "Endpoint: " + endPoint.print() + "\n";
+        str += "Attribute Control: " + attrCtrl.print() + "\n";
 
         if(attrCtrl.isLengthControl()){
 
-            str += lengthControl.print();
+            str += "Length Control: " + lengthControl.print() + "\n";
 
         }
 
-        str += getPayload();
+
+        printPayload(true);
 
         System.out.println(str);
 
