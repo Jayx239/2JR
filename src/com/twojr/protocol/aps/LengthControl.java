@@ -26,10 +26,17 @@ public class LengthControl extends JBitmap{
         this.attributeMap = attributeMap;
     }
 
-    public LengthControl(byte[] data){
+    public LengthControl(byte[] data, EndPoint endPoint){
 
         super(data);
-        this.attributeMap = null;
+
+        attributeMap = new HashMap<>();
+
+        for(int i = 0; i < getSize(); i++){
+
+            attributeMap.put(i,endPoint.getAttribute(i));
+
+        }
 
     }
 

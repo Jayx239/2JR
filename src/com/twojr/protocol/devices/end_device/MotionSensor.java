@@ -5,7 +5,7 @@ import com.twojr.protocol.devices.TwoJRDevice;
 /**
  * Created by rcunni002c on 11/17/2016.
  */
-public class MotionSensor extends EndDevice {
+public class MotionSensor  {
 
 //==================================================================================================================
 // Constructor(s)

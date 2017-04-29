@@ -1,46 +1,66 @@
 package com.twojr.protocol.devices;
 
+import com.digi.xbee.api.Raw802Device;
+import com.digi.xbee.api.XBeeDevice;
+import com.digi.xbee.api.exceptions.XBeeException;
+import com.digi.xbee.api.models.XBee16BitAddress;
+import com.digi.xbee.api.models.XBee64BitAddress;
+import com.twojr.protocol.aps.EndPoint;
 import com.twojr.toolkit.JIdentity;
 import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.JString;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+
 /**
  * Created by rcunni002c on 11/17/2016.
  */
-public abstract class TwoJRDevice extends JIdentity {
+public abstract class TwoJRDevice extends Raw802Device {
 
-    private TwoJRRadioListener radioListener;
+    private TwoJrDataListener radioListener;
     private JString modelID;
     private JString manufacturer;
     private JInteger applicationVersion;
+    private HashMap<XBee64BitAddress,HashMap<Integer,EndPoint>> remoteEndPoints;
+    private HashMap<Integer,EndPoint> localEndpoints;
 
 
     //==================================================================================================================
     // Constructor(s)
     //==================================================================================================================
 
-    public TwoJRDevice(){
-
-    }
-
-    public TwoJRDevice(int id, String name, TwoJRRadioListener radioListener, JString modelID, JString manufacturer, JInteger applicationVersion) {
-        super(id, name);
+    public TwoJRDevice(String port, int baudRate, TwoJrDataListener radioListener, JString modelID, JString manufacturer,
+                       JInteger applicationVersion, HashMap<XBee64BitAddress, HashMap<Integer,EndPoint>> remoteEndPoints,
+                       HashMap<Integer,EndPoint> localEndpoints) {
+        super(port, baudRate);
         this.radioListener = radioListener;
         this.modelID = modelID;
         this.manufacturer = manufacturer;
         this.applicationVersion = applicationVersion;
+        this.remoteEndPoints = remoteEndPoints;
+
     }
 
+    public TwoJRDevice(String port, int baudRate, TwoJrDataListener radioListener, JString modelID, JString manufacturer, JInteger applicationVersion) {
+        super(port, baudRate);
+        this.radioListener = radioListener;
+        this.modelID = modelID;
+        this.manufacturer = manufacturer;
+        this.applicationVersion = applicationVersion;
+        this.remoteEndPoints = new HashMap<>();
+        this.localEndpoints = new HashMap<>();
+    }
 
     //==================================================================================================================
     // Getter(s) & Setter(s)
     //==================================================================================================================
 
-    public TwoJRRadioListener getRadioListener() {
+    public TwoJrDataListener getRadioListener() {
         return radioListener;
     }
 
-    public void setRadioListener(TwoJRRadioListener radioListener) {
+    public void setRadioListener(TwoJrDataListener radioListener) {
         this.radioListener = radioListener;
     }
 
@@ -68,14 +88,40 @@ public abstract class TwoJRDevice extends JIdentity {
         this.applicationVersion = applicationVersion;
     }
 
+    public HashMap<XBee64BitAddress, HashMap<Integer, EndPoint>> getRemoteEndPoints() {
+        return remoteEndPoints;
+    }
+
+    public void setRemoteEndPoints(HashMap<XBee64BitAddress, HashMap<Integer, EndPoint>> remoteEndPoints) {
+        this.remoteEndPoints = remoteEndPoints;
+    }
+
+    public HashMap<Integer, EndPoint> getLocalEndpoints() {
+        return localEndpoints;
+    }
+
+    public void setLocalEndpoints(HashMap<Integer, EndPoint> localEndpoints) {
+        this.localEndpoints = localEndpoints;
+    }
 
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
 
-    public abstract void start();
-    public abstract void close();
-    public abstract void send();
+    public EndPoint getRemoteEndPoint(XBee64BitAddress address, int id){
+
+        return remoteEndPoints.get(address).get(id);
+
+    }
+
+    public EndPoint getLocalEndPoint(int id){
+
+        return localEndpoints.get(id);
+    }
+
+    public abstract void start() throws XBeeException;
+    public abstract void stop();
+    public abstract void send() throws XBeeException;
     public abstract void read();
     public abstract void discover();
 

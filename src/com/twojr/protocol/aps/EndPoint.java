@@ -84,12 +84,25 @@ public class EndPoint extends JData{
 
     @Override
     public String print() {
-        return null;
+
+        String str = "";
+
+        for(Attribute attribute : attributes){
+
+            str += attribute.getName() + "\n" + attribute.getData().print();
+
+        }
+
+        System.out.println(str);
+
+        return str;
+
     }
 
     @Override
     public byte[] toByte() {
-        return new byte[0];
+
+        return jId.toByte();
     }
 
     @Override
@@ -100,6 +113,23 @@ public class EndPoint extends JData{
     @Override
     public int getSavings() {
         return 0;
+    }
+
+    public ArrayList<Attribute> getAttributes(AttributeControl attributeControl){
+
+        ArrayList<Attribute> attributes = new ArrayList<>();
+
+        for(int i = 0; i < attributeControl.getSize(); i++){
+
+            if(attributeControl.getBitValue(i)){
+
+                attributes.add(attributes.get(i));
+            }
+
+        }
+
+        return attributes;
+
     }
 
     //==================================================================================================================

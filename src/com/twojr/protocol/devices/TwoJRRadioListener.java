@@ -1,4 +1,6 @@
 package com.twojr.protocol.devices;
+import com.digi.xbee.api.models.ExplicitXBeeMessage;
+import com.digi.xbee.api.models.XBeeMessage;
 import com.twojr.protocol.network.NetworkPacket;
 import gnu.io.*;
 
@@ -12,7 +14,7 @@ import static com.twojr.protocol.network.INetPacket.*;
 /**
  * Created by rcunni002c on 11/17/2016.
  */
-public class TwoJRRadioListener{
+public class TwoJRRadioListener extends TwoJrDataListener {
     private boolean DEBUG = false;
 
     public TwoJRRadioListener(String portName) {
@@ -125,4 +127,13 @@ public class TwoJRRadioListener{
         return packets;
     }
 
+    @Override
+    public void explicitDataReceived(ExplicitXBeeMessage explicitXBeeMessage) {
+
+    }
+
+    @Override
+    public void dataReceived(XBeeMessage xBeeMessage) {
+
+    }
 }
