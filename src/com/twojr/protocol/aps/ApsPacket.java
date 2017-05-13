@@ -284,8 +284,8 @@ public class ApsPacket extends Packet implements IApsPacket {
                 length = (int) payload[payloadOffset++];
 
             byte[] stream = getByteSegment(payload,payloadOffset,length);
-            payloadString += attribute.getName() + ": " + attribute.getData().getName() + ": ";
-            payloadString += DataFactory.getData(dataId, stream).print() + '\n';
+            payloadString += attribute.print();
+            payloadString += "Value: " + DataFactory.getData(dataId, stream).print() + '\n';
             payloadOffset += length;
         }
 

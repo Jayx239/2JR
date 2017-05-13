@@ -42,6 +42,10 @@ public class Attribute{
         this.name = name;
     }
 
+    public String print() {
+        String output = "Name: " + this.getName() + " Type: " + this.getData().getName() + '\n';
+        return output;
+    }
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================
