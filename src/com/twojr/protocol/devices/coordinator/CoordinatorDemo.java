@@ -23,10 +23,13 @@ import static com.twojr.protocol.aps.IApsPacket.*;
  */
 public class CoordinatorDemo {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws XBeeException {
 
-        Coordinator coordinator = new Coordinator("COM1",9600,null,null,null);
+        Coordinator coordinator = new Coordinator("COM6",9600,null,null,null);
 
+        coordinator.start();
+
+        /*
         Attribute running = new Attribute(new JBoolean(true),"Running");
         Attribute groupMembers = new Attribute(new JSignedInteger(new byte[]{0x09}),"Group Members");
         Attribute projMembers = new Attribute(new JSignedInteger(new byte[]{0x08}),"Project Members");
@@ -46,7 +49,7 @@ public class CoordinatorDemo {
         AttributeControl attributeControl = new AttributeControl(new byte[]{(byte)0x07});
 
         byte[] writeData = {0x00, 0x02, 0x03};
-        ApsPacket apsPacket = new ApsPacket(new JSignedInteger(new byte[]{0}),writeData, apsCommands.WRITE,endPoint,attributeControl);
+        ApsPacket apsPacket = new ApsPacket(new JSignedInteger(new byte[]{0}),writeData, apsCommands.DISCOVER,endPoint,attributeControl);
         NetworkPacket networkPacket = new NetworkPacket(0,0,0,0,apsPacket.toByte());
 
         TwoJrDataGram dataGram = new TwoJrDataGram(null,networkPacket);
@@ -63,6 +66,7 @@ public class CoordinatorDemo {
         aps = new ApsPacket(dataGram.getPacket().getPayload());
         aps.print();
 
+        */
 
     }
 

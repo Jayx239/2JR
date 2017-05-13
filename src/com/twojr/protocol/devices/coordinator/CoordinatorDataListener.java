@@ -9,6 +9,32 @@ import com.twojr.protocol.devices.TwoJrDataListener;
  */
 public class CoordinatorDataListener extends TwoJrDataListener {
 
+    private Coordinator coordinator;
+
+
+    //==================================================================================================================
+    // Constructor(s)
+    //==================================================================================================================
+
+    public CoordinatorDataListener(){
+
+    }
+    public CoordinatorDataListener(Coordinator coordinator) {
+        this.coordinator = coordinator;
+    }
+
+    //==================================================================================================================
+    // Getter(s) and Setter(s)
+    //==================================================================================================================
+
+    public Coordinator getCoordinator() {
+        return coordinator;
+    }
+
+    public void setCoordinator(Coordinator coordinator) {
+        this.coordinator = coordinator;
+    }
+
 
     //==================================================================================================================
     // Public Functions

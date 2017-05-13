@@ -88,6 +88,9 @@ public class DataTypes {
     public static final int IEEE_ADDRESS = 0xF0;
     public static final int SECURITY_KEY = 0xF1;
 
+    public static final int DISCOVER_START = 0xA1;
+    public static final int DISCOVER_END = 0xAF;
+
     //================================================================
     // Data Size
     //================================================================

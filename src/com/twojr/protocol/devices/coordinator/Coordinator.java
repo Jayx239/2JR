@@ -38,6 +38,8 @@ public class Coordinator extends TwoJRDevice{
                        HashMap<XBee64BitAddress, Router> routers, LinkedList<TwoJrDataGram> messageQueue) {
 
         super(port, baudRate, new CoordinatorDataListener(), modelID, manufacturer, applicationVersion);
+        CoordinatorDataListener dataListener = new CoordinatorDataListener(this);
+        setRadioListener(dataListener);
         this.endDevices = endDevices;
         this.routers = routers;
         this.messageQueue = messageQueue;
@@ -50,6 +52,8 @@ public class Coordinator extends TwoJRDevice{
     public Coordinator(String port, int baudRate, JString modelID, JString manufacturer, JInteger applicationVersion) {
         super(port, baudRate, new CoordinatorDataListener(), modelID, manufacturer, applicationVersion);
 
+        CoordinatorDataListener dataListener = new CoordinatorDataListener(this);
+        setRadioListener(dataListener);
         this.endDevices = new HashMap<>();
         this.routers = new HashMap<>();
         this.messageQueue = new LinkedList<>();
@@ -207,7 +211,6 @@ public class Coordinator extends TwoJRDevice{
         }
 
     }
-
 
     //==================================================================================================================
     // Private Functions(s)

@@ -4,9 +4,11 @@ import com.digi.xbee.api.models.XBee64BitAddress;
 import com.twojr.protocol.Attribute;
 import com.twojr.protocol.TwoJrDataGram;
 import com.twojr.protocol.aps.*;
-import com.twojr.protocol.devices.coordinator.Coordinator;
 import com.twojr.protocol.network.NetworkPacket;
 import com.twojr.protocol.network.TwoJRNetworkPacketHandler;
+import com.twojr.toolkit.DataTypes;
+import com.twojr.toolkit.JDataSizes;
+import com.twojr.toolkit.JString;
 
 import java.util.ArrayList;
 
@@ -64,17 +66,17 @@ public class TwoJRDataGramHandler {
         networkResponse = twoJRNetworkPacketHandler.handle(networkPacket);
         apsResponse = twoJRAPSPacketHandler.handle(apsPacket);
 
-
         EndPoint endPoint = device.getLocalEndPoint(apsPacket.getEndPoint().getId());
         AttributeControl attributeControl = apsPacket.getAttrCtrl();
         LengthControl lengthControl = apsPacket.getLengthControl();
+        ArrayList<Attribute> attributes = endPoint.getAttributes(attributeControl);
         byte[] apsPayload = new byte[0];
 
         switch (apsResponse.getCommandFrame()){
 
             case READ_RESPONSE:
 
-                ArrayList<Attribute> attributes = endPoint.getAttributes(attributeControl);
+
 
                 ArrayList<byte[]> bytes = new ArrayList<>();
 
@@ -91,10 +93,37 @@ public class TwoJRDataGramHandler {
             case WRITE_RESPONSE:
 
                 endPoint.setAttributes(attributeControl,apsPacket.getPayload());
-
+                                
                 break;
 
             case DISCOVER_RESPONSE:
+
+                ArrayList<byte[]> discoveryReponse = new ArrayList<>();
+
+                for (Attribute attribute : attributes){
+
+
+                    String name = attribute.getName();
+                    JString jString = new JString(JDataSizes.values()[name.getBytes().length], name);
+
+
+                    byte[] byteArray = new byte[jString.getSize() + 5];
+
+                    byteArray[0] = (byte) DataTypes.DISCOVER_START;
+                    byteArray[1] = (byte)jString.getSize();
+
+                    for (int i = 2; i < jString.getSize(); i++){
+                        byteArray[i] = jString.toByte()[i];
+                    }
+
+                    byteArray[jString.getSize()+ 2] = (byte) attribute.getData().getId();
+                    byteArray[jString.getSize() + 3] = (byte) attribute.getData().getSize();
+
+                    discoveryReponse.add(byteArray);
+
+                    apsPayload = apsPacket.generatePayload(discoveryReponse);
+
+                }
 
                 break;
 
