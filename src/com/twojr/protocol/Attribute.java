@@ -43,7 +43,7 @@ public class Attribute{
     }
 
     public String print() {
-        String output = "Name: " + this.getName() + " Type: " + this.getData().getName() + '\n';
+        String output = "Name: " + this.getName() + "\n   Type: " + this.getData().getName() + "\n   Value: " + this.getData().print();
         return output;
     }
     //==================================================================================================================

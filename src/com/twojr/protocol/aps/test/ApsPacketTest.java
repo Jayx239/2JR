@@ -167,12 +167,15 @@ public class ApsPacketTest {
                 "------------------------------\n" +
                 "Attributes\n" +
                 "------------------------------\n" +
-                "Name: Running Type: Boolean\n" +
-                "Value: false\n" +
-                "Name: Group Members Type: Signed Integer\n" +
-                "Value: 2\n" +
-                "Name: Project Members Type: Signed Integer\n" +
-                "Value: 3\n" +
+                "Name: Running\n" +
+                "   Type: Boolean\n" +
+                "   Value: truefalse\n" +
+                "Name: Group Members\n" +
+                "   Type: Signed Integer\n" +
+                "   Value: 92\n" +
+                "Name: Project Members\n" +
+                "   Type: Signed Integer\n" +
+                "   Value: 83\n" +
                 "\n" +
                 "------------------------------\n" +
                 "Payload as byte array\n" +
