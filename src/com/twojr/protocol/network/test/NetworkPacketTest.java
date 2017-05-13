@@ -1,12 +1,19 @@
 package com.twojr.protocol.network.test;
 
+import com.twojr.protocol.Attribute;
+import com.twojr.protocol.aps.ApsPacket;
+import com.twojr.protocol.aps.AttributeControl;
+import com.twojr.protocol.aps.EndPoint;
+import com.twojr.protocol.aps.IApsPacket;
 import com.twojr.protocol.network.INetPacket;
 import com.twojr.protocol.network.NetworkPacket;
 import com.twojr.toolkit.*;
+import com.twojr.toolkit.integer.JSignedInteger;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 import org.junit.Test;
 
-import static com.twojr.protocol.network.INetPacket.MAXPACKETSIZE;
+import java.util.HashMap;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -174,35 +181,110 @@ public class NetworkPacketTest {
     @Test
     public void evaluatePrint() {
         byte[] byteInput = {0x32,(byte) INetPacket.networkControlFlags.ENCRYPTED.ordinal(),0x41, 0x0F, 0x42, (byte) 0xE9, (byte) 0xB2, 0x2D, 0x0E, 0x56, (byte) (INetPacket.networkLayerCommands.ROUTE_RESPONSE.ordinal()&0xff), 0x39,0x42};
-        NetworkPacket testPacket = new NetworkPacket(byteInput);
-        assertEquals("Sequence number: 50\n" +
-                "Network control: ENCRYPTED\n" +
-                "Mac address: Address: 86:14:45:-78:-23:66:15:65\n" +
-                "Command frame: ROUTE_RESPONSE\n" +
-                "Payload: \n" +
-                "Payload [0]: 57\n" +
-                "Payload [1]: 66\n"
-                ,testPacket.print(false));
 
-        assertEquals("Sequence number: 50\n" +
-                "Network control: ENCRYPTED\n" +
-                "Mac address: Address: 86:14:45:-78:-23:66:15:65\n" +
-                "Command frame: ROUTE_RESPONSE\n" +
-                "Payload: \n" +
-                "Payload [0]: 00111001\n" +
-                "Payload [1]: 01000010\n"
-                ,testPacket.print());
+
+        //-------------- Aps Packet --------------
+        Attribute running = new Attribute(new JBoolean(true),"Running");
+        Attribute groupMembers = new Attribute(new JSignedInteger(new byte[]{0x09}),"Group Members");
+        Attribute projMembers = new Attribute(new JSignedInteger(new byte[]{0x08}),"Project Members");
+
+
+        EndPoint endPoint = new EndPoint((byte) 0x00);
+        endPoint.addAttribute(running);
+        endPoint.addAttribute(groupMembers);
+        endPoint.addAttribute(projMembers);
+
+        HashMap<Integer,EndPoint> endpoints = new HashMap<>();
+
+        endpoints.put(endPoint.getId(),endPoint);
+
+
+        AttributeControl attributeControl = new AttributeControl(new byte[]{(byte)0x07});
+
+        byte[] writeData = {0x00, 0x02, 0x03};
+        ApsPacket apsPacket = new ApsPacket(new JSignedInteger(new byte[]{0}),writeData, IApsPacket.apsCommands.DISCOVER,endPoint,attributeControl);
+
+        //-------------- end Aps Packet ----------
+        byte[] totalByteInput = new byte[byteInput.length + apsPacket.toByte().length];
+        for(int i=0; i<byteInput.length; i++) {
+            totalByteInput[i] = byteInput[i];
+        }
+        int apsIndex = 0;
+        for(int i=byteInput.length; i<totalByteInput.length; i++) {
+            totalByteInput[i] = apsPacket.toByte()[apsIndex++];
+        }
+
+        NetworkPacket testPacket = new NetworkPacket(totalByteInput);
+
+        testPacket.setApsPacket(apsPacket);
+
+        System.err.print(testPacket.print());
+        assertEquals("\n" +
+                        "------------------------------\n" +
+                        "Network Layer Packet\n" +
+                        "------------------------------\n" +
+                        "Sequence number: 50\n" +
+                        "Network control: ENCRYPTED\n" +
+                        "Mac address: Address: 86:14:45:-78:-23:66:15:65\n" +
+                        "Command frame: ROUTE_RESPONSE\n" +
+                        "Application Packet: \n" +
+                        "\n" +
+                        "------------------------------\n" +
+                        "Application Layer Packet\n" +
+                        "------------------------------\n" +
+                        "Command Frame: DISCOVER\n" +
+                        "Endpoint: ID: 0\n" +
+                        "Running: true\n" +
+                        "Group Members: 9\n" +
+                        "Project Members: 8\n" +
+                        "\n" +
+                        "Attribute Control: Row[0]: 00000111\n" +
+                        "\n" +
+                        "\n" +
+                        "------------------------------\n" +
+                        "Attributes\n" +
+                        "------------------------------\n" +
+                        "Running: Boolean: false\n" +
+                        "Group Members: Signed Integer: 2\n" +
+                        "Project Members: Signed Integer: 3\n" +
+                        "\n" +
+                        "------------------------------\n" +
+                        "Payload as byte array\n" +
+                        "------------------------------\n" +
+                        "Payload [0]: 00000000\n" +
+                        "Payload [1]: 00000010\n" +
+                        "Payload [2]: 00000011\n"
+                ,testPacket.print(false));
 
     }
 
     @Test
     public void evaluateNullChecks() {
         NetworkPacket newPacket = new NetworkPacket();
-        assertEquals("Sequence number: null\n" +
+        assertEquals("\n" +
+                "------------------------------\n" +
+                "Network Layer Packet\n" +
+                "------------------------------\n" +
+                "Sequence number: null\n" +
                 "Network control: null\n" +
                 "Mac address: null\n" +
                 "Command frame: null\n" +
-                "Payload: \n" +
+                "Application Packet: \n" +
+                "\n" +
+                "------------------------------\n" +
+                "Application Layer Packet\n" +
+                "------------------------------\n" +
+                "Command Frame: null\n" +
+                "Endpoint: null\n" +
+                "Attribute Control: null\n" +
+                "\n" +
+                "------------------------------\n" +
+                "Attributes\n" +
+                "------------------------------\n" +
+                "null\n" +
+                "------------------------------\n" +
+                "Payload as byte array\n" +
+                "------------------------------\n" +
                 "null",newPacket.print());
     }
 }

@@ -89,15 +89,13 @@ public class EndPoint extends JData{
 
         String str = "";
 
-        str += getId();
+        str += "ID: " + getId() + '\n';
 
         for(Attribute attribute : attributes){
 
-            str += attribute.getName() + "\n" + attribute.getData().print();
+            str += attribute.getName() + ": " + attribute.getData().print() + '\n';
 
         }
-
-        //System.out.print(str);
 
         return str;
 

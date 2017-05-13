@@ -1,10 +1,14 @@
 package com.twojr.protocol.aps;
 
 
+import com.twojr.protocol.Attribute;
 import com.twojr.protocol.Packet;
+import com.twojr.toolkit.DataFactory;
+import com.twojr.toolkit.DataTypes;
 import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -21,12 +25,13 @@ public class ApsPacket extends Packet implements IApsPacket {
     private int attributeCtrlLength;
     private AttributeControl attrCtrl;
     private LengthControl lengthControl;
-
+    private DataFactory dataFactory;
     //==================================================================================================================
     // Constructor(s)
     //==================================================================================================================
 
     public ApsPacket() {
+        dataFactory = new DataFactory();
     }
 
     public ApsPacket(JInteger sequenceNumber, byte[] payload, apsCommands commandFrame, EndPoint endPoint, AttributeControl attrCtrl, LengthControl lengthControl) {
@@ -38,7 +43,7 @@ public class ApsPacket extends Packet implements IApsPacket {
         this.attrCtrl = attrCtrl;
         this.lengthControl = lengthControl;
         this.attributeCtrlLength = attrCtrl.getSize();
-
+        this.dataFactory = new DataFactory();
     }
 
     public ApsPacket(JInteger sequenceNumber, byte[] payload, apsCommands commandFrame, EndPoint endPoint, AttributeControl attrCtrl) {
@@ -47,12 +52,13 @@ public class ApsPacket extends Packet implements IApsPacket {
         this.endPoint = endPoint;
         this.attrCtrl = attrCtrl;
         this.attributeCtrlLength = attrCtrl.getSize();
+        this.dataFactory = new DataFactory();
     }
 
 
 
     public ApsPacket(byte[] data){
-
+        this.dataFactory = new DataFactory();
         attributeCtrlLength = 0;
 
         if(data == null) {
@@ -241,21 +247,63 @@ public class ApsPacket extends Packet implements IApsPacket {
         str += "------------------------------\n";
 
         str += "Command Frame: " + (commandFrame != null ? commandFrame : null) + "\n";
-        str += "Endpoint: " + endPoint.print() + "\n";
-        str += "Attribute Control: " + attrCtrl.print() + "\n";
+        str += "Endpoint: " + (endPoint != null ? endPoint.print() : "null") + "\n";
+        str += "Attribute Control: " + (attrCtrl != null ? attrCtrl.print() : "null") + "\n";
 
-        if(attrCtrl.isLengthControl()){
+        if(attrCtrl != null && attrCtrl.isLengthControl()){
 
             str += "Length Control: " + lengthControl.print() + "\n";
 
         }
 
+        str += "\n------------------------------\nAttributes\n------------------------------\n";
+        str += printPayloadContents();
+        str += "\n------------------------------\nPayload as byte array\n------------------------------\n";
         str += printPayload(true);
-
-        System.out.println(str);
+        //System.out.println(str);
 
         return str;
 
+    }
+
+    public String printPayloadContents() {
+        if (endPoint == null)
+            return "null";
+        ArrayList<Attribute> attributes = endPoint.getAttributes(attrCtrl);
+        boolean lengthControl = attrCtrl != null && attrCtrl.isLengthControl();
+
+        int payloadOffset = 0;
+        String payloadString = "";
+        byte[] payload = getPayload();
+
+        for(Attribute attribute : attributes) {
+            int dataId = attribute.getData().getId();
+            int length = DataTypes.dataSizeMap.get(dataId);
+
+            if(lengthControl)
+                length = (int) payload[payloadOffset++];
+
+            byte[] stream = getByteSegment(payload,payloadOffset,length);
+            payloadString += attribute.getName() + ": " + attribute.getData().getName() + ": ";
+            payloadString += DataFactory.getData(dataId, stream).print() + '\n';
+            payloadOffset += length;
+        }
+
+        return payloadString;
+    }
+
+    byte[] getByteSegment(byte[] inputArray, int startIndex, int length) {
+        if(length < 0) {
+            System.err.println("Invalid parameters for byte segment");
+            return null;
+        }
+        byte[] output = new byte[length];
+        int outputIndex = 0;
+        for(int i=0; i<length; i++) {
+            output[i] = inputArray[i+startIndex];
+        }
+
+        return output;
     }
 
     public byte[] generatePayload(ArrayList<byte[]> bytes){

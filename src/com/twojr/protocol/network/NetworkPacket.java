@@ -1,6 +1,7 @@
 package com.twojr.protocol.network;
 
 import com.twojr.protocol.Packet;
+import com.twojr.protocol.aps.ApsPacket;
 import com.twojr.toolkit.*;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 
@@ -14,6 +15,7 @@ public class NetworkPacket extends Packet implements INetPacket {
     //==================================================================================================================
     public NetworkPacket() {
         packetSize = MAXPACKETSIZE;
+        apsPacket = new ApsPacket();
     }
 
     public NetworkPacket(int sequenceNumber, int networkControl, long macAddress, int commandFrame, byte[] payload) {
@@ -32,6 +34,24 @@ public class NetworkPacket extends Packet implements INetPacket {
         this.commandFrame = commandFrame;
         this.packetSize = MAXPACKETSIZE;
         this.setPayload(payload);
+    }
+
+    public NetworkPacket(int sequenceNumber, int networkControl, long macAddress, int commandFrame, ApsPacket apsPacket) {
+        this.sequenceNumber = new JUnsignedInteger(JDataSizes.EIGHT_BIT, sequenceNumber);
+        this.networkControl = new JUnsignedInteger(JDataSizes.EIGHT_BIT, networkControl);
+        this.macAddress = new JAddress(macAddress);
+        this.commandFrame = new JUnsignedInteger(JDataSizes.EIGHT_BIT, commandFrame);
+        this.packetSize = MAXPACKETSIZE;
+        this.setPayload(apsPacket);
+    }
+
+    public NetworkPacket(JUnsignedInteger sequenceNumber, JUnsignedInteger networkControl, JAddress macAddress, JUnsignedInteger commandFrame, ApsPacket apsPacket) {
+        this.sequenceNumber = sequenceNumber;
+        this.networkControl = networkControl;
+        this.macAddress = macAddress;
+        this.commandFrame = commandFrame;
+        this.packetSize = MAXPACKETSIZE;
+        this.setPayload(apsPacket);
     }
 
     public NetworkPacket(JUnsignedInteger sequenceNumber, JUnsignedInteger networkControl, JAddress macAddress, JUnsignedInteger commandFrame) {
@@ -68,7 +88,7 @@ public class NetworkPacket extends Packet implements INetPacket {
 
         for (int i = 0; i < sizeOfPayload; i++)
             this.payload[i] = encodedPacket[i + networkPacketByteOffset[networkPacketMasks.PAYLOAD.ordinal()]];
-
+        setPayload(this.payload);
     }
 
     //==================================================================================================================
@@ -81,6 +101,7 @@ public class NetworkPacket extends Packet implements INetPacket {
 
     private JUnsignedInteger commandFrame;
     private byte[] payload;
+    private ApsPacket apsPacket;
     private int packetSize;
 
     //==================================================================================================================
@@ -125,6 +146,20 @@ public class NetworkPacket extends Packet implements INetPacket {
 
     public void setPayload(byte[] payload) {
         this.payload = payload;
+        apsPacket = new ApsPacket(payload);
+    }
+
+    public void setPayload(ApsPacket apsPacket) {
+        this.apsPacket = apsPacket;
+        this.payload = apsPacket.toByte();
+    }
+
+    public ApsPacket getApsPacket() {
+        return apsPacket;
+    }
+
+    public void setApsPacket(ApsPacket apsPacket) {
+        this.apsPacket = apsPacket;
     }
 
     //==================================================================================================================
@@ -190,8 +225,8 @@ public class NetworkPacket extends Packet implements INetPacket {
         output += "Network control: " + (networkControl != null ? networkControlFlags.values()[networkControl.getValue()] : null) + "\n";
         output += "Mac address: " + (macAddress != null ? macAddress.print() : null + "\n");
         output += "Command frame: " + (commandFrame != null ? networkLayerCommands.values()[commandFrame.getValue()] : null) + "\n";
-        output += "Payload: \n";
-        output += printPayload(byteFormatted);
+        output += "Application Packet: \n";
+        output += apsPacket.print();
 
         return output;
     }
