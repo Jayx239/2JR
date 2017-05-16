@@ -42,7 +42,7 @@ public class ApsPacket extends Packet implements IApsPacket {
         this.endPoint = endPoint;
         this.attrCtrl = attrCtrl;
         this.lengthControl = lengthControl;
-        this.attributeCtrlLength = attrCtrl.getSize();
+        this.attributeCtrlLength = 2;//attrCtrl.getSize();
         this.dataFactory = new DataFactory();
     }
 
@@ -51,7 +51,7 @@ public class ApsPacket extends Packet implements IApsPacket {
         this.commandFrame = commandFrame;
         this.endPoint = endPoint;
         this.attrCtrl = attrCtrl;
-        this.attributeCtrlLength = attrCtrl.getSize();
+        this.attributeCtrlLength = 2;//attrCtrl.getSize();
         this.dataFactory = new DataFactory();
     }
 
@@ -59,7 +59,7 @@ public class ApsPacket extends Packet implements IApsPacket {
 
     public ApsPacket(byte[] data){
         this.dataFactory = new DataFactory();
-        attributeCtrlLength = 0;
+        attributeCtrlLength = 2;
 
         if(data == null) {
             System.err.println("Invalid byte data for ApsPacket initialization");
@@ -109,12 +109,12 @@ public class ApsPacket extends Packet implements IApsPacket {
             System.err.println("Invalid byte data for ApsPacket initialization");
             return;
         }
-
+        /*
         if(attrCtrl.isLengthControl()){
             this.lengthControl = new LengthControl(Arrays.copyOfRange(data, attributeCtrlLength + 5, attributeCtrlLength * 2 +5), endPoint);
             count += attributeCtrlLength;
         }
-
+        */
         payloadSize = data.length - count;
 
         if(payloadSize <= 0) {
@@ -184,11 +184,11 @@ public class ApsPacket extends Packet implements IApsPacket {
 
         if(attrCtrl.isLengthControl()){
 
-            data = new byte[getPayload().length + attributeCtrlLength*2 +4];
+            data = new byte[1 + getPayload().length + attributeCtrlLength +4];
 
         }else{
-
-            data = new byte[getPayload().length + attributeCtrlLength + 4];
+            // 1 = endpoint id len
+            data = new byte[1 + getPayload().length + attributeCtrlLength + 4];
 
         }
 
@@ -196,23 +196,22 @@ public class ApsPacket extends Packet implements IApsPacket {
 
         data[count++] = commandFrame.getId();
 
-        data[count++] = endPoint.toByte()[0];
+        //for(byte endPointByte : endPoint.toByte())
+            data[count++] = endPoint.toByte()[0];
 
-        data[count++] = (byte)attributeCtrlLength;
+
+        //data[count++] = (byte)attributeCtrlLength;
 
 
-        for(int i  = count; i < 4 + attributeCtrlLength; i++){
-
-            data[count++] = attrCtrl.toByte()[i-4];
-
+        for(int i  = 0; i < attributeCtrlLength; i++){
+            data[count++] = attrCtrl.toByte()[i];
         }
 
         if(attrCtrl.isLengthControl()){
 
-            for(int i  = count; i < 4 + attributeCtrlLength *2; i++){
+            for(int i  = count; i < lengthControl.toByte().length; i++){
 
-                data[count++] = lengthControl.toByte()[i- (4 + attributeCtrlLength)];
-
+                data[count++] = lengthControl.toByte()[i];
             }
 
         }

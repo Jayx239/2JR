@@ -244,9 +244,15 @@ public class NetworkPacketTest {
                         "------------------------------\n" +
                         "Attributes\n" +
                         "------------------------------\n" +
-                        "Running: Boolean: false\n" +
-                        "Group Members: Signed Integer: 2\n" +
-                        "Project Members: Signed Integer: 3\n" +
+                        "Name: Running\n" +
+                        "   Type: Boolean\n" +
+                        "   Value: truefalse\n" +
+                        "Name: Group Members\n" +
+                        "   Type: Signed Integer\n" +
+                        "   Value: 92\n" +
+                        "Name: Project Members\n" +
+                        "   Type: Signed Integer\n" +
+                        "   Value: 83\n" +
                         "\n" +
                         "------------------------------\n" +
                         "Payload as byte array\n" +

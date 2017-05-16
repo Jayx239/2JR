@@ -23,9 +23,11 @@ public class AttributeControl extends JBitmap{
     }
 
     public AttributeControl(JDataSizes dataSize, HashMap<Integer, Attribute> attributeMap, boolean lengthControl) {
-        super(dataSize);
+        super(attributeMap.size()+1);
+        //super(dataSize);
         this.attributeMap = attributeMap;
         this.lengthControl = lengthControl;
+        super.setValue(new byte[dataSize.ordinal()]);
     }
 
     public AttributeControl(byte[] data,EndPoint endPoint){
@@ -67,6 +69,16 @@ public class AttributeControl extends JBitmap{
 
     public void setLengthControl(boolean lengthControl) {
         this.lengthControl = lengthControl;
+    }
+
+    @Override
+    public byte[] toByte() {
+        for(int i=0; i<getSize(); i++) {
+            for(int j = 0; j< 8; j++) {
+                setBitValue(attributeMap.containsKey(i*8 + j),j,i);
+            }
+        }
+        return super.toByte();
     }
 
     //==================================================================================================================

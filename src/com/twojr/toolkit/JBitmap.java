@@ -22,6 +22,11 @@ public class JBitmap extends JData {
         value = new byte[EIGHT_BIT.ordinal()];
     }
 
+    public JBitmap(int size) {
+        super(EIGHT_BIT_DATA,BITMAP,size);
+        value = new byte[size];
+    }
+
     public JBitmap(JDataSizes size) {
         super(EIGHT_BIT_MAP_DATA, BITMAP, size);
         if(size == null){

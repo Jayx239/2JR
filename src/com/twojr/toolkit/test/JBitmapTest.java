@@ -77,7 +77,7 @@ public class JBitmapTest {
     {
         byte[] bitmap = {0x39,0x32,0x76};
         JBitmap jBitmap = new JBitmap(bitmap);
-        String output = "Bitmap:\nRow[0]: 00111001\nRow[1]: 00110010\nRow[2]: 01110110\n";
+        String output = "Row[0]: 00111001\nRow[1]: 00110010\nRow[2]: 01110110\n";
 
         assertEquals(output,jBitmap.print());
 

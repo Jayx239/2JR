@@ -91,6 +91,9 @@ public class DataTypes {
     public static final int DISCOVER_START = 0xA1;
     public static final int DISCOVER_END = 0xAF;
 
+    public static final int NETWORK_PACKET = 0xF2;
+    public static final int APPLICATION_PACKET = 0xF3;
+
     //================================================================
     // Data Size
     //================================================================

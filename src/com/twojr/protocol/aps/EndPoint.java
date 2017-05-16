@@ -104,6 +104,12 @@ public class EndPoint extends JData{
     @Override
     public byte[] toByte() {
 
+        byte[] output = new byte[1 + attributes.size()];
+        output[0] = jId.toByte()[0];
+        for(int i=0; i<attributes.size(); i++ ) {
+            output[i+1] = (byte) attributes.get(i).getData().getId();
+        }
+
         return jId.toByte();
     }
 
