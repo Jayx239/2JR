@@ -41,6 +41,7 @@ public abstract class TwoJRDevice extends Raw802Device {
         this.manufacturer = manufacturer;
         this.applicationVersion = applicationVersion;
         this.remoteEndPoints = remoteEndPoints;
+        this.localEndpoints = new HashMap<>();
         this.outMessageQueue = new TwoJrDatagramQueue();
 
     }
@@ -130,6 +131,12 @@ public abstract class TwoJRDevice extends Raw802Device {
     public EndPoint getLocalEndPoint(int id){
 
         return localEndpoints.get(id);
+    }
+
+
+    public void setLocalEndPoint(EndPoint endPoint){
+
+        localEndpoints.put(endPoint.getId(),endPoint);
     }
 
     public abstract void start() throws XBeeException;

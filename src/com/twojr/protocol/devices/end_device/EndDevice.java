@@ -1,7 +1,10 @@
 package com.twojr.protocol.devices.end_device;
 
+import com.digi.xbee.api.XBeeNetwork;
+import com.digi.xbee.api.exceptions.TimeoutException;
 import com.digi.xbee.api.exceptions.XBeeException;
 import com.digi.xbee.api.listeners.IExplicitDataReceiveListener;
+import com.digi.xbee.api.models.DiscoveryOptions;
 import com.digi.xbee.api.models.ExplicitXBeeMessage;
 import com.digi.xbee.api.models.XBee64BitAddress;
 import com.digi.xbee.api.models.XBeeMessage;
@@ -9,6 +12,8 @@ import com.twojr.protocol.Attribute;
 import com.twojr.protocol.TwoJrDataGram;
 import com.twojr.protocol.aps.EndPoint;
 import com.twojr.protocol.devices.TwoJRDevice;
+import com.twojr.protocol.devices.coordinator.CoordinatorDataListener;
+import com.twojr.protocol.devices.coordinator.CoordinatorDiscoveryListener;
 import com.twojr.protocol.network.TwoJRNetworkPacketHandler;
 import com.twojr.protocol.devices.TwoJrDataListener;
 import com.twojr.protocol.network.INetPacket;
@@ -20,13 +25,15 @@ import com.twojr.toolkit.JString;
 import com.twojr.toolkit.integer.JUnsignedInteger;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by rcunni002c on 11/17/2016.
  */
-public class EndDevice extends TwoJRDevice implements IExplicitDataReceiveListener {
+public class EndDevice extends TwoJRDevice {
 
 
     private int sleepInterval;
@@ -64,32 +71,61 @@ public class EndDevice extends TwoJRDevice implements IExplicitDataReceiveListen
 
     @Override
     public void start() {
+
         try {
-            super.open();
-            this.running = true;
-            networkPacketHandler = new TwoJRNetworkPacketHandler();
-            ArrayList<Attribute> attributes = new ArrayList<Attribute>();
-            attributes.add(new Attribute(new JAddress(get64BitAddress().getValue()),toString()));
+            if (!isOpen()) {
 
-            EndPoint myEp = new EndPoint("Device",new JUnsignedInteger(JDataSizes.THIRTY_TWO_BIT,getModelID().getId()),attributes);
-            LinkedList<EndPoint> endPoints = new LinkedList<>();
-            endPoints.add(myEp);
 
-            HashMap<XBee64BitAddress,LinkedList<EndPoint>> initEndPoints = new HashMap<>();
-            initEndPoints.put(get64BitAddress(),endPoints);
-            //setEndPoints(initEndPoints);
+                open();
+                reset();
+
+                addDataListener(new EndDeviceDataListener(this));
+                getNetwork().addDiscoveryListener(new EndDeviceDiscoveryListener(this));
+                setReceiveTimeout(5000);
+                applyChanges();
+
+                System.out.println("Connection is Open");
+
+
+            } else {
+
+                System.out.println("Connection is already open");
+
+            }
+
+        }catch (XBeeException e){
+
 
         }
-        catch (XBeeException ex) {
-            this.running = false;
-            System.err.println("Error starting end device");
-            ex.printStackTrace();
-        }
+
+
     }
 
     @Override
     public void stop() {
-        super.close();
+
+        if(isOpen()){
+
+            System.out.println("Closing Serial Connection");
+
+
+            getNetwork().clearDeviceList();
+
+            removeDataListener(getRadioListener());
+
+            if(getNetwork().isDiscoveryRunning()){
+
+                getNetwork().stopDiscoveryProcess();
+
+
+            }
+
+            close();
+
+            System.out.println("Serial connection closed");
+
+
+        }
     }
 
     @Override
@@ -105,53 +141,56 @@ public class EndDevice extends TwoJRDevice implements IExplicitDataReceiveListen
 
     @Override
     public void read() {
-        // Read encoded data
-        XBeeMessage nextMessage = super.readData();
 
-        // Strip datagram data
-        TwoJrDataGram nextDatagram = new TwoJrDataGram(nextMessage.getData());
-
-        // Store datagram in inbound queue
-        //queueMessageToRead(nextDatagram);
-
-        nextMessage.getDevice();
-        //super.queueMessageToSend(new TwoJrDataGram(nextMessage.getDevice().get64BitAddress(),new NetworkPacket(new JUnsignedInteger(JDataSizes.EIGHT_BIT,0), new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkControlFlags.END_DEVICE.ordinal()),new JAddress(get64BitAddress().getValue()),new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkLayerCommands.REJOIN_RESPONSE.ordinal()))));
-        try {
-            this.send();
-        } catch (XBeeException ex) {
-
-        }
     }
 
     @Override
     public void discover() {
-        this.getNetwork();
-    }
 
-    @Override
-    public void explicitDataReceived(ExplicitXBeeMessage explicitXBeeMessage) {
-        System.err.println("Data received");
-        //this.read();
-        TwoJrDataGram nextDatagram = new TwoJrDataGram(explicitXBeeMessage.getData());
-
-        // Store datagram in inbound queue
-        //queueMessageToRead(nextDatagram);
-
-        explicitXBeeMessage.getDevice();
-
-        TwoJrDataGram responseDatagram;
-        NetworkPacket responseNetworkPacket = networkPacketHandler.handle(nextDatagram.getPacket());
-        //ApsPacket responseApsPacket = apsPacketHandler.handle(new ApsPacket(nextDatagram.getPacket.getPayload()));
-        //responseNetworkPacket.setPayload(apsPacket.toByte());
-        responseDatagram = new TwoJrDataGram(new XBee64BitAddress(responseNetworkPacket.getMacAddress().toByte()),responseNetworkPacket);
-        //super.queueMessageToSend(new TwoJrDataGram(explicitXBeeMessage.getDevice().get64BitAddress(),new NetworkPacket(new JUnsignedInteger(JDataSizes.EIGHT_BIT,0), new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkControlFlags.END_DEVICE.ordinal()),new JAddress(get64BitAddress().toString()),new JUnsignedInteger(JDataSizes.EIGHT_BIT,INetPacket.networkLayerCommands.REJOIN_RESPONSE.ordinal()))));
+        System.out.println("Starting Discovery");
+        XBeeNetwork network = getNetwork();
         try {
-            this.send();
-        } catch (XBeeException ex) {
+            network.setDiscoveryTimeout(10000);
 
+            // Append the device type identifier and the local device.
+            network.setDiscoveryOptions(EnumSet.of(DiscoveryOptions.APPEND_DD));
+
+            if (isOpen()) {
+
+                if (!network.isDiscoveryRunning()) {
+
+
+                    network.startDiscoveryProcess();
+
+                    while (getNetwork().isDiscoveryRunning()) {
+                        try {
+                            TimeUnit.MILLISECONDS.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+
+                } else {
+
+                    System.out.println("Discovery is already running");
+
+                }
+            }
+
+        } catch (TimeoutException e1){
+
+            System.out.println("Discovery Timeout");
+            network.stopDiscoveryProcess();
+
+        } catch (XBeeException e) {
+            e.printStackTrace();
         }
-        this.read();
+
+
     }
+
+
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================

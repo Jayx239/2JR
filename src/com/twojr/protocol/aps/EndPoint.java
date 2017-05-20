@@ -25,6 +25,7 @@ public class EndPoint extends JData{
 
     public EndPoint(){
 
+        attributes = new ArrayList<>();
     }
 
     public EndPoint(String name, JInteger jId, ArrayList<Attribute> attributes) {

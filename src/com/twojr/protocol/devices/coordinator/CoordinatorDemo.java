@@ -25,7 +25,7 @@ public class CoordinatorDemo {
 
     public static void main(String[] args) throws XBeeException {
 
-        Coordinator coordinator = new Coordinator("COM6",9600,null,null,null);
+        Coordinator coordinator = new Coordinator("COM25",115200,null,null,null);
 
         coordinator.start();
 

@@ -62,65 +62,70 @@ public class ApsPacket extends Packet implements IApsPacket {
         attributeCtrlLength = 0;
 
         if(data == null) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
+            System.err.println("Invalid byte data for ApsPacket initialization: Data Null");
             return;
         }
         int payloadSize;
         int count = 0;
 
+        /*
         if(data.length <= 1) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
+            System.err.println("Invalid byte data for ApsPacket initialization: No Data");
             return;
         }
+        */
 
         JUnsignedInteger sequenceNumber = new JUnsignedInteger(new byte[]{data[count]});
         setSequenceNumber(sequenceNumber);
         count++;
 
         if(data.length <= count) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
+            System.err.println("Invalid byte data for ApsPacket initialization: Sequence Number");
             return;
         }
         this.commandFrame = getApsCommand(data[count]);
         count++;
 
         if(data.length <= count) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
+            System.err.println("Invalid byte data for ApsPacket initialization: Command Frame");
             return;
         }
         this.endPoint = new EndPoint(data[count]);
         count++;
 
         if(data.length <= count) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
+            System.err.println("Invalid byte data for ApsPacket initialization: End Point");
             return;
         }
         this.attributeCtrlLength = data[count];
         count++;
-
+        /*
         if(data.length <= count) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
+            System.err.println("Invalid byte data for ApsPacket initialization: Attribute Control Length");
             return;
-        }
+        }*/
+
         this.attrCtrl = new AttributeControl(Arrays.copyOfRange(data,4,attributeCtrlLength + count),endPoint);
         count += attributeCtrlLength;
 
-        if(data.length <= count) {
-            System.err.println("Invalid byte data for ApsPacket initialization");
+        /*
+        if(data.length < count) {
+            System.err.println("Invalid byte data for ApsPacket initialization: : Attribute Control");
             return;
         }
+        */
 
         if(attrCtrl.isLengthControl()){
             this.lengthControl = new LengthControl(Arrays.copyOfRange(data, attributeCtrlLength + 5, attributeCtrlLength * 2 +5), endPoint);
             count += attributeCtrlLength;
+
+            if(data.length < count) {
+                System.err.println("Invalid byte data for ApsPacket initialization: : Length Control");
+                return;
+            }
         }
 
         payloadSize = data.length - count;
-
-        if(payloadSize <= 0) {
-            System.err.println("No payload for ApsPacket byte initialization");
-            return;
-        }
 
         byte[] payload = Arrays.copyOfRange(data,count, data.length);
         setPayload(payload);
@@ -246,9 +251,10 @@ public class ApsPacket extends Packet implements IApsPacket {
                      "Application Layer Packet\n";
         str += "------------------------------\n";
 
-        str += "Command Frame: " + (commandFrame != null ? commandFrame : null) + "\n";
-        str += "Endpoint: " + (endPoint != null ? endPoint.print() : "null") + "\n";
-        str += "Attribute Control: " + (attrCtrl != null ? attrCtrl.print() : "null") + "\n";
+        str += "Sequence Number: " + getSequenceNumber().getValue() + "\n";
+        str += "Command Frame: " + commandFrame + "\n";
+        str += "Endpoint: " + endPoint.print();
+        str += "Attribute Control: " + attrCtrl.print() + "\n";
 
         if(attrCtrl != null && attrCtrl.isLengthControl()){
 
@@ -256,10 +262,15 @@ public class ApsPacket extends Packet implements IApsPacket {
 
         }
 
-        str += "\n------------------------------\nAttributes\n------------------------------\n";
-        str += printPayloadContents();
-        str += "\n------------------------------\nPayload as byte array\n------------------------------\n";
-        str += printPayload(true);
+        if(getPayload().length > 0) {
+
+            str += "\n------------------------------\nAttributes\n------------------------------\n";
+            str += printPayloadContents();
+            str += "\n------------------------------\nPayload as byte array\n------------------------------\n";
+
+            str += printPayload(true);
+
+        }
         //System.out.println(str);
 
         return str;

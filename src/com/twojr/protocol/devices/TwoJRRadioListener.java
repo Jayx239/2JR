@@ -127,10 +127,6 @@ public class TwoJRRadioListener extends TwoJrDataListener {
         return packets;
     }
 
-    @Override
-    public void explicitDataReceived(ExplicitXBeeMessage explicitXBeeMessage) {
-
-    }
 
     @Override
     public void dataReceived(XBeeMessage xBeeMessage) {

@@ -1,39 +1,44 @@
-package com.twojr.protocol.devices.coordinator;
+package com.twojr.protocol.devices.end_device;
 
 import com.digi.xbee.api.exceptions.XBeeException;
-import com.digi.xbee.api.models.ExplicitXBeeMessage;
+import com.digi.xbee.api.listeners.IDataReceiveListener;
 import com.digi.xbee.api.models.XBeeMessage;
 import com.digi.xbee.api.utils.HexUtils;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import com.twojr.protocol.devices.TwoJrDataListener;
+import com.twojr.protocol.TwoJrDataGram;
+import com.twojr.protocol.devices.TwoJRDataGramHandler;
 import com.twojr.protocol.network.NetworkPacket;
+import com.twojr.protocol.network.TwoJRNetworkPacketHandler;
 
 /**
- * Created by rcunni002c on 4/5/2017.
+ * Created by rcunni202 on 5/20/2017.
  */
-public class CoordinatorDataListener extends TwoJrDataListener {
+public class EndDeviceDataListener implements IDataReceiveListener {
 
-    private Coordinator coordinator;
-
+    private EndDevice endDevice;
 
     //==================================================================================================================
-    // Constructor(s)
+    // Constructors
     //==================================================================================================================
 
-    public CoordinatorDataListener(Coordinator coordinator) {
-        this.coordinator = coordinator;
+    public EndDeviceDataListener(){
+
     }
 
-    //==================================================================================================================
-    // Getter(s) and Setter(s)
-    //==================================================================================================================
-
-    public Coordinator getCoordinator() {
-        return coordinator;
+    public EndDeviceDataListener(EndDevice endDevice) {
+        this.endDevice = endDevice;
     }
 
-    public void setCoordinator(Coordinator coordinator) {
-        this.coordinator = coordinator;
+
+    //==================================================================================================================
+    // Getters & Setters
+    //==================================================================================================================
+
+    public EndDevice getEndDevice() {
+        return endDevice;
+    }
+
+    public void setEndDevice(EndDevice endDevice) {
+        this.endDevice = endDevice;
     }
 
 
@@ -44,18 +49,16 @@ public class CoordinatorDataListener extends TwoJrDataListener {
     @Override
     public void dataReceived(XBeeMessage xBeeMessage) {
 
-        CoordinatorDataListenThread thread = new CoordinatorDataListenThread(coordinator,xBeeMessage);
+        EndDeviceListenerThread thread = new EndDeviceListenerThread(endDevice,xBeeMessage);
         thread.run();
+
 
     }
 
-
     //==================================================================================================================
-    // Private Function(s)
+    // Private Functions
     //==================================================================================================================
 
 
 
-
-
-}/*********************************************END OF FILE*************************************************************/
+}
