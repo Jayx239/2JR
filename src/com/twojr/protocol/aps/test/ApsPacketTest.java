@@ -155,12 +155,12 @@ public class ApsPacketTest {
                 "------------------------------\n" +
                 "Application Layer Packet\n" +
                 "------------------------------\n" +
+                "Sequence Number: 0\n" +
                 "Command Frame: DISCOVER\n" +
                 "Endpoint: ID: 0\n" +
                 "Running: true\n" +
                 "Group Members: 9\n" +
                 "Project Members: 8\n" +
-                "\n" +
                 "Attribute Control: Row[0]: 00000111\n" +
                 "\n" +
                 "\n" +
