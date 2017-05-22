@@ -105,6 +105,11 @@ public class JBitmap extends JData {
     //==================================================================================================================
 
     @Override
+    public int getSize() {
+        return value.length;
+    }
+
+    @Override
     public byte[] toByte() {
         return value;
     }

@@ -56,8 +56,24 @@ public abstract class JInteger extends JData {
     public abstract byte[] toByte();
     @Override
     public abstract String print();
+
     @Override
-    public abstract byte[] compress();      //Compresses data into the smallest format possible
+    public byte[] compress() {
+        byte[] byteVal = toByte();
+        int len = byteVal.length;
+        for(int i=byteVal.length-1; i>=0; i--) {
+            if(byteVal[i] != (byte) 0x00)
+                break;
+            len--;
+        }
+
+        byte[] output = new byte[len];
+        for(int i=0; i<len; i++) {
+            output[i] = byteVal[i];
+        }
+        return output;
+    }
+
     @Override
     public abstract int getSavings();       //Reports the numbers of bytes saved by compression
     //==================================================================================================================

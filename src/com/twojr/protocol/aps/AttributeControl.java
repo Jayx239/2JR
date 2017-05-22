@@ -59,6 +59,7 @@ public class AttributeControl extends JBitmap{
 
     public void setAttributeMap(HashMap<Integer, Attribute> attributeMap) {
         this.attributeMap = attributeMap;
+        toByte();
     }
 
     public boolean isLengthControl() {
@@ -69,6 +70,14 @@ public class AttributeControl extends JBitmap{
         this.lengthControl = lengthControl;
     }
 
+    @Override
+    public byte[] toByte() {
+        for(int i=0; i<getSize()*8; i++) {
+            if (attributeMap.containsKey(i));
+                super.setBitValue(true, i%8, i > 0 ? i/8 : 0);
+        }
+        return super.toByte();
+    }
     //==================================================================================================================
     // Public Functions(s)
     //==================================================================================================================

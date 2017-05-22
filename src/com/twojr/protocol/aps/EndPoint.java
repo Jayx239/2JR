@@ -76,7 +76,9 @@ public class EndPoint extends JData{
     }
 
     public void addAttribute(Attribute attribute){
-        if(attributes != null) {
+        if(attributes == null)
+            attributes = new ArrayList<>();
+        if(attribute != null) {
 
             attributes.add(attribute);
 
@@ -119,18 +121,18 @@ public class EndPoint extends JData{
 
     public ArrayList<Attribute> getAttributes(AttributeControl attributeControl){
 
-        ArrayList<Attribute> attributes = new ArrayList<>();
+        ArrayList<Attribute> addAttributes = new ArrayList<>();
 
-        for(int i = 0; i < attributeControl.getSize() * 8; i++){
+        for(int i = 0; i < attributes.size(); i++){
 
-            if(attributeControl.getBitValue(i)){
+            if(attributeControl.getBitValue(i/8,i%8)){
 
-                attributes.add(this.attributes.get(i));
+                addAttributes.add(this.attributes.get(i));
             }
 
         }
 
-        return attributes;
+        return addAttributes;
 
     }
 
