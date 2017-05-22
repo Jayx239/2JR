@@ -1,6 +1,7 @@
 package com.twojr.protocol.devices.end_device;
 
 import com.digi.xbee.api.exceptions.XBeeException;
+import com.digi.xbee.api.models.XBee64BitAddress;
 import com.digi.xbee.api.models.XBeeMessage;
 import com.digi.xbee.api.utils.HexUtils;
 import com.twojr.protocol.TwoJrDataGram;
@@ -40,7 +41,7 @@ public class EndDeviceListenerThread implements Runnable {
 
         System.out.println(response.getPacket().print());
         try {
-            endDevice.sendData(xBeeMessage.getDevice(),response.getPacket().toByte());
+            endDevice.sendData(new XBee64BitAddress("0013A20041249BBA"),response.getPacket().toByte());
         } catch (XBeeException e) {
             e.printStackTrace();
         }

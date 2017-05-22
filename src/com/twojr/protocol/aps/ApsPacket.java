@@ -253,7 +253,7 @@ public class ApsPacket extends Packet implements IApsPacket {
 
         str += "Sequence Number: " + getSequenceNumber().getValue() + "\n";
         str += "Command Frame: " + commandFrame + "\n";
-        str += "Endpoint: " + endPoint.print();
+        str += "Endpoint: " + endPoint.getId();
         str += "Attribute Control: " + attrCtrl.print() + "\n";
 
         if(attrCtrl != null && attrCtrl.isLengthControl()){
@@ -265,7 +265,7 @@ public class ApsPacket extends Packet implements IApsPacket {
         if(getPayload().length > 0) {
 
             str += "\n------------------------------\nAttributes\n------------------------------\n";
-            str += printPayloadContents();
+            //str += printPayloadContents();
             str += "\n------------------------------\nPayload as byte array\n------------------------------\n";
 
             str += printPayload(true);

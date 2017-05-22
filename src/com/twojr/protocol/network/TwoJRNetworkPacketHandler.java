@@ -20,7 +20,6 @@ public class TwoJRNetworkPacketHandler extends TwoJrPacketHandler {
     public NetworkPacket handle(Packet packet) {
         NetworkPacket inboundNetworkPacket = (NetworkPacket) packet;
         NetworkPacket responsePacket = inboundNetworkPacket;
-        responsePacket.setPayload(new byte[0]);
 
         INetPacket.networkLayerCommands networkLayerCommand = INetPacket.networkLayerCommands.values()[inboundNetworkPacket.getCommandFrame().getValue()];
 

@@ -186,7 +186,7 @@ public class Coordinator extends TwoJRDevice{
         System.out.println("Sending APS Discovery Request");
         System.out.println(networkPacket.print());
 
-        sendData(new XBee64BitAddress("0013A20041249BBA"),networkPacket.toByte());
+        sendData(new XBee64BitAddress("0013A20041249BBE"),networkPacket.toByte());
 
     }
 

@@ -222,7 +222,7 @@ public class NetworkPacket extends Packet implements INetPacket {
                 "Network Layer Packet\n";
         output += "------------------------------\n";
         output += "Sequence number: " + (sequenceNumber != null ? sequenceNumber.getValue() : null) + "\n";
-        output += "Network control: " + networkControl.print() + "\n";
+        output += "Network control: " + (networkControl != null ? networkControlFlags.values()[networkControl.getValue()] : null) + "\n";
         output += "Mac address: " + (macAddress != null ? macAddress.print() : null + "\n");
         output += "Command frame: " + (commandFrame != null ? networkLayerCommands.values()[commandFrame.getValue()] : null) + "\n";
         output += "Application Packet: \n";
