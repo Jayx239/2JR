@@ -1,10 +1,7 @@
 package com.twojr.utilities;
 
 import com.twojr.protocol.Attribute;
-import com.twojr.protocol.aps.ApsPacket;
-import com.twojr.protocol.aps.AttributeControl;
-import com.twojr.protocol.aps.EndPoint;
-import com.twojr.protocol.aps.IApsPacket;
+import com.twojr.protocol.aps.*;
 import com.twojr.protocol.devices.TwoJRRadioListener;
 import com.twojr.protocol.network.INetPacket;
 import com.twojr.protocol.network.NetworkPacket;
@@ -322,6 +319,7 @@ public class TwoJRTerminal {
                         else if (bValStr.toLowerCase().equals("f"))
                             bool = new JBoolean(false);
                         else {
+                            bool = new JBoolean(true);
                             System.out.println("Invalid Entry!");
                         }
 
@@ -427,10 +425,10 @@ public class TwoJRTerminal {
 
                             return jInt;
                         }
-
-                        System.out.println("Invalid entry");
-                        return null;
-
+                        else {
+                            System.out.println("Invalid entry");
+                            return new JSignedInteger(JDataSizes.THIRTY_TWO_BIT, 0);
+                        }
                     case 8:
                         // String
                         System.out.print("Enter a string to encode: ");
@@ -473,7 +471,7 @@ public class TwoJRTerminal {
                 System.out.println("Invalid input\n Error message: " + ex.getMessage());
             }
         }
-        return null;
+        return new JSignedInteger(JDataSizes.THIRTY_TWO_BIT, 0);
     }
 
     NetworkPacket buildNetworkPacket() {
@@ -508,8 +506,8 @@ public class TwoJRTerminal {
         printByteB(netPacket.toByte());
 
         System.out.println("Decoding: ");
-        System.out.print(new NetworkPacket(netPacket.toByte()).print());
-
+        //System.out.print(new NetworkPacket(netPacket.toByte()).print());
+        System.out.println(netPacket.print());
         testNetworkPacketAttributes(netPacket);
         return netPacket;
 
@@ -536,7 +534,19 @@ public class TwoJRTerminal {
             EndPoint endPoint = createEndpoint();
             AttributeControl attributeControl = createAttributeControl(endPoint);
 
-            ArrayList<Byte> payload = new ArrayList<Byte>();
+            /*ArrayList<Byte> payload = new ArrayList<Byte>();
+
+                LengthControl lengthControl;
+                byte[] lengthControlByte = new byte[1];
+                lengthControlByte[0] = (byte) 0x00;
+
+            for(int i=0; i<8; i++) {
+                if(attributeControl.getBitValue(i) && isDataVariableSize(attributeControl.getAttributeMap().get(i).getData().getId()))
+                    lengthControlByte[0] += (0x01 << i);
+            }
+
+            lengthControl = new LengthControl(lengthControlByte,endPoint);
+
             for(int i=0; i<endPoint.getAttributes().size(); i++) {
                 if(!attributeControl.getAttributeMap().containsKey(i))
                     continue;
@@ -553,8 +563,8 @@ public class TwoJRTerminal {
             for(Object b : payload.toArray()) {
                 payloadArray[i++] = (byte) b;
             }
-
-            ApsPacket apsPacket = new ApsPacket(seqNumber, payloadArray, commandFrame, endPoint, attributeControl);
+*/
+            ApsPacket apsPacket = new ApsPacket(seqNumber, commandFrame, endPoint, attributeControl);
             int payloadSize = 0;
             System.out.println("Encoding application packet: ");
             printByteB(apsPacket.toByte());
@@ -602,7 +612,7 @@ public class TwoJRTerminal {
 
     public ArrayList<Attribute> createAttributes() {
         ArrayList<Attribute> attributes = new ArrayList<>();
-        for(int i= 0; i < 16; i++) {
+        for(int i= 0; i < 8; i++) {
             try {
                 System.out.print("Add new Attribute? (1 - yes , else - no) :");
                 int response = Integer.parseInt(reader.nextLine());
@@ -630,8 +640,11 @@ public class TwoJRTerminal {
     public AttributeControl createAttributeControl(EndPoint endPoint) {
         HashMap<Integer, Attribute> attributeHashMap = new HashMap<>();
         printAttributes(endPoint);
-        for(int i=0; i < endPoint.getAttributes().size(); i++) {
-            System.out.print("Add attribute " + i + " to attribute control? (0 - false, 1 - true): ");
+        byte[] attributeMap = new byte[1];
+        attributeMap[0] = (byte) 0x00;
+        int attributeIndex = 0;
+        for(Attribute attribute : endPoint.getAttributes()) {
+            System.out.print("Add attribute " + attribute.getName() + " to attribute control? (0 - false, 1 - true): ");
 
             boolean invalidEntry = true;
             while(invalidEntry) {
@@ -639,8 +652,10 @@ public class TwoJRTerminal {
                 try {
                     if(nextValue > -1 && nextValue < 2) {
                         invalidEntry = false;
+                        attributeHashMap.put(attribute.getData().getId(),attribute);
                         if(nextValue == 1)
-                            attributeHashMap.put(i,endPoint.getAttributes().get(i));
+                            attributeMap[0] += (0x01<<attributeIndex);
+                        attributeIndex++;
                     }
                 }catch (NumberFormatException ex) {
                     System.out.println("Invalid Entry");
@@ -666,8 +681,8 @@ public class TwoJRTerminal {
 
         boolean lengthControl = lengthControlInt == 1;
         */
-        AttributeControl attributeControl = new AttributeControl(JDataSizes.SIXTEEN_BIT,attributeHashMap, requiresLengthControl(endPoint));
-
+        AttributeControl attributeControl = new AttributeControl(JDataSizes.EIGHT_BIT,attributeHashMap, requiresLengthControl(endPoint));
+        attributeControl.setValue(attributeMap);
         return attributeControl;
     }
 
@@ -817,7 +832,7 @@ public class TwoJRTerminal {
                         break;
                     case 12:
                         // print payload
-                        System.out.print(networkPacket.printPayload(true));
+                        System.out.print(networkPacket.getApsPacket().print());//printPayload(true));
                         break;
                     case -1:
                         // Exit

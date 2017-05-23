@@ -141,6 +141,8 @@ public class NetworkPacket extends Packet implements INetPacket {
     }
 
     public byte[] getPayload() {
+        if(payload == null && apsPacket != null)
+            payload = apsPacket.toByte();
         return payload;
     }
 
@@ -160,6 +162,7 @@ public class NetworkPacket extends Packet implements INetPacket {
 
     public void setApsPacket(ApsPacket apsPacket) {
         this.apsPacket = apsPacket;
+        setPayload(apsPacket);
     }
 
     //==================================================================================================================
@@ -187,10 +190,14 @@ public class NetworkPacket extends Packet implements INetPacket {
             for (byte command : commandFrame.toByte()) {
                 output[index++] = command;
             }
-        if (payload != null)
-            for (byte pay : payload) {
+        if (apsPacket != null)
+            for (byte pay : apsPacket.toByte()) {
                 output[index++] = pay;
             }
+            else if(payload != null) {
+            for(byte pay: payload)
+                output[index++] = pay;
+        }
 
         return output;
     }
@@ -206,7 +213,9 @@ public class NetworkPacket extends Packet implements INetPacket {
             size += macAddress.getSize();
         if (commandFrame != null)
             size += commandFrame.getSize();
-        if (payload != null)
+        if(apsPacket != null)
+            size+= apsPacket.toByte().length;
+        else if (payload != null)
             size += payload.length;
 
         return size;

@@ -100,7 +100,7 @@ public class JString extends JData {
     @Override
     public String print() {
 
-        String output = "String Value: " + value + "\n";
+        String output = value;
         return output;
     }
 

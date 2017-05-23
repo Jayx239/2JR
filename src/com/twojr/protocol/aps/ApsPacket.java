@@ -7,12 +7,16 @@ import com.twojr.toolkit.DataFactory;
 import com.twojr.toolkit.DataTypes;
 import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.integer.JUnsignedInteger;
+import org.w3c.dom.Attr;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.twojr.protocol.aps.IApsPacket.apsCommands.*;
+import static com.twojr.toolkit.DataTypes.*;
+import static com.twojr.toolkit.DataTypes.LONG_CHARACTER_STRING;
+import static com.twojr.toolkit.DataTypes.LONG_OCTET_STRING;
 
 
 /**
@@ -55,7 +59,28 @@ public class ApsPacket extends Packet implements IApsPacket {
         this.dataFactory = new DataFactory();
     }
 
+    public ApsPacket(JInteger sequenceNumber, apsCommands commandFrame, EndPoint endPoint, AttributeControl attrCtrl) {
+        super(sequenceNumber, new byte[0]);
+        this.commandFrame = commandFrame;
+        this.endPoint = endPoint;
+        this.attrCtrl = attrCtrl;
+        this.attributeCtrlLength = attrCtrl.getSize();
+        this.dataFactory = new DataFactory();
+        generatePayload();
+    }
 
+    public ApsPacket(JInteger sequenceNumber, apsCommands commandFrame, EndPoint endPoint, AttributeControl attrCtrl, LengthControl lengthControl) {
+
+        super(sequenceNumber, new byte[0]);
+
+        this.commandFrame = commandFrame;
+        this.endPoint = endPoint;
+        this.attrCtrl = attrCtrl;
+        this.lengthControl = lengthControl;
+        this.attributeCtrlLength = attrCtrl.getSize();
+        this.dataFactory = new DataFactory();
+        generatePayload();
+    }
 
     public ApsPacket(byte[] data){
         this.dataFactory = new DataFactory();
@@ -95,15 +120,16 @@ public class ApsPacket extends Packet implements IApsPacket {
             System.err.println("Invalid byte data for ApsPacket initialization");
             return;
         }
-        this.attributeCtrlLength = data[count];
+        lengthControl = new LengthControl(new byte[]{(byte)data[count]},endPoint);
+        //this.attributeCtrlLength = data[count];
         count++;
 
         if(data.length <= count) {
             System.err.println("Invalid byte data for ApsPacket initialization");
             return;
         }
-        this.attrCtrl = new AttributeControl(Arrays.copyOfRange(data,4,attributeCtrlLength + count),endPoint);
-        count += attributeCtrlLength;
+        this.attrCtrl = new AttributeControl(Arrays.copyOfRange(data,4,1 + count),endPoint);
+        count ++;
 
         if(data.length <= count) {
             System.err.println("Invalid byte data for ApsPacket initialization");
@@ -278,15 +304,17 @@ public class ApsPacket extends Packet implements IApsPacket {
 
         for(Attribute attribute : attributes) {
             int dataId = attribute.getData().getId();
-            int length = DataTypes.dataSizeMap.get(dataId);
+            //int length = attribute.getData().getSize();//;DataTypes.dataSizeMap.get(dataId);
+            if(!attrCtrl.getAttributeMap().containsKey(dataId))
+                continue;
 
-            if(lengthControl)
-                length = (int) payload[payloadOffset++];
+            //if(lengthControl)
+                //length = (int) payload[payloadOffset++];
 
-            byte[] stream = getByteSegment(payload,payloadOffset,length);
-            payloadString += attribute.print();
-            payloadString += DataFactory.getData(dataId, stream).print() + '\n';
-            payloadOffset += length;
+            //byte[] stream = getByteSegment(payload,payloadOffset,attribute.getData().getSize());
+            payloadString += attribute.print() + '\n';
+            //payloadString += DataFactory.getData(dataId, stream).print() + '\n';
+            //payloadOffset += length;
         }
 
         return payloadString;
@@ -304,6 +332,52 @@ public class ApsPacket extends Packet implements IApsPacket {
         }
 
         return output;
+    }
+
+    public byte[] generatePayload() {
+        if(attrCtrl == null)
+            return new byte[0];
+
+        ArrayList<Byte> payload = new ArrayList<Byte>();
+
+
+        LengthControl lengthControl = getLengthControl();
+        if(lengthControl == null) {
+            byte[] lengthControlByte = new byte[1];
+            lengthControlByte[0] = (byte) 0x00;
+            int i=0;
+            for(Attribute attr : attrCtrl.getAttributeMap().values()){//for (int i = 0; i < 8; i++) {
+                if (attrCtrl.getBitValue(i) && isDataVariableSize(attr.getData().getId()))
+                    lengthControlByte[0] += (0x01 << i);
+                i++;
+            }
+
+            lengthControl = new LengthControl(lengthControlByte, endPoint);
+            setLengthControl(lengthControl);
+        }
+
+        //for(int i=0; i<endPoint.getAttributes().size(); i++) {
+            //if(!attrCtrl.getAttributeMap().containsKey(i))
+                //continue;
+        int bitIndex = 0;
+        for(Attribute attribute : attrCtrl.getAttributeMap().values()) {
+            if(attrCtrl.getBitValue(bitIndex)) {
+                if (lengthControl.getBitValue(bitIndex))
+                    payload.add((byte) attribute.getData().getSize());
+                for (byte payloadByte : attribute.getData().toByte())
+                    payload.add(payloadByte);
+            }
+            bitIndex = bitIndex == 0 ? 1 : bitIndex*2;
+
+        }
+        byte[] payloadArray = new byte[payload.size()];
+        int i = 0;
+
+        for(Object b : payload.toArray()) {
+            payloadArray[i++] = (byte) b;
+        }
+        this.setPayload(payloadArray);
+        return payloadArray;
     }
 
     public byte[] generatePayload(ArrayList<byte[]> bytes){
@@ -330,9 +404,34 @@ public class ApsPacket extends Packet implements IApsPacket {
         return payload;
     }
 
+
+
     //==================================================================================================================
     // Private Functions(s)
     //==================================================================================================================
+
+    private boolean isDataVariableSize(int dataType) {
+        switch (dataType) {
+            // bit map
+            case EIGHT_BIT_MAP_DATA :
+            case SIXTEEN_BIT_MAP_DATA:
+            case TWENTY_FOUR_BIT_MAP_DATA:
+            case THIRTY_TWO_BIT_MAP_DATA:
+            case FORTY_BIT_MAP_DATA:
+            case FORTY_EIGHT_BIT_MAP_DATA:
+            case FIFTY_SIX_BIT_MAP_DATA:
+            case SIXTY_FOUR_BIT_MAP_DATA:
+
+                // Strings
+            case OCTET_STRING :
+            case CHARACTER_STRING :
+            case LONG_OCTET_STRING :
+            case LONG_CHARACTER_STRING :
+
+                return true;
+        }
+        return false;
+    }
 
     public apsCommands getApsCommand(byte id){
 
@@ -387,7 +486,7 @@ public class ApsPacket extends Packet implements IApsPacket {
         if(attrCtrl == null) {
             return false;
         }
-        if(lengthControl == null && attrCtrl.isLengthControl()) {
+        if(lengthControl == null ) {//&& attrCtrl.isLengthControl()) {
             return false;
         }
         return true;

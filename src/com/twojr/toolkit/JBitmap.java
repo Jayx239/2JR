@@ -89,7 +89,7 @@ public class JBitmap extends JData {
 
         byte data = this.value[byteOffset];
 
-        return (data & (1 << bitOffset)) != 0;
+        return (data & (0x01 << bitOffset)) != 0;
 
 
     }
