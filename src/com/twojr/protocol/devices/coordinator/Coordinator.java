@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.digi.xbee.api.models.APIOutputMode.*;
 import static com.digi.xbee.api.models.DiscoveryOptions.*;
+import static com.twojr.protocol.aps.IApsPacket.*;
 import static com.twojr.protocol.devices.ATCommands.*;
 
 /**
@@ -174,19 +175,56 @@ public class Coordinator extends TwoJRDevice{
     }
 
     @Override
-    public void send() throws XBeeException {
+    public void send(apsCommands command) throws XBeeException {
 
-        System.out.println("Sending Data");
+        if(command.equals(apsCommands.DISCOVER)) {
 
-        AttributeControl attributeControl = new AttributeControl(new byte[]{(byte) 0x03});
+            System.out.println("Sending Data");
 
-        ApsPacket apsPacket = new ApsPacket(new JSignedInteger(new byte[]{0}), new byte[]{}, IApsPacket.apsCommands.DISCOVER, new EndPoint((byte) 0x01), attributeControl);
-        NetworkPacket networkPacket = new NetworkPacket(0, 0, 0, 0, apsPacket.toByte());
+            AttributeControl attributeControl = new AttributeControl(new byte[]{(byte) 0x03});
 
-        System.out.println("Sending APS Discovery Request");
-        System.out.println(networkPacket.print());
+            ApsPacket apsPacket = new ApsPacket(new JSignedInteger(new byte[]{0}), new byte[]{}, apsCommands.DISCOVER, new EndPoint((byte) 0x00), attributeControl);
+            NetworkPacket networkPacket = new NetworkPacket(0, 0, 0, 0, apsPacket.toByte());
 
-        sendData(new XBee64BitAddress("0013A20041249BBE"),networkPacket.toByte());
+            System.out.println("Sending APS Discovery Request");
+            System.out.println(networkPacket.print());
+
+            sendData(new XBee64BitAddress("0013A20041249BBE"), networkPacket.toByte());
+
+        }else  if(command.equals(apsCommands.WRITE)){
+
+            System.out.println("Sending Data");
+
+            AttributeControl attributeControl = new AttributeControl(new byte[]{(byte) 0x03});
+            byte[] writeData = {0x01, 0x01};
+
+            ApsPacket apsPacket = new ApsPacket(new JSignedInteger(new byte[]{0}), writeData, apsCommands.WRITE, new EndPoint((byte) 0x00), attributeControl);
+            NetworkPacket networkPacket = new NetworkPacket(0, 0, 0, 0, apsPacket.toByte());
+
+            System.out.println("Sending APS Write Request");
+            System.out.println(networkPacket.print());
+
+            sendData(new XBee64BitAddress("0013A20041249BBE"), networkPacket.toByte());
+
+
+        }else if(command.equals(apsCommands.READ)){
+
+            System.out.println("Sending Data");
+
+            AttributeControl attributeControl = new AttributeControl(new byte[]{(byte) 0x03});
+
+            ApsPacket apsPacket = new ApsPacket(new JSignedInteger(new byte[]{0}), new byte[]{}, apsCommands.READ, new EndPoint((byte) 0x00), attributeControl);
+            NetworkPacket networkPacket = new NetworkPacket(0, 0, 0, 0, apsPacket.toByte());
+
+            System.out.println("Sending APS Read Request");
+            System.out.println(networkPacket.print());
+
+            sendData(new XBee64BitAddress("0013A20041249BBE"), networkPacket.toByte());
+
+
+        }else {
+
+        }
 
     }
 

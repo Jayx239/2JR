@@ -69,11 +69,7 @@ public class JString extends JData {
         }
     }
     public void setValue(byte[] byteString) {
-        value = "";
-        for(byte byteChar: byteString) {
-            value+=(char) byteChar;
-        }
-
+        value = new String(byteString);
         setValue(value);
     }
     //==================================================================================================================

@@ -11,6 +11,7 @@ import com.digi.xbee.api.models.XBeeMessage;
 import com.twojr.protocol.Attribute;
 import com.twojr.protocol.TwoJrDataGram;
 import com.twojr.protocol.aps.EndPoint;
+import com.twojr.protocol.aps.IApsPacket;
 import com.twojr.protocol.devices.TwoJRDevice;
 import com.twojr.protocol.devices.coordinator.CoordinatorDataListener;
 import com.twojr.protocol.devices.coordinator.CoordinatorDiscoveryListener;
@@ -129,7 +130,7 @@ public class EndDevice extends TwoJRDevice {
     }
 
     @Override
-    public void send() throws XBeeException {
+    public void send(IApsPacket.apsCommands command) throws XBeeException {
         // Get next queued message
         //TwoJrDataGram nextMessage = getOutMessageQueue().getNext();
         //NetworkPacket networkPacket = nextMessage.getPacket();

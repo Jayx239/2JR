@@ -1,5 +1,6 @@
 package com.twojr.protocol.devices.router;
 
+import com.twojr.protocol.aps.IApsPacket;
 import com.twojr.protocol.devices.TwoJRDevice;
 import com.twojr.protocol.devices.TwoJrDataListener;
 import com.twojr.toolkit.JInteger;
@@ -47,7 +48,7 @@ public class Router extends TwoJRDevice{
 
 
     @Override
-    public void send() {
+    public void send(IApsPacket.apsCommands command) {
 
     }
 

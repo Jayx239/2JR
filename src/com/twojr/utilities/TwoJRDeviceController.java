@@ -1,6 +1,7 @@
 package com.twojr.utilities;
 
 import com.digi.xbee.api.exceptions.XBeeException;
+import com.twojr.protocol.aps.EndPoint;
 import com.twojr.protocol.aps.IApsPacket;
 import com.twojr.protocol.devices.TwoJRDevice;
 import com.twojr.protocol.devices.coordinator.Coordinator;
@@ -14,6 +15,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
+import java.util.HashMap;
 
 /**
  * Created by rcunni202 on 5/13/2017.
@@ -34,6 +36,9 @@ public class TwoJRDeviceController extends JFrame {
     private JLabel statusLabel;
     private JComboBox endPointComboBox;
     private JButton createEndPointButton;
+    private JList packetsRecieved;
+    private JTextArea localEndpointTextArea;
+    private JTextArea remoteEndpointTextArea;
 
 
     private TwoJRDevice twoJRDevice;
@@ -156,8 +161,10 @@ public class TwoJRDeviceController extends JFrame {
     }
 
     private void sendButtonAction(){
+
+        IApsPacket.apsCommands command = IApsPacket.apsCommands.valueOf(apsCommandComboBox.getSelectedItem().toString());
         try {
-            twoJRDevice.send();
+            twoJRDevice.send(command);
         } catch (XBeeException e) {
             e.printStackTrace();
         }
@@ -210,6 +217,32 @@ public class TwoJRDeviceController extends JFrame {
 
         comPortComboBox.removeAllItems();
         AddCOMs();
+
+        String endpointStr = "";
+
+       for(HashMap<Integer,EndPoint> map : twoJRDevice.getRemoteEndPoints().values()){
+
+           for(EndPoint endPoint : map.values()){
+
+               endpointStr += endPoint.print();
+           }
+
+       }
+
+
+
+        remoteEndpointTextArea.setText(endpointStr);
+
+        endpointStr = "";
+
+        for(EndPoint endPoint : twoJRDevice.getLocalEndpoints().values()) {
+
+            endpointStr += endPoint.print();
+        }
+
+        localEndpointTextArea.setText(endpointStr);
+
+
     }
 
 

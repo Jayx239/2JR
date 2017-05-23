@@ -253,7 +253,7 @@ public class ApsPacket extends Packet implements IApsPacket {
 
         str += "Sequence Number: " + getSequenceNumber().getValue() + "\n";
         str += "Command Frame: " + commandFrame + "\n";
-        str += "Endpoint: " + endPoint.getId();
+        str += "Endpoint: " + endPoint.getId() + "\n";
         str += "Attribute Control: " + attrCtrl.print() + "\n";
 
         if(attrCtrl != null && attrCtrl.isLengthControl()){

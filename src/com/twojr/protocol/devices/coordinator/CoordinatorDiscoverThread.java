@@ -32,7 +32,6 @@ public class CoordinatorDiscoverThread implements Runnable {
     public void run() {
 
         if(!remoteXBeeDevice.get64BitAddress().equals(coordinator.get64BitAddress())) {
-            System.out.println(remoteXBeeDevice.toString() + "was added to the network");
 
             coordinator.addEndDevice(remoteXBeeDevice.get64BitAddress(), new TwoJRRemoteDevice(remoteXBeeDevice.get64BitAddress()));
 

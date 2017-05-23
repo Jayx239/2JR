@@ -5,6 +5,7 @@ import com.digi.xbee.api.models.XBee64BitAddress;
 import com.digi.xbee.api.models.XBeeMessage;
 import com.digi.xbee.api.utils.HexUtils;
 import com.twojr.protocol.TwoJrDataGram;
+import com.twojr.protocol.aps.ApsPacket;
 import com.twojr.protocol.devices.TwoJRDataGramHandler;
 import com.twojr.protocol.network.NetworkPacket;
 
@@ -28,6 +29,7 @@ public class EndDeviceListenerThread implements Runnable {
         System.out.println(printPretty(xBeeMessage));
 
         NetworkPacket packet = new NetworkPacket(xBeeMessage.getData());
+        ApsPacket apsPacket = new ApsPacket(packet.getPayload());
 
         System.out.println(packet.print());
 

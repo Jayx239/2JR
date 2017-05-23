@@ -94,7 +94,7 @@ public class EndPoint extends JData{
 
         for(Attribute attribute : attributes){
 
-            str += attribute.getName() + ": " + attribute.getData().print() + '\n';
+            str += attribute.getName() + ": " + attribute.getData().getName() + ":" + attribute.getData().print() +'\n';
 
         }
 

@@ -34,6 +34,8 @@ public class CoordinatorDiscoveryListener implements IDiscoveryListener {
     @Override
     public void deviceDiscovered(RemoteXBeeDevice remoteXBeeDevice) {
 
+        System.out.println(remoteXBeeDevice.get64BitAddress().toString() + " was added to the network");
+
         CoordinatorDiscoverThread discoverThread = new CoordinatorDiscoverThread(coordinator,remoteXBeeDevice);
         discoverThread.run();
         coordinator.getNetwork().stopDiscoveryProcess();

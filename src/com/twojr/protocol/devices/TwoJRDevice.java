@@ -8,12 +8,15 @@ import com.digi.xbee.api.models.XBee64BitAddress;
 import com.twojr.protocol.TwoJrDataGram;
 import com.twojr.protocol.TwoJrDatagramQueue;
 import com.twojr.protocol.aps.EndPoint;
+import com.twojr.protocol.aps.IApsPacket;
 import com.twojr.toolkit.JIdentity;
 import com.twojr.toolkit.JInteger;
 import com.twojr.toolkit.JString;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import static com.twojr.protocol.aps.IApsPacket.*;
 
 /**
  * Created by rcunni002c on 11/17/2016.
@@ -139,9 +142,23 @@ public abstract class TwoJRDevice extends Raw802Device {
         localEndpoints.put(endPoint.getId(),endPoint);
     }
 
+    public void setRemotelEndPoint(XBee64BitAddress address, EndPoint endPoint){
+
+        if(remoteEndPoints.containsKey(address)){
+
+            remoteEndPoints.get(address).put(endPoint.getId(),endPoint);
+
+        }else {
+
+            HashMap<Integer,EndPoint> endPoints = new HashMap<>();
+            endPoints.put(endPoint.getId(),endPoint);
+            remoteEndPoints.put(address,endPoints);
+
+        }
+    }
     public abstract void start() throws XBeeException;
     public abstract void stop();
-    public abstract void send() throws XBeeException;
+    public abstract void send(apsCommands command) throws XBeeException;
     public abstract void read();
     public abstract void discover();
 

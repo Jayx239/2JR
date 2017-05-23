@@ -110,10 +110,11 @@ public class TwoJRDataGramHandler {
                     byte[] byteArray = new byte[jString.getSize() + 5];
 
                     byteArray[0] = (byte) DataTypes.DISCOVER_START;
-                    byteArray[1] = (byte)jString.getSize();
+                    byteArray[1] = (byte)jString.toByte().length;
 
-                    for (int i = 2; i < jString.getSize(); i++){
-                        byteArray[i] = jString.toByte()[i];
+
+                    for (int i = 2; i < jString.toByte().length +2; i++){
+                        byteArray[i] = jString.toByte()[i-2];
                     }
 
                     byteArray[jString.getSize()+ 2] = (byte) attribute.getData().getId();
